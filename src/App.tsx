@@ -4,11 +4,13 @@ import { PageTransition } from './components/PageTransition';
 import { LanguageProvider } from './context/LanguageContext';
 import { ProgressProvider } from './context/ProgressContext';
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export function App() {
   return (
     <ProgressProvider>
       <LanguageProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={routerBasename || undefined}>
           <Layout>
             <PageTransition />
           </Layout>

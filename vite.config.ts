@@ -2,8 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const base = process.env.VITE_BASE_PATH ?? '/';
+
 // https://vite.dev/config/
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -17,22 +20,22 @@ export default defineConfig({
         background_color: '#f4f6fb',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
+        start_url: base,
         icons: [
           {
-            src: '/oyen-icon.svg',
+            src: `${base}oyen-icon.svg`.replace('//', '/'),
             sizes: 'any',
             type: 'image/svg+xml',
             purpose: 'any',
           },
           {
-            src: '/oyen-icon.svg',
+            src: `${base}oyen-icon.svg`.replace('//', '/'),
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'any',
           },
           {
-            src: '/oyen-icon-maskable.svg',
+            src: `${base}oyen-icon-maskable.svg`.replace('//', '/'),
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'maskable',

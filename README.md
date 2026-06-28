@@ -2,6 +2,8 @@
 
 An interactive math learning web app for primary school kids (grades K–5). Practice quizzes, mini-games, Math Lab manipulatives, stars, badges, read-aloud support, and a teacher/parent area — English and Bahasa Melayu, no account required.
 
+**Live app:** [https://miruladzim.github.io/math-with-oyen/](https://miruladzim.github.io/math-with-oyen/)
+
 ## Features
 
 - **Practice** — 14 topics, soft learning path, wrong-answer teaching loop, mastery tracking, Oyen coaching
@@ -41,4 +43,4 @@ Open [http://localhost:5173](http://localhost:5173).
 
 ## License
 
-Private / all rights reserved unless otherwise noted by the repository owner.
+Public repository — all rights reserved unless otherwise noted by the repository owner.
