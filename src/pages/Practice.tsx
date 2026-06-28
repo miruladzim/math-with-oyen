@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { BackButton } from '../components/BackButton';
 import { Confetti } from '../components/Confetti';
 import { FeedbackBanner } from '../components/FeedbackBanner';
 import { BigButton } from '../components/BigButton';
+import { FadeView } from '../components/FadeView';
 import { HintButton } from '../components/HintButton';
 import { KidHint, type HintMood } from '../components/KidHint';
 import { QuestionCard } from '../components/QuestionCard';
@@ -47,6 +48,8 @@ interface MissedQuestion {
   correctAnswer: number | string;
   hint?: string;
   strategyHint: string;
+  choices?: (number | string)[];
+  inputType: 'choice' | 'number';
 }
 
 export function Practice() {
@@ -330,6 +333,8 @@ export function Practice() {
             correctAnswer: currentQuestion.correctAnswer,
             hint: currentQuestion.hint,
             strategyHint: getPracticeTopicHint(language, topicId),
+            choices: currentQuestion.choices,
+            inputType: currentQuestion.inputType,
           },
         ]);
       }
@@ -372,10 +377,17 @@ export function Practice() {
   };
 
   const startMissedReview = () => {
-    const count = Math.min(3, missedQuestions.length);
-    const reviewQuestions = Array.from({ length: count }, () =>
-      generateQuestion(topicId!, 1, language, generateOptions(topicId!)),
-    );
+    const reviewSlice = missedQuestions.slice(0, 3);
+    const reviewQuestions = reviewSlice.map((item, index) => ({
+      id: `missed-review-${index}-${Date.now()}`,
+      topicId: topicId!,
+      prompt: item.prompt,
+      correctAnswer: item.correctAnswer,
+      choices: item.choices,
+      inputType: item.inputType,
+      difficulty: 1,
+      hint: item.hint,
+    }));
     setQuestions(reviewQuestions);
     setCurrentIndex(0);
     setCorrectCount(0);
@@ -451,10 +463,12 @@ export function Practice() {
       return tp.totalAnswered > 0 && tp.stars < 2;
     }) && progress.weeklyAnswered >= 5;
 
+  let content: ReactNode;
+
   if (phase === 'pick') {
     const recommendedTopic = topics.find((topic) => topic.id === recommendedTopicId);
 
-    return (
+    content = (
       <div className={styles.page}>
         <BackButton label={t('practice.backHome')} to="/" />
 
@@ -536,10 +550,8 @@ export function Practice() {
         </div>
       </div>
     );
-  }
-
-  if (phase === 'recap') {
-    return (
+  } else if (phase === 'recap') {
+    content = (
       <div className={styles.page}>
         <BackButton label={t('practice.backTopics')} onClick={reset} />
         <div className={styles.recapCard}>
@@ -571,13 +583,11 @@ export function Practice() {
         </div>
       </div>
     );
-  }
-
-  if (phase === 'done') {
+  } else if (phase === 'done') {
     const stars = starsFromAccuracy(correctCount, sessionSize);
     const mastery = topicId ? getTopicProgress(progress, topicId).masteryLevel ?? 0 : 0;
 
-    return (
+    content = (
       <div className={styles.page}>
         <BackButton label={t('practice.backTopics')} onClick={reset} />
         <Confetti active count={stars >= 2 ? 50 : 25} />
@@ -615,9 +625,8 @@ export function Practice() {
         </div>
       </div>
     );
-  }
-
-  return (
+  } else {
+    content = (
     <div className={styles.page}>
       <BackButton label={t('practice.backTopics')} onClick={reset} />
 
@@ -672,5 +681,12 @@ export function Practice() {
         ) : null}
       </div>
     </div>
+    );
+  }
+
+  return (
+    <FadeView viewKey={phase} scrollTopOnEnter>
+      {content}
+    </FadeView>
   );
 }

@@ -1,8 +1,9 @@
 .hint {
   display: flex;
-  align-items: flex-end;
-  gap: 0.55rem;
+  align-items: flex-start;
+  gap: 0.65rem;
   max-width: 100%;
+  margin-bottom: 0.15rem;
 }
 
 .compact {
@@ -13,21 +14,22 @@
   position: relative;
   flex-shrink: 0;
   line-height: 1;
+  padding-top: 0.15rem;
 }
 
 .cat {
   display: block;
-  font-size: 2.35rem;
+  font-size: 2.1rem;
   filter: drop-shadow(0 4px 8px rgba(249, 115, 22, 0.22));
 }
 
 .compact .cat {
-  font-size: 1.85rem;
+  font-size: 1.75rem;
 }
 
 .thought {
   position: absolute;
-  top: -0.15rem;
+  top: -0.1rem;
   right: -0.35rem;
   font-size: 0.85rem;
 }
@@ -36,11 +38,11 @@
   position: relative;
   flex: 1;
   min-width: 0;
-  padding: 0.8rem 0.95rem;
+  padding: 0.85rem 1rem;
   border-radius: 18px 18px 18px 6px;
   border: 2px solid;
   box-shadow: var(--shadow-sm);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .compact .bubble {
@@ -52,7 +54,7 @@
   content: '';
   position: absolute;
   left: -8px;
-  bottom: 10px;
+  top: 14px;
   width: 0;
   height: 0;
   border-top: 7px solid transparent;
@@ -64,8 +66,8 @@
   display: block;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 0.78rem;
-  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.35rem;
   letter-spacing: 0.02em;
   opacity: 0.92;
 }
@@ -76,8 +78,9 @@
 
 .message {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  line-height: 1.55;
 }
 
 .compact .message {
@@ -134,6 +137,29 @@
 
 .think .bubble::before {
   border-right-color: var(--color-hint-think-border);
+}
+
+@media (max-width: 520px) {
+  .howTo.hint,
+  .help.hint {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .howTo .bubble::before,
+  .help .bubble::before {
+    display: none;
+  }
+
+  .howTo .bubble,
+  .help .bubble {
+    border-radius: var(--radius-lg);
+  }
+
+  .catWrap {
+    padding-top: 0;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

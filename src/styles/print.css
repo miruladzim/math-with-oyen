@@ -26,8 +26,9 @@
   }
 
   .worksheet-print ol {
-    padding-left: 20pt;
-    line-height: 2;
+    padding-left: 0;
+    line-height: 1.6;
+    list-style: none;
   }
 
   .worksheet-print .answer-key {
@@ -37,6 +38,13 @@
 
   .worksheet-print .answer-key h2 {
     font-size: 16pt;
+    margin-bottom: 10pt;
+  }
+
+  .worksheet-print .answer-key ol {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6pt;
   }
 }
 

@@ -70,11 +70,21 @@ export interface AppSettings {
   pinHintDismissed: boolean;
 }
 
+export interface FinalExamProgress {
+  attempts: number;
+  bestCorrect: number;
+  bestTotal: number;
+  bestStars: 0 | 1 | 2 | 3;
+  lastAttempt?: string;
+  passed: boolean;
+}
+
 export interface AppProgress {
   gradeLevel: GradeLevel;
   studentName: string;
   topics: Partial<Record<TopicId, TopicProgress>>;
   labModes: Partial<Record<LabModeId, LabModeProgress>>;
+  finalExams?: Partial<Record<GradeLevel, FinalExamProgress>>;
   badges: string[];
   streak: number;
   lastPlayedDate?: string;
@@ -110,4 +120,5 @@ export const BADGE_DEFINITIONS: Record<string, { label: string; emoji: string }>
   lab_explorer: { label: 'Lab Explorer', emoji: '🧪' },
   lab_streak_3: { label: 'Lab Streak', emoji: '🔬' },
   lab_perfect: { label: 'Lab Perfect', emoji: '💡' },
+  exam_graduate: { label: 'Exam Graduate', emoji: '🎓' },
 };

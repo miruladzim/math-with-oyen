@@ -20,7 +20,7 @@ export function StarDisplay({ count, max = 3, large, label }: StarDisplayProps) 
           className={`${styles.star} ${i < count ? styles.starEarned : styles.starEmpty}`}
           aria-hidden="true"
         >
-          ⭐
+          {i < count ? '⭐' : '☆'}
         </span>
       ))}
     </span>

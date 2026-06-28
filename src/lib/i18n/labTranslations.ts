@@ -148,7 +148,7 @@ export const labEn = {
 export const labMs: typeof labEn = {
   backLab: '← Kembali ke Makmal Matematik',
   hubTitle: 'Makmal Matematik',
-  hubSubtitle: 'Matematik hands-on — fikir, bina, dan teroka dengan Oyen!',
+  hubSubtitle: 'Matematik bercorak main — fikir, bina, dan teroka bersama Oyen!',
   play: 'MULA',
   showShortcut: 'Tunjuk tip pantas',
   stepGuide: 'Bantuan langkah demi langkah',
@@ -254,7 +254,7 @@ export const labMs: typeof labEn = {
       },
       steps: {
         '1': 'Baca peraturan setiap tong.',
-        '2': 'Ketik kad, kemudian ketik tong.',
+        '2': 'Tekan kad, kemudian tekan tong.',
         '3': 'Hantar bila semua kad diisih.',
       },
     },
@@ -269,7 +269,7 @@ export const labMs: typeof labEn = {
       add: '{name} ada {a} pelekat dan dapat {b} lagi.',
       sub: '{name} ada {a} guli dan beri {b}.',
       mult: '{name} ada {a} beg dengan {b} snek setiap satu.',
-      step1: 'Langkah 1: Ketik nombor dalam cerita.',
+      step1: 'Langkah 1: Tekan nombor dalam cerita.',
       step2: 'Langkah 2: Pilih tambah, tolak, atau darab.',
       step3: 'Langkah 3: Taip jawapan awak.',
       opAdd: 'Tambah',

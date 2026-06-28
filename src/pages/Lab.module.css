@@ -22,7 +22,7 @@
 
 .modeGrid {
   display: grid;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 @media (min-width: 560px) {

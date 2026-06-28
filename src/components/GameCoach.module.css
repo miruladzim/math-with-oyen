@@ -18,8 +18,8 @@
 }
 
 .toggle {
-  min-height: 38px;
-  padding: 0.35rem 0.75rem;
+  min-height: var(--touch-target);
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
   border: 2px solid var(--color-primary-border);
   background: var(--color-surface);

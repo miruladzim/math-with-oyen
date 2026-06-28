@@ -5,19 +5,28 @@
   color: var(--color-text-muted);
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.78rem;
-  min-height: 34px;
-  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 0.45rem 0.85rem;
   background: var(--color-surface);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.12s, border-color 0.12s;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
 }
 
-.backBtn:hover {
-  color: var(--color-primary);
+.backBtn:active {
+  background: var(--color-control-bg);
   border-color: var(--color-primary-border);
+  color: var(--color-primary);
+}
+
+@media (hover: hover) {
+  .backBtn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary-border);
+  }
 }

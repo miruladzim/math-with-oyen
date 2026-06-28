@@ -1,25 +1,32 @@
 .stars {
   display: inline-flex;
-  gap: 0.2rem;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
 }
 
 .star {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   line-height: 1;
   display: inline-block;
 }
 
 .starEmpty {
-  opacity: 0.2;
-  filter: grayscale(1);
-}
-
-.large .star {
-  font-size: 2rem;
+  color: var(--color-star-empty);
+  opacity: 1;
+  filter: none;
 }
 
 .starEarned {
   animation: starPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.large .star {
+  font-size: 1.85rem;
+}
+
+.large .starEmpty {
+  opacity: 0.9;
 }
 
 @keyframes starPop {

@@ -33,9 +33,9 @@
 }
 
 .compact {
-  min-height: 38px;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.78rem;
+  min-height: var(--touch-target);
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
 }
 
 .waiting {

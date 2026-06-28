@@ -1,19 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { GradeLevelSlider } from '../components/GradeLevelSlider';
+import { KidHint } from '../components/KidHint';
 import { StudentNameField } from '../components/StudentNameField';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
 import { GRADE_GAME_PICK } from '../lib/gameConfig';
-import { getAllTopics } from '../lib/questions';
+import { getAllTopics, getTopicsForGrade } from '../lib/questions';
 import { getNextPracticeSteps, getTopicProgress } from '../lib/progress';
+import { getFinalExamProgress } from '../lib/exam/examProgress';
 import type { GradeLevel } from '../lib/types';
 import styles from './Home.module.css';
-
-const GRADES: { id: GradeLevel; emoji: string; tone: string }[] = [
-  { id: 'k1', emoji: '🌱', tone: styles.gradeK1 },
-  { id: 'grade2', emoji: '🧭', tone: styles.grade2 },
-  { id: 'grade3', emoji: '🔨', tone: styles.grade3 },
-  { id: 'grade45', emoji: '🏆', tone: styles.grade45 },
-];
 
 const GAME_EMOJI: Record<string, string> = {
   balloon: '🎈',
@@ -26,10 +23,12 @@ const GAME_EMOJI: Record<string, string> = {
 
 export function Home() {
   const { gradeLevel, setGradeLevel, progress, patchSettings } = useProgress();
-  const { t, gradeLabel, language, topicLabel } = useLanguage();
+  const { t, language, topicLabel } = useLanguage();
   const navigate = useNavigate();
+  const [showLevelHint, setShowLevelHint] = useState(true);
 
   const topics = getAllTopics(language);
+  const gradeTopics = getTopicsForGrade(gradeLevel, language);
   const nextSteps = getNextPracticeSteps(progress, 3);
   const primaryStep = nextSteps[0];
   const recommendedTopic = topics.find((topic) => topic.id === primaryStep?.topicId);
@@ -39,11 +38,20 @@ export function Home() {
     (sum, topic) => sum + (getTopicProgress(progress, topic.id).stars ?? 0),
     0,
   );
+  const gradeStars = gradeTopics.reduce(
+    (sum, topic) => sum + (getTopicProgress(progress, topic.id).stars ?? 0),
+    0,
+  );
 
   const startRecommendedPractice = () => {
     if (!primaryStep) return;
     patchSettings({ onboardingDone: true });
     navigate(`/practice?topic=${primaryStep.topicId}`);
+  };
+
+  const selectGrade = (id: GradeLevel) => {
+    setGradeLevel(id);
+    setShowLevelHint(false);
   };
 
   return (
@@ -58,6 +66,15 @@ export function Home() {
           <StudentNameField showGreeting />
         </div>
       </header>
+
+      {showLevelHint ? <KidHint variant="howTo" message={t('home.chooseLevelHint')} /> : null}
+
+      <section className={styles.levelSection} aria-labelledby="grade-heading">
+        <h2 id="grade-heading" className={styles.sectionLabel}>
+          {t('home.chooseLevel')}
+        </h2>
+        <GradeLevelSlider value={gradeLevel} onChange={selectGrade} />
+      </section>
 
       {!progress.settings.onboardingDone && recommendedTopic ? (
         <section className={styles.startHere} aria-labelledby="start-here-heading">
@@ -81,27 +98,11 @@ export function Home() {
         </section>
       ) : null}
 
-      {nextSteps.length > 0 ? (
-        <section className={styles.nextSteps} aria-labelledby="next-steps-heading">
-          <h2 id="next-steps-heading" className={styles.nextStepsTitle}>
-            {t('home.nextSteps')}
-          </h2>
-          <ul className={styles.nextStepsList}>
-            {nextSteps.map((step) => {
-              const topic = topics.find((item) => item.id === step.topicId);
-              if (!topic) return null;
-              return (
-                <li key={step.topicId}>
-                  <Link to={`/practice?topic=${step.topicId}`} className={styles.nextStepLink}>
-                    {t('home.nextStepItem', {
-                      emoji: topic.emoji,
-                      topic: topicLabel(step.topicId),
-                    })}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+      {gradeStars >= 10 && !getFinalExamProgress(progress, gradeLevel)?.passed ? (
+        <section className={styles.examNudge}>
+          <Link to="/exam" className={styles.examNudgeLink}>
+            {t('home.examReady')} 🎓
+          </Link>
         </section>
       ) : null}
 
@@ -114,6 +115,8 @@ export function Home() {
             <span>➕</span>
             <span>7</span>
             <span>✏️</span>
+            <span>⭐</span>
+            <span>🔢</span>
           </div>
           <span className={styles.tileIcon} aria-hidden="true">
             📝
@@ -157,6 +160,8 @@ export function Home() {
           <div className={`${styles.tileDecor} ${styles.labDecor}`} aria-hidden="true">
             <span>🧪</span>
             <span>🧩</span>
+            <span>⚖️</span>
+            <span>🔢</span>
           </div>
           <span className={styles.tileIcon} aria-hidden="true">
             🔬
@@ -164,6 +169,23 @@ export function Home() {
           <div className={styles.tileContent}>
             <h2 className={styles.tileTitle}>{t('lab.homeTitle')}</h2>
             <p className={styles.tileDesc}>{t('lab.homeDesc')}</p>
+          </div>
+        </Link>
+
+        <Link
+          to="/exam"
+          className={`${styles.tile} ${styles.tileWide} ${styles.examTile}`}
+        >
+          <div className={`${styles.tileDecor} ${styles.examDecor}`} aria-hidden="true">
+            <span>🎓</span>
+            <span>✓</span>
+          </div>
+          <span className={styles.tileIcon} aria-hidden="true">
+            📋
+          </span>
+          <div className={styles.tileContent}>
+            <h2 className={styles.tileTitle}>{t('home.examTitle')}</h2>
+            <p className={styles.tileDesc}>{t('home.examDesc')}</p>
           </div>
         </Link>
 
@@ -191,32 +213,6 @@ export function Home() {
         <summary>{t('home.parentGuide')}</summary>
         <p>{t('home.parentGuideText')}</p>
       </details>
-
-      <section className={styles.levelSection} aria-labelledby="grade-heading">
-        <h2 id="grade-heading" className={styles.sectionLabel}>
-          {t('home.chooseLevel')}
-        </h2>
-        <div className={styles.gradeGrid} role="radiogroup" aria-label={t('home.gradeLevelAria')}>
-          {GRADES.map(({ id, emoji, tone }) => {
-            const active = gradeLevel === id;
-            return (
-              <button
-                key={id}
-                type="button"
-                role="radio"
-                aria-checked={active}
-                className={`${styles.gradeBtn} ${tone} ${active ? styles.gradeBtnActive : ''}`}
-                onClick={() => setGradeLevel(id)}
-              >
-                <span className={styles.gradeEmoji} aria-hidden="true">
-                  {emoji}
-                </span>
-                <span className={styles.gradeLabel}>{gradeLabel(id)}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }

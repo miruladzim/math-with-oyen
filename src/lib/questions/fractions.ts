@@ -16,13 +16,20 @@ export function generateFractionQuestion(difficulty: number, lang: Language = 'e
   const correct = `${numer}/${denom}`;
 
   const wrongOptions = new Set<string>();
-  while (wrongOptions.size < 3) {
-    const wn = randInt(1, denom);
+  for (let wn = 1; wn <= denom; wn++) {
     const opt = `${wn}/${denom}`;
     if (opt !== correct) wrongOptions.add(opt);
   }
+  for (const altDenom of DENOMINATORS) {
+    if (wrongOptions.size >= 3) break;
+    for (let n = 1; n < altDenom; n++) {
+      const opt = `${n}/${altDenom}`;
+      if (opt !== correct) wrongOptions.add(opt);
+      if (wrongOptions.size >= 3) break;
+    }
+  }
 
-  const choices = [correct, ...Array.from(wrongOptions)].sort(() => Math.random() - 0.5);
+  const choices = [correct, ...Array.from(wrongOptions).slice(0, 3)].sort(() => Math.random() - 0.5);
 
   return {
     id: crypto.randomUUID(),

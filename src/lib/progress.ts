@@ -100,6 +100,7 @@ export function loadProgress(): AppProgress {
       topics: parsed.topics ?? {},
       badges: parsed.badges ?? [],
       labModes: parsed.labModes ?? {},
+      finalExams: parsed.finalExams ?? {},
       weeklyAnswered: parsed.weeklyAnswered ?? 0,
       weeklyCorrect: parsed.weeklyCorrect ?? 0,
       weekStartDate: parsed.weekStartDate ?? getWeekStart(),
@@ -126,7 +127,7 @@ export function starsFromAccuracy(correct: number, total: number): 0 | 1 | 2 | 3
   return 0;
 }
 
-function updateWeeklyStats(progress: AppProgress, correct: number, total: number): AppProgress {
+export function updateWeeklyStats(progress: AppProgress, correct: number, total: number): AppProgress {
   const weekStart = getWeekStart();
   let weeklyAnswered = progress.weeklyAnswered ?? 0;
   let weeklyCorrect = progress.weeklyCorrect ?? 0;

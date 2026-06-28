@@ -46,12 +46,29 @@ export function createWorksheet(
   };
 }
 
-export function formatQuestionForPrint(question: Question, index: number): string {
-  const prompt = question.prompt.replace(/\n/g, ' ');
+export function parseWorksheetQuestion(question: Question): {
+  heading: string;
+  visual?: string;
+} {
+  const lines = question.prompt
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return {
+    heading: lines[0] ?? question.prompt.trim(),
+    visual: lines.length > 1 ? lines.slice(1).join('  ') : undefined,
+  };
+}
+
+/** @deprecated Use parseWorksheetQuestion with list markup instead */
+export function formatQuestionForPrint(question: Question, _index: number): string {
+  const { heading, visual } = parseWorksheetQuestion(question);
+  const body = visual ? `${heading} — ${visual}` : heading;
   if (question.inputType === 'choice') {
-    return `${index + 1}. ${prompt}`;
+    return body;
   }
-  return `${index + 1}. ${prompt} ______`;
+  return `${body} ______`;
 }
 
 export { getGradeLabel };

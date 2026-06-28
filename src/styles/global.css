@@ -1,4 +1,7 @@
 @import './theme-tokens.css';
+@import './transitions.css';
+@import './page-shell.css';
+@import './touch.css';
 
 *,
 *::before,

@@ -69,8 +69,8 @@
 }
 
 .small {
-  min-height: 38px;
-  padding: 0.45rem 0.85rem;
+  min-height: var(--touch-target);
+  padding: 0.5rem 0.95rem;
   font-size: 0.85rem;
 }
 

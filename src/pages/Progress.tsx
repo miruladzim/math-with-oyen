@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
+import { getFinalExamProgress } from '../lib/exam/examProgress';
 import { getPracticePath } from '../lib/curriculum/practicePath';
 import { getAllTopics, getTopicsForGrade } from '../lib/questions';
 import { getLabModesForGrade } from '../lib/lab/labConfig';
@@ -10,7 +12,7 @@ import { StarDisplay } from '../components/StarDisplay';
 
 export function ProgressPage() {
   const { progress } = useProgress();
-  const { t, language, badgeLabel, topicLabel } = useLanguage();
+  const { t, language, badgeLabel, topicLabel, gradeLabel } = useLanguage();
   const gradeTopics = getTopicsForGrade(progress.gradeLevel, language);
   const allTopics = getAllTopics(language);
   const pathUnits = getPracticePath(progress.gradeLevel);
@@ -27,6 +29,7 @@ export function ProgressPage() {
     (sum, tp) => sum + (tp?.totalAnswered ?? 0),
     0,
   );
+  const examRecord = getFinalExamProgress(progress, progress.gradeLevel);
 
   const renderTopicRow = (topicId: typeof gradeTopics[0]['id'], step?: number) => {
     const topic = allTopics.find((item) => item.id === topicId);
@@ -81,6 +84,31 @@ export function ProgressPage() {
         ) : (
           <p className={styles.weeklyNudge}>{t('progress.bestTopic')}</p>
         )}
+      </section>
+
+      <section className={styles.examCard} aria-labelledby="exam-heading">
+        <h2 id="exam-heading" className={styles.sectionTitle}>
+          {t('progress.examCardTitle')}
+        </h2>
+        {examRecord ? (
+          <>
+            <p className={styles.examStat}>
+              {t('progress.examBest', {
+                correct: examRecord.bestCorrect,
+                total: examRecord.bestTotal,
+              })}
+            </p>
+            <StarDisplay count={examRecord.bestStars} />
+            <p className={styles.examMeta}>
+              {t('progress.examAttempts', { count: examRecord.attempts })}
+            </p>
+          </>
+        ) : (
+          <p className={styles.examStat}>{t('progress.examNotTaken')}</p>
+        )}
+        <Link to="/exam" className={styles.examLink}>
+          {t('progress.examTake')} — {gradeLabel(progress.gradeLevel)}
+        </Link>
       </section>
 
       <div className={styles.statsRow}>

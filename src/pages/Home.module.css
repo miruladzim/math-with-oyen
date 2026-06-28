@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--page-gap);
   width: 100%;
 }
 
@@ -103,8 +103,11 @@
   overflow: hidden;
   isolation: isolate;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: none;
+  background-clip: border-box;
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .tile::before,
@@ -117,7 +120,9 @@
 
 .tile:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24);
 }
 
 .tile:active {
@@ -212,23 +217,36 @@
 }
 
 .practiceDecor span:nth-child(1) {
-  top: 12%;
-  left: 58%;
-  font-size: 1.4rem;
+  top: 8%;
+  right: 20%;
+  font-size: 1.35rem;
 }
 
 .practiceDecor span:nth-child(2) {
-  top: 38%;
-  left: 72%;
-  font-size: 1.1rem;
+  top: 28%;
+  right: 6%;
+  font-size: 1.25rem;
   font-family: var(--font-display);
   font-weight: 900;
 }
 
 .practiceDecor span:nth-child(3) {
-  top: 62%;
-  left: 55%;
-  font-size: 1.6rem;
+  bottom: 20%;
+  right: 14%;
+  font-size: 1.5rem;
+}
+
+.practiceDecor span:nth-child(4) {
+  top: 14%;
+  left: 6%;
+  font-size: 1.2rem;
+}
+
+.practiceDecor span:nth-child(5) {
+  bottom: 10%;
+  left: 10%;
+  font-size: 1.1rem;
+  opacity: 0.12;
 }
 
 .gamesDecor span:nth-child(1) {
@@ -243,40 +261,65 @@
   font-size: 1.5rem;
 }
 
-/* Practice — numbers & pencil vibe */
+/* Practice — workbook & stars vibe */
 .practiceTile {
   background:
-    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.28) 0%, transparent 42%),
-    radial-gradient(circle at 88% 78%, rgba(67, 56, 202, 0.55) 0%, transparent 48%),
+    radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.32) 0%, transparent 38%),
+    radial-gradient(circle at 90% 84%, rgba(67, 56, 202, 0.55) 0%, transparent 46%),
+    radial-gradient(circle at 76% 12%, rgba(165, 180, 252, 0.38) 0%, transparent 32%),
+    radial-gradient(circle at 22% 70%, rgba(255, 255, 255, 0.09) 6px, transparent 6px),
+    radial-gradient(circle at 54% 38%, rgba(255, 255, 255, 0.07) 4px, transparent 4px),
     repeating-linear-gradient(
       -35deg,
-      rgba(255, 255, 255, 0.04) 0,
-      rgba(255, 255, 255, 0.04) 2px,
+      rgba(255, 255, 255, 0.045) 0,
+      rgba(255, 255, 255, 0.045) 2px,
       transparent 2px,
       transparent 10px
     ),
-    linear-gradient(145deg, #a5b4fc 0%, #6366f1 42%, #4338ca 100%);
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px),
+    linear-gradient(145deg, #c7d2fe 0%, #818cf8 30%, #6366f1 55%, #4338ca 100%);
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    18px 18px,
+    auto;
 }
 
 .practiceTile::before {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  top: -48px;
-  right: 20%;
-  border: 2px dashed rgba(255, 255, 255, 0.22);
+  width: 92px;
+  height: 112px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.24);
+  border-left: 5px solid rgba(251, 113, 133, 0.5);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 10px,
+      rgba(255, 255, 255, 0.11) 10px,
+      rgba(255, 255, 255, 0.11) 11px
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(99, 102, 241, 0.14) 100%);
+  top: -30px;
+  right: 7%;
+  transform: rotate(-10deg);
+  box-shadow: 2px 6px 14px rgba(49, 46, 129, 0.22);
 }
 
 .practiceTile::after {
-  content: '12';
+  content: '10';
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: 5.5rem;
-  color: rgba(255, 255, 255, 0.1);
-  bottom: -1.2rem;
-  left: 0.5rem;
-  letter-spacing: -0.05em;
+  font-size: 5.75rem;
+  color: rgba(255, 255, 255, 0.11);
+  bottom: -1.15rem;
+  left: 0.45rem;
+  letter-spacing: -0.06em;
+  line-height: 1;
 }
 
 /* Games — playful arcade dots */
@@ -313,18 +356,74 @@
 
 .labTile {
   background:
-    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.2) 0%, transparent 42%),
-    linear-gradient(145deg, #8b5cf6 0%, #6366f1 45%, #06b6d4 100%);
+    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.28) 0%, transparent 36%),
+    radial-gradient(circle at 88% 78%, rgba(6, 182, 212, 0.55) 0%, transparent 44%),
+    radial-gradient(circle at 72% 18%, rgba(167, 139, 250, 0.4) 0%, transparent 32%),
+    radial-gradient(circle at 28% 72%, rgba(255, 255, 255, 0.1) 6px, transparent 6px),
+    radial-gradient(circle at 62% 38%, rgba(255, 255, 255, 0.08) 4px, transparent 4px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.11) 1.5px, transparent 1.5px),
+    linear-gradient(145deg, #7c3aed 0%, #6366f1 32%, #0891b2 65%, #06b6d4 100%);
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    20px 20px,
+    auto;
 }
 
-.labDecor span:first-child {
-  top: 0.4rem;
-  right: 1.2rem;
+.labTile::before {
+  width: 74px;
+  height: 98px;
+  border-radius: 10px 10px 44px 44px;
+  border: 3px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(6, 182, 212, 0.22) 55%,
+    rgba(99, 102, 241, 0.15) 100%
+  );
+  top: -24px;
+  right: 9%;
+  transform: rotate(14deg);
+  box-shadow: inset 0 -12px 20px rgba(6, 182, 212, 0.15);
 }
 
-.labDecor span:last-child {
-  bottom: 0.5rem;
-  right: 2rem;
+.labTile::after {
+  content: '∑';
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 4.75rem;
+  color: rgba(255, 255, 255, 0.11);
+  bottom: -0.85rem;
+  left: 0.65rem;
+  line-height: 1;
+}
+
+.labDecor span:nth-child(1) {
+  top: 6%;
+  right: 16%;
+  font-size: 1.35rem;
+}
+
+.labDecor span:nth-child(2) {
+  top: 38%;
+  right: 6%;
+  font-size: 1.15rem;
+}
+
+.labDecor span:nth-child(3) {
+  bottom: 16%;
+  left: 10%;
+  font-size: 1.25rem;
+}
+
+.labDecor span:nth-child(4) {
+  top: 20%;
+  left: 6%;
+  font-size: 1rem;
+  opacity: 0.12;
 }
 
 /* Stars — sparkle field */
@@ -392,7 +491,12 @@
 .levelSection {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.45rem;
+  padding: 0.65rem 0.7rem 0.55rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-primary-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .sectionLabel {
@@ -402,94 +506,6 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-muted);
-}
-
-.gradeGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.gradeBtn {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  min-height: 76px;
-  padding: 0.65rem 0.4rem;
-  border-radius: var(--radius-md);
-  border: 2px solid rgba(255, 255, 255, 0.22);
-  color: white;
-  text-align: center;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.gradeBtn::before {
-  content: '';
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  top: -28px;
-  right: -18px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.gradeBtn:hover {
-  transform: translateY(-1px);
-}
-
-.gradeEmoji {
-  position: relative;
-  z-index: 1;
-  font-size: 1.5rem;
-  line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-}
-
-.gradeLabel {
-  position: relative;
-  z-index: 1;
-  font-size: 0.68rem;
-  font-weight: 800;
-  line-height: 1.25;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-}
-
-.gradeBtnActive {
-  border-color: white;
-  box-shadow: 0 0 0 2px var(--color-primary), var(--shadow-md);
-}
-
-.gradeK1 {
-  background:
-    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.2), transparent 55%),
-    linear-gradient(160deg, #c4b5fd 0%, #8b5cf6 55%, #6d28d9 100%);
-}
-
-.grade2 {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.22), transparent 50%),
-    linear-gradient(160deg, #a5b4fc 0%, #6366f1 55%, #4338ca 100%);
-}
-
-.grade3 {
-  background:
-    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.2), transparent 50%),
-    linear-gradient(160deg, #fdba74 0%, #f97316 55%, #c2410c 100%);
-}
-
-.grade45 {
-  background:
-    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.2), transparent 50%),
-    linear-gradient(160deg, #6ee7b7 0%, #10b981 55%, #047857 100%);
 }
 
 @media (max-width: 640px) {
@@ -514,24 +530,14 @@
   .practiceTile::after {
     font-size: 4rem;
   }
-
-  .gradeGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .gradeBtn {
-    min-height: 72px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tile,
-  .gradeBtn {
+  .tile {
     transition: none;
   }
 
-  .tile:hover,
-  .gradeBtn:hover {
+  .tile:hover {
     transform: none;
   }
 
@@ -636,4 +642,61 @@
   margin-top: 0.65rem;
   color: var(--color-text-muted);
   line-height: 1.45;
+}
+
+.examNudge {
+  margin-bottom: 0.75rem;
+}
+
+.examNudgeLink {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(99, 102, 241, 0.12));
+  border: 2px solid var(--color-primary-border);
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.examTile {
+  background:
+    radial-gradient(circle at 88% 14%, rgba(252, 211, 77, 0.45) 0%, transparent 38%),
+    radial-gradient(circle at 8% 82%, rgba(255, 255, 255, 0.16) 0%, transparent 40%),
+    linear-gradient(145deg, #9f1239 0%, #881337 38%, #4c0519 100%);
+}
+
+.examTile::before {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 2px dashed rgba(252, 211, 77, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  top: -22px;
+  right: 12%;
+}
+
+.examTile::after {
+  content: 'A+';
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 4rem;
+  color: rgba(252, 211, 77, 0.14);
+  bottom: -0.5rem;
+  left: 1rem;
+  letter-spacing: -0.04em;
+}
+
+.examDecor span:first-child {
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.4rem;
+}
+
+.examDecor span:last-child {
+  bottom: 0.6rem;
+  right: 2.2rem;
+  font-family: var(--font-display);
+  font-weight: 900;
 }

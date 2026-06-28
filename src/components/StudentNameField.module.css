@@ -25,8 +25,8 @@
 }
 
 .input {
-  min-height: 38px;
-  padding: 0.45rem 0.65rem;
+  min-height: var(--touch-target);
+  padding: 0.55rem 0.75rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface);

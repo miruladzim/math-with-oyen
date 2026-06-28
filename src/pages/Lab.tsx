@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { FadeView } from '../components/FadeView';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
-import { getLabModesForGrade, VALID_LAB_MODES } from '../lib/lab/labConfig';
+import { getLabModesForGrade } from '../lib/lab/labConfig';
 import type { LabModeId } from '../lib/types';
 import { PatternStudio } from '../lab/modes/PatternStudio/PatternStudio';
 import { SortSquad } from '../lab/modes/SortSquad/SortSquad';
@@ -30,87 +31,91 @@ export function Lab() {
 
   useEffect(() => {
     const mode = searchParams.get('mode');
-    if (mode && VALID_LAB_MODES.includes(mode as LabModeId)) {
+    const allowedModes = getLabModesForGrade(gradeLevel).map((entry) => entry.id);
+    if (mode && allowedModes.includes(mode as LabModeId)) {
       setActiveMode(mode as LabModeId);
       setSearchParams({}, { replace: true });
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, gradeLevel]);
 
   const exitMode = () => setActiveMode(null);
   const modes = getLabModesForGrade(gradeLevel);
 
+  let content: ReactNode;
+
   if (activeMode === 'patternStudio') {
-    return (
+    content = (
       <div className={styles.modeArea}>
         <PatternStudio onExit={exitMode} />
       </div>
     );
-  }
-  if (activeMode === 'sortSquad') {
-    return (
+  } else if (activeMode === 'sortSquad') {
+    content = (
       <div className={styles.modeArea}>
         <SortSquad onExit={exitMode} />
       </div>
     );
-  }
-  if (activeMode === 'numberLine') {
-    return (
+  } else if (activeMode === 'numberLine') {
+    content = (
       <div className={styles.modeArea}>
         <NumberLineJump onExit={exitMode} />
       </div>
     );
-  }
-  if (activeMode === 'equationBuilder') {
-    return (
+  } else if (activeMode === 'equationBuilder') {
+    content = (
       <div className={styles.modeArea}>
         <EquationBuilder onExit={exitMode} />
       </div>
     );
-  }
-  if (activeMode === 'balanceScale') {
-    return (
+  } else if (activeMode === 'balanceScale') {
+    content = (
       <div className={styles.modeArea}>
         <BalanceScale onExit={exitMode} />
       </div>
     );
-  }
-  if (activeMode === 'thinkSteps') {
-    return (
+  } else if (activeMode === 'thinkSteps') {
+    content = (
       <div className={styles.modeArea}>
         <ThinkSteps onExit={exitMode} />
+      </div>
+    );
+  } else {
+    content = (
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>{t('lab.hubTitle')}</h1>
+          <p className={styles.subtitle}>{t('lab.hubSubtitle')}</p>
+        </div>
+
+        <KidHint variant="howTo" message={t('lab.hubSubtitle')} />
+
+        <div className={styles.modeGrid}>
+          {modes.map((mode) => (
+            <button
+              key={mode.id}
+              type="button"
+              className={`${styles.modeCard} ${THEME_CLASS[mode.theme] ?? ''}`}
+              onClick={() => setActiveMode(mode.id)}
+            >
+              <span className={styles.modeArt} aria-hidden="true">
+                {mode.emoji}
+              </span>
+              <div className={styles.modeInfo}>
+                <h3>{t(`lab.modes.${mode.id}.title`)}</h3>
+                <p>{t(`lab.modes.${mode.id}.desc`)}</p>
+                <p className={styles.learning}>{t(`lab.modes.${mode.id}.learning`)}</p>
+              </div>
+              <span className={styles.playBadge}>▶️ {t('lab.play')}</span>
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>{t('lab.hubTitle')}</h1>
-        <p className={styles.subtitle}>{t('lab.hubSubtitle')}</p>
-      </div>
-
-      <KidHint variant="howTo" message={t('lab.hubSubtitle')} />
-
-      <div className={styles.modeGrid}>
-        {modes.map((mode) => (
-          <button
-            key={mode.id}
-            type="button"
-            className={`${styles.modeCard} ${THEME_CLASS[mode.theme] ?? ''}`}
-            onClick={() => setActiveMode(mode.id)}
-          >
-            <span className={styles.modeArt} aria-hidden="true">
-              {mode.emoji}
-            </span>
-            <div className={styles.modeInfo}>
-              <h3>{t(`lab.modes.${mode.id}.title`)}</h3>
-              <p>{t(`lab.modes.${mode.id}.desc`)}</p>
-              <p className={styles.learning}>{t(`lab.modes.${mode.id}.learning`)}</p>
-            </div>
-            <span className={styles.playBadge}>▶️ {t('lab.play')}</span>
-          </button>
-        ))}
-      </div>
-    </div>
+    <FadeView viewKey={activeMode ?? 'hub'} scrollTopOnEnter>
+      {content}
+    </FadeView>
   );
 }

@@ -109,7 +109,10 @@
   --font-display: 'Nunito', system-ui, sans-serif;
   --font-body: system-ui, -apple-system, sans-serif;
   --touch-min: 48px;
-  --page-gap: 1rem;
+  --touch-target: 44px;
+  --page-gap: 1.25rem;
+  --section-gap: 1rem;
+  --color-star-empty: #64748b;
 }
 
 html.dark {
@@ -209,4 +212,5 @@ html.dark {
   --shadow-play: 0 10px 36px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
   --shadow-stage: 0 18px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --gradient-surface: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  --color-star-empty: #64748b;
 }

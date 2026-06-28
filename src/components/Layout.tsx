@@ -23,6 +23,7 @@ export function Layout({ children }: LayoutProps) {
     { to: '/practice', icon: '📝', label: t('nav.practice') },
     { to: '/games', icon: '🎮', label: t('nav.games') },
     { to: '/lab', icon: '🧪', label: t('nav.lab') },
+    { to: '/exam', icon: '🎓', label: t('nav.exam') },
     { to: '/progress', icon: '⭐', label: t('nav.stars') },
     { to: '/teacher', icon: '👩‍🏫', label: t('nav.teacher') },
   ];

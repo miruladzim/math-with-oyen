@@ -99,7 +99,7 @@
 }
 
 .choice {
-  min-height: 58px;
+  min-height: var(--touch-min);
   padding: 0.85rem 0.65rem;
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -178,6 +178,12 @@
   .dot,
   .choice {
     transition: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .choices {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BalloonPop } from '../games/BalloonPop';
 import { CrystalCave } from '../games/CrystalCave';
@@ -6,6 +6,7 @@ import { FractionPizza } from '../games/FractionPizza';
 import { NumberMatch } from '../games/NumberMatch';
 import { RocketLaunch } from '../games/RocketLaunch';
 import { TreasureDive } from '../games/TreasureDive';
+import { FadeView } from '../components/FadeView';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { getArcadeHint } from '../lib/hints';
@@ -75,82 +76,80 @@ export function Games() {
     },
   ];
 
+  let content: ReactNode;
+
   if (activeGame === 'balloon') {
-    return (
+    content = (
       <div className={styles.gameArea}>
         <BalloonPop onExit={exitGame} />
       </div>
     );
-  }
-
-  if (activeGame === 'rocket') {
-    return (
+  } else if (activeGame === 'rocket') {
+    content = (
       <div className={styles.gameArea}>
         <RocketLaunch onExit={exitGame} />
       </div>
     );
-  }
-
-  if (activeGame === 'dive') {
-    return (
+  } else if (activeGame === 'dive') {
+    content = (
       <div className={styles.gameArea}>
         <TreasureDive onExit={exitGame} />
       </div>
     );
-  }
-
-  if (activeGame === 'crystal') {
-    return (
+  } else if (activeGame === 'crystal') {
+    content = (
       <div className={styles.gameArea}>
         <CrystalCave onExit={exitGame} />
       </div>
     );
-  }
-
-  if (activeGame === 'match') {
-    return (
+  } else if (activeGame === 'match') {
+    content = (
       <div className={styles.gameArea}>
         <NumberMatch onExit={exitGame} />
       </div>
     );
-  }
-
-  if (activeGame === 'pizza') {
-    return (
+  } else if (activeGame === 'pizza') {
+    content = (
       <div className={styles.gameArea}>
         <FractionPizza onExit={exitGame} />
+      </div>
+    );
+  } else {
+    content = (
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>{t('games.arcadeTitle')}</h1>
+          <p className={styles.subtitle}>{t('games.arcadeSubtitle')}</p>
+        </div>
+
+        <KidHint variant="howTo" message={getArcadeHint(language)} />
+
+        <div className={styles.gameGrid}>
+          {GAMES.map((game) => (
+            <button
+              key={game.id}
+              type="button"
+              className={`${styles.gameCard} ${game.theme}`}
+              onClick={() => setActiveGame(game.id)}
+            >
+              <span className={styles.gameArt} aria-hidden="true">
+                {game.emoji}
+              </span>
+              <div className={styles.gameInfo}>
+                <h3>{game.title}</h3>
+                <p>{game.desc}</p>
+              </div>
+              <span className={styles.playBadge}>▶️ {t('games.play')}</span>
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>{t('games.arcadeTitle')}</h1>
-        <p className={styles.subtitle}>{t('games.arcadeSubtitle')}</p>
-      </div>
-
-      <KidHint variant="howTo" message={getArcadeHint(language)} />
-
-      <div className={styles.gameGrid}>
-        {GAMES.map((game) => (
-          <button
-            key={game.id}
-            type="button"
-            className={`${styles.gameCard} ${game.theme}`}
-            onClick={() => setActiveGame(game.id)}
-          >
-            <span className={styles.gameArt} aria-hidden="true">
-              {game.emoji}
-            </span>
-            <div className={styles.gameInfo}>
-              <h3>{game.title}</h3>
-              <p>{game.desc}</p>
-            </div>
-            <span className={styles.playBadge}>▶️ {t('games.play')}</span>
-          </button>
-        ))}
-      </div>
-    </div>
+    <FadeView viewKey={activeGame ?? 'menu'} scrollTopOnEnter>
+      {content}
+    </FadeView>
   );
 }

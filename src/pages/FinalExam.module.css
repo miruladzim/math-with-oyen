@@ -1,0 +1,127 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0.25rem 0 2rem;
+  width: 100%;
+}
+
+.quizPage {
+  padding-bottom: 1.5rem;
+}
+
+.hero {
+  text-align: center;
+}
+
+.heroIcon {
+  font-size: 2.75rem;
+  display: block;
+  margin-bottom: 0.4rem;
+  line-height: 1;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  margin: 0 0 0.35rem;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.coachSection {
+  width: 100%;
+}
+
+.bestScore {
+  text-align: center;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary-border);
+}
+
+.bestLabel {
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.bestValue {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+.readiness {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.05rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.readinessTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  line-height: 1.3;
+}
+
+.readinessList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.readinessItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  background: var(--color-control-bg);
+  border: 1px solid var(--color-border);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.topicRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.topicEmoji {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.topicLabel {
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.ctaWrap {
+  padding-top: 0.15rem;
+}

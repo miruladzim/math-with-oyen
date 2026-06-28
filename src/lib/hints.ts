@@ -40,6 +40,30 @@ export function getPracticeWrongHint(lang: Language, topicId: TopicId | null): s
   return `${translations[lang].hints.practice.afterWrong} ${topicTip}`;
 }
 
+export function getExamIntroHint(lang: Language): string {
+  return translations[lang].hints.exam.intro;
+}
+
+export function getExamQuizHint(lang: Language): string {
+  return translations[lang].hints.exam.quiz;
+}
+
+export function getExamWrongHint(lang: Language, topicId: TopicId): string {
+  return `${translations[lang].hints.exam.afterWrong} ${getPracticeTopicHint(lang, topicId)}`;
+}
+
+export function getExamCheckpointHint(
+  lang: Language,
+  sectionCorrect: number,
+  sectionTotal: number,
+): string {
+  if (sectionTotal === 0) return translations[lang].hints.exam.checkpointDefault;
+  const pct = sectionCorrect / sectionTotal;
+  if (pct >= 0.8) return translations[lang].hints.exam.checkpointGreat;
+  if (pct >= 0.6) return translations[lang].hints.exam.checkpointGood;
+  return translations[lang].hints.exam.checkpointTry;
+}
+
 export function getArcadeHint(lang: Language): string {
   return translations[lang].hints.arcade;
 }
@@ -75,6 +99,26 @@ export function getLabTip(lang: Language, mode: LabHintId, round: number): strin
 
 export function getLabWrongHelp(lang: Language, mode: LabHintId): string {
   return translations[lang].hints.lab[mode].wrong;
+}
+
+export function getTeacherLockHint(lang: Language): string {
+  return translations[lang].hints.teacher.lockIntro;
+}
+
+export function getTeacherDashboardHint(lang: Language): string {
+  return translations[lang].hints.teacher.dashboardIntro;
+}
+
+export function getTeacherProgressHint(lang: Language): string {
+  return translations[lang].hints.teacher.progressHelp;
+}
+
+export function getTeacherWorksheetHint(lang: Language): string {
+  return translations[lang].hints.teacher.worksheetHelp;
+}
+
+export function getTeacherSettingsHint(lang: Language): string {
+  return translations[lang].hints.teacher.settingsHelp;
 }
 
 export { getOyenAskLabLine as getOyenAskLabHint } from './i18n/oyenAskLab';

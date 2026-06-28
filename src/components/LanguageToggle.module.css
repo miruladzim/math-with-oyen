@@ -78,8 +78,10 @@
 }
 
 .compactBtn {
-  width: 34px;
-  height: 34px;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
   border-radius: 8px;
   font-family: var(--font-display);
   font-weight: 800;
@@ -103,35 +105,9 @@
   box-shadow: var(--shadow-sm);
 }
 
-@media (min-width: 720px) {
-  .compactEmbedded .compactBtn {
-    width: 36px;
-    height: 36px;
-  }
-}
-
 @media (max-width: 400px) {
   .btn {
     padding: 0.5rem 0.75rem;
     font-size: 0.78rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .compactEmbedded .compactBtn {
-    width: 36px;
-    height: 36px;
-    font-size: 0.64rem;
-  }
-}
-
-@media (max-width: 380px) {
-  .compactEmbedded {
-    gap: 2px;
-  }
-
-  .compactEmbedded .compactBtn {
-    width: 34px;
-    height: 34px;
   }
 }

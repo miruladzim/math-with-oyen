@@ -125,7 +125,7 @@ const pools: Record<LabModeId, Record<Language, string[]>> = {
     ],
     ms: [
       'Langkah 1: cari nombor dalam cerita.',
-      'Langkah 2: bertambah? Tambah. berkurang? Tolak.',
+      'Langkah 2: Bertambah? Tambah. Berkurang? Tolak.',
       'Kumpulan sama banyak selalu darab — beg, baris, pek.',
       'Jangan langkau langkah — setiap satu membantu awak fikir.',
       'Tekan nombor dalam cerita sebelum pilih operasi.',
