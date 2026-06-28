@@ -1,0 +1,45 @@
+@media print {
+  body {
+    background: white !important;
+    font-size: 14pt;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .worksheet-print {
+    display: block !important;
+    padding: 0;
+    margin: 0;
+  }
+
+  .worksheet-print h1 {
+    font-size: 20pt;
+    margin-bottom: 8pt;
+  }
+
+  .worksheet-print .worksheet-meta {
+    font-size: 11pt;
+    color: #444;
+    margin-bottom: 16pt;
+  }
+
+  .worksheet-print ol {
+    padding-left: 20pt;
+    line-height: 2;
+  }
+
+  .worksheet-print .answer-key {
+    page-break-before: always;
+    margin-top: 24pt;
+  }
+
+  .worksheet-print .answer-key h2 {
+    font-size: 16pt;
+  }
+}
+
+.worksheet-print {
+  display: none;
+}

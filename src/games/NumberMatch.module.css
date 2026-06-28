@@ -1,0 +1,140 @@
+.board {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 1.1rem;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 55%),
+    linear-gradient(145deg, #15803d, #166534 55%, #14532d);
+  border: 3px solid #4ade80;
+  box-shadow: var(--shadow-stage);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  perspective: 900px;
+}
+
+.cardWrap {
+  aspect-ratio: 1;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+.cardWrap:disabled {
+  cursor: default;
+}
+
+.cardInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+  border-radius: var(--radius-md);
+}
+
+.cardInnerFlipped {
+  transform: rotateY(180deg);
+}
+
+.cardFace {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  padding: 0.5rem;
+  text-align: center;
+  border: 2px solid;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.cardBack {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: var(--color-primary-dark);
+  color: white;
+}
+
+.cardEmoji {
+  font-size: 2.35rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.cardFront {
+  transform: rotateY(180deg);
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.cardEquation {
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.cardAnswer {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-color: #3b82f6;
+  color: #1e40af;
+  font-size: 1.4rem;
+}
+
+.typeEmoji {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.matchEmoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.cardMatched .cardFront {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border-color: var(--color-success);
+}
+
+.cardMatched {
+  animation: matchPulse 0.45s ease-out;
+}
+
+@keyframes matchPulse {
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 400px) {
+  .board {
+    padding: 0.85rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardInner {
+    transition: none;
+  }
+
+  .cardMatched {
+    animation: none;
+  }
+}

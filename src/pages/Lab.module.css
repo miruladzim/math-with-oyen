@@ -1,0 +1,110 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+}
+
+.header {
+  padding: 0 0.15rem;
+}
+
+.title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+  font-size: 0.88rem;
+}
+
+.modeGrid {
+  display: grid;
+  gap: 8px;
+}
+
+@media (min-width: 560px) {
+  .modeGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.modeCard {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.15rem 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  border: none;
+  overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: var(--shadow-sm);
+  color: white;
+  min-height: 96px;
+}
+
+.modeCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.modeArt {
+  font-size: 2rem;
+  padding-left: 0.75rem;
+}
+
+.modeInfo h3 {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.modeInfo p {
+  font-size: 0.78rem;
+  opacity: 0.92;
+  margin-top: 0.15rem;
+}
+
+.learning {
+  font-size: 0.72rem !important;
+  opacity: 0.85 !important;
+  font-style: italic;
+}
+
+.playBadge {
+  padding-right: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.modeArea {
+  min-height: 50vh;
+}
+
+.studioTheme {
+  background: linear-gradient(145deg, #ec4899, #8b5cf6);
+}
+
+.pathTheme {
+  background: linear-gradient(145deg, #0ea5e9, #6366f1);
+}
+
+.workshopTheme {
+  background: linear-gradient(145deg, #f59e0b, #ef4444);
+}
+
+.scaleTheme {
+  background: linear-gradient(145deg, #84cc16, #16a34a);
+}
+
+.sortTheme {
+  background: linear-gradient(145deg, #0284c7, #06b6d4);
+}
+
+.stepsTheme {
+  background: linear-gradient(145deg, #312e81, #7c3aed);
+}

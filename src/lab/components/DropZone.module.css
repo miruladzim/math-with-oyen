@@ -1,0 +1,30 @@
+.zone {
+  min-width: 3rem;
+  min-height: 3rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--color-primary-border-strong);
+  background: var(--color-surface-soft);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--color-primary);
+}
+
+.large {
+  min-width: 4.5rem;
+  min-height: 4.5rem;
+  font-size: 1.45rem;
+}
+
+.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.filled {
+  border-style: solid;
+  background: var(--color-surface);
+  color: var(--color-primary);
+}

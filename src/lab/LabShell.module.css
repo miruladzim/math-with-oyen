@@ -1,0 +1,22 @@
+.pedagogy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.workBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.solverWrap :global([class*='stage']) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+  box-shadow: var(--shadow-play);
+}

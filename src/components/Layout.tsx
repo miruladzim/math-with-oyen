@@ -1,0 +1,143 @@
+import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { isSpeechEnabled, setSpeechEnabled } from '../lib/speech';
+import { isSoundEnabled, setSoundEnabled } from '../lib/audio';
+import { applyDarkMode } from '../lib/theme';
+import { useLanguage } from '../context/LanguageContext';
+import { useProgress } from '../context/ProgressContext';
+import { LanguageToggle } from './LanguageToggle';
+import { SceneBackground } from './SceneBackground';
+import styles from './Layout.module.css';
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export function Layout({ children }: LayoutProps) {
+  const { progress, setProgress } = useProgress();
+  const { t } = useLanguage();
+  const displayName = progress.studentName || t('appName');
+
+  const NAV = [
+    { to: '/', end: true, icon: '🏠', label: t('nav.home') },
+    { to: '/practice', icon: '📝', label: t('nav.practice') },
+    { to: '/games', icon: '🎮', label: t('nav.games') },
+    { to: '/lab', icon: '🧪', label: t('nav.lab') },
+    { to: '/progress', icon: '⭐', label: t('nav.stars') },
+    { to: '/teacher', icon: '👩‍🏫', label: t('nav.teacher') },
+  ];
+
+  useEffect(() => {
+    setSpeechEnabled(progress.settings.speechEnabled);
+    setSoundEnabled(progress.settings.soundEnabled);
+    applyDarkMode(progress.settings.darkMode ?? false);
+  }, [progress.settings]);
+
+  const toggleDarkMode = () => {
+    const next = !progress.settings.darkMode;
+    applyDarkMode(next);
+    setProgress({
+      ...progress,
+      settings: { ...progress.settings, darkMode: next },
+    });
+  };
+
+  const toggleSpeech = () => {
+    const next = !isSpeechEnabled();
+    setSpeechEnabled(next);
+    setProgress({
+      ...progress,
+      settings: { ...progress.settings, speechEnabled: next },
+    });
+  };
+
+  const toggleSound = () => {
+    const next = !isSoundEnabled();
+    setSoundEnabled(next);
+    setProgress({
+      ...progress,
+      settings: { ...progress.settings, soundEnabled: next },
+    });
+  };
+
+  return (
+    <div className={styles.layout}>
+      <SceneBackground />
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <NavLink to="/" className={styles.logo} aria-label={t('nav.homeAria')}>
+            <span className={styles.logoMark} aria-hidden="true">
+              🐱
+            </span>
+            <span className={styles.logoCopy}>
+              <span className={styles.logoTitle}>{displayName}</span>
+              {progress.studentName ? (
+                <span className={styles.logoSubtitle}>{t('appName')}</span>
+              ) : null}
+            </span>
+          </NavLink>
+
+          <nav className={styles.nav} aria-label="Main navigation">
+            {NAV.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                title={item.label}
+                aria-label={item.label}
+                className={({ isActive }) =>
+                  `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+                }
+              >
+                <span className={styles.navIcon} aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span className={styles.navLabel}>{item.label}</span>
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className={styles.controls} aria-label={t('toggles.groupAria')}>
+            <LanguageToggle compact embedded />
+            <span className={styles.controlsDivider} aria-hidden="true" />
+            <button
+              type="button"
+              className={`${styles.controlBtn} ${progress.settings.darkMode ? styles.controlBtnActive : styles.controlBtnMuted}`}
+              onClick={toggleDarkMode}
+              aria-label={progress.settings.darkMode ? t('toggles.darkOff') : t('toggles.darkOn')}
+              aria-pressed={progress.settings.darkMode}
+            >
+              {progress.settings.darkMode ? '☀️' : '🌙'}
+            </button>
+            <button
+              type="button"
+              className={`${styles.controlBtn} ${progress.settings.speechEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
+              onClick={toggleSpeech}
+              aria-label={
+                progress.settings.speechEnabled ? t('toggles.speechOn') : t('toggles.speechOff')
+              }
+              aria-pressed={progress.settings.speechEnabled}
+            >
+              🔊
+            </button>
+            <button
+              type="button"
+              className={`${styles.controlBtn} ${progress.settings.soundEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
+              onClick={toggleSound}
+              aria-label={
+                progress.settings.soundEnabled ? t('toggles.soundOn') : t('toggles.soundOff')
+              }
+              aria-pressed={progress.settings.soundEnabled}
+            >
+              🔔
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className={styles.main}>{children}</main>
+
+      <footer className={`${styles.footer} no-print`}>{t('footer')}</footer>
+    </div>
+  );
+}

@@ -1,0 +1,639 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-hero-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  background: var(--color-hero-bg);
+}
+
+.hero::before {
+  content: '➕ ✖️ 🔢';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  letter-spacing: 0.35rem;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.heroIcon {
+  position: relative;
+  z-index: 1;
+  font-size: 2.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .heroIcon {
+    animation: heroFloat 2.8s ease-in-out infinite;
+  }
+}
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(4deg);
+  }
+}
+
+.heroBody {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.heroTitle {
+  position: relative;
+  z-index: 1;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.heroTagline {
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.tileGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(84px, auto);
+  gap: 8px;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 84px;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: white;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.tile::before,
+.tile::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.tile:active {
+  transform: translateY(0);
+}
+
+.tileLarge {
+  grid-column: span 2;
+  grid-row: span 2;
+  min-height: 176px;
+  padding: 1rem;
+}
+
+.tileWide {
+  grid-column: span 2;
+}
+
+.tileIcon {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.7rem;
+  font-size: 1.75rem;
+  line-height: 1;
+  opacity: 0.95;
+  z-index: 2;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+}
+
+.tileLarge .tileIcon {
+  font-size: 2.75rem;
+  top: 0.85rem;
+  right: 0.85rem;
+}
+
+.tileContent {
+  position: relative;
+  z-index: 2;
+  padding-right: 2rem;
+}
+
+.tileLarge .tileContent {
+  padding-right: 3rem;
+}
+
+.tileTitle {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
+}
+
+.tileLarge .tileTitle {
+  font-size: 1.2rem;
+}
+
+.tileDesc {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  opacity: 0.95;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tileLarge .tileDesc {
+  -webkit-line-clamp: 3;
+}
+
+.tileMeta {
+  margin: 0.15rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+.tileDecor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.tileDecor span {
+  position: absolute;
+  opacity: 0.16;
+  line-height: 1;
+  filter: blur(0.2px);
+}
+
+.practiceDecor span:nth-child(1) {
+  top: 12%;
+  left: 58%;
+  font-size: 1.4rem;
+}
+
+.practiceDecor span:nth-child(2) {
+  top: 38%;
+  left: 72%;
+  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 900;
+}
+
+.practiceDecor span:nth-child(3) {
+  top: 62%;
+  left: 55%;
+  font-size: 1.6rem;
+}
+
+.gamesDecor span:nth-child(1) {
+  top: 18%;
+  left: 8%;
+  font-size: 1.2rem;
+}
+
+.gamesDecor span:nth-child(2) {
+  top: 55%;
+  left: 22%;
+  font-size: 1.5rem;
+}
+
+/* Practice — numbers & pencil vibe */
+.practiceTile {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.28) 0%, transparent 42%),
+    radial-gradient(circle at 88% 78%, rgba(67, 56, 202, 0.55) 0%, transparent 48%),
+    repeating-linear-gradient(
+      -35deg,
+      rgba(255, 255, 255, 0.04) 0,
+      rgba(255, 255, 255, 0.04) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    linear-gradient(145deg, #a5b4fc 0%, #6366f1 42%, #4338ca 100%);
+}
+
+.practiceTile::before {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  top: -48px;
+  right: 20%;
+  border: 2px dashed rgba(255, 255, 255, 0.22);
+}
+
+.practiceTile::after {
+  content: '12';
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 5.5rem;
+  color: rgba(255, 255, 255, 0.1);
+  bottom: -1.2rem;
+  left: 0.5rem;
+  letter-spacing: -0.05em;
+}
+
+/* Games — playful arcade dots */
+.gamesTile {
+  background:
+    radial-gradient(circle at 12% 88%, rgba(255, 255, 255, 0.22) 0%, transparent 40%),
+    radial-gradient(circle at 92% 18%, rgba(234, 88, 12, 0.45) 0%, transparent 45%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.14) 1.5px, transparent 1.5px),
+    linear-gradient(145deg, #fcd34d 0%, #f59e0b 38%, #ea580c 72%, #db2777 100%);
+  background-size:
+    auto,
+    auto,
+    14px 14px,
+    auto;
+}
+
+.gamesTile::before {
+  width: 90px;
+  height: 90px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  top: -24px;
+  left: -18px;
+  transform: rotate(18deg);
+}
+
+.gamesTile::after {
+  content: '▶';
+  font-size: 3.5rem;
+  color: rgba(255, 255, 255, 0.12);
+  bottom: 0.2rem;
+  left: 38%;
+}
+
+.labTile {
+  background:
+    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.2) 0%, transparent 42%),
+    linear-gradient(145deg, #8b5cf6 0%, #6366f1 45%, #06b6d4 100%);
+}
+
+.labDecor span:first-child {
+  top: 0.4rem;
+  right: 1.2rem;
+}
+
+.labDecor span:last-child {
+  bottom: 0.5rem;
+  right: 2rem;
+}
+
+/* Stars — sparkle field */
+.starsTile {
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.35) 0%, transparent 38%),
+    radial-gradient(circle at 20% 80%, rgba(21, 128, 61, 0.5) 0%, transparent 45%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(145deg, #4ade80 0%, #22c55e 50%, #059669 100%);
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    auto;
+}
+
+.starsTile::before {
+  content: '★';
+  font-size: 4.5rem;
+  color: rgba(255, 255, 255, 0.12);
+  top: -0.75rem;
+  left: 0.35rem;
+}
+
+.starsTile::after {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.18);
+  bottom: -18px;
+  right: -10px;
+}
+
+/* Teacher & parent — notebook lines */
+.teacherTile {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 42%),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 11px,
+      rgba(255, 255, 255, 0.08) 11px,
+      rgba(255, 255, 255, 0.08) 12px
+    ),
+    linear-gradient(145deg, #94a3b8 0%, #64748b 45%, #334155 100%);
+}
+
+.teacherTile::before {
+  width: 6px;
+  height: 100%;
+  left: 14px;
+  top: 0;
+  background: rgba(239, 68, 68, 0.45);
+  border-radius: 0 2px 2px 0;
+}
+
+.teacherTile::after {
+  content: '📋';
+  font-size: 2.75rem;
+  opacity: 0.14;
+  bottom: -0.35rem;
+  left: 28%;
+}
+
+.levelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sectionLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.gradeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.gradeBtn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 76px;
+  padding: 0.65rem 0.4rem;
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.gradeBtn::before {
+  content: '';
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  top: -28px;
+  right: -18px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gradeBtn:hover {
+  transform: translateY(-1px);
+}
+
+.gradeEmoji {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.gradeLabel {
+  position: relative;
+  z-index: 1;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.gradeBtnActive {
+  border-color: white;
+  box-shadow: 0 0 0 2px var(--color-primary), var(--shadow-md);
+}
+
+.gradeK1 {
+  background:
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.2), transparent 55%),
+    linear-gradient(160deg, #c4b5fd 0%, #8b5cf6 55%, #6d28d9 100%);
+}
+
+.grade2 {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.22), transparent 50%),
+    linear-gradient(160deg, #a5b4fc 0%, #6366f1 55%, #4338ca 100%);
+}
+
+.grade3 {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.2), transparent 50%),
+    linear-gradient(160deg, #fdba74 0%, #f97316 55%, #c2410c 100%);
+}
+
+.grade45 {
+  background:
+    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.2), transparent 50%),
+    linear-gradient(160deg, #6ee7b7 0%, #10b981 55%, #047857 100%);
+}
+
+@media (max-width: 640px) {
+  .hero::before {
+    display: none;
+  }
+
+  .tileGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tileLarge {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 160px;
+  }
+
+  .tileWide {
+    grid-column: span 2;
+  }
+
+  .practiceTile::after {
+    font-size: 4rem;
+  }
+
+  .gradeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gradeBtn {
+    min-height: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .gradeBtn {
+    transition: none;
+  }
+
+  .tile:hover,
+  .gradeBtn:hover {
+    transform: none;
+  }
+
+  .heroIcon {
+    animation: none;
+  }
+}
+
+.startHere {
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-start-here-border);
+  background: var(--color-start-here-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.startHereTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+
+.startHereDesc {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.startHereActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.startHereBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--touch-min);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.startHereLink {
+  text-align: center;
+  font-weight: 700;
+  padding: 0.5rem;
+}
+
+.nextSteps {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.nextStepsTitle {
+  font-size: 0.92rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.nextStepsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.nextStepLink {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-primary-text);
+  text-decoration: none;
+}
+
+.nextStepLink:hover {
+  text-decoration: underline;
+}
+
+.parentGuide {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  font-size: 0.88rem;
+}
+
+.parentGuide summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.parentGuide p {
+  margin-top: 0.65rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}

@@ -1,0 +1,152 @@
+.caveStage {
+  min-height: 360px;
+  border-color: #9333ea;
+}
+
+.caveBg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.25) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 85%, #581c87 0%, #1e1b4b 48%, #0a0118 100%);
+}
+
+.batEmoji {
+  position: absolute;
+  top: 7%;
+  right: 11%;
+  font-size: 1.55rem;
+  pointer-events: none;
+  animation: flutter 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+.torchEmoji {
+  position: absolute;
+  top: 7%;
+  left: 9%;
+  font-size: 1.45rem;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+  z-index: 1;
+}
+
+.sparkleEmoji {
+  position: absolute;
+  font-size: 0.95rem;
+  pointer-events: none;
+  animation: twinkle 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+.crystalGrid {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  padding: 3.75rem 1.1rem 1.65rem;
+  width: 100%;
+}
+
+.crystalBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 118px;
+  padding: 0.85rem;
+  border: 2px solid rgba(216, 180, 254, 0.55);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow:
+    0 0 24px rgba(168, 85, 247, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.crystalBtn:hover:not(:disabled) {
+  transform: scale(1.05) translateY(-2px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  box-shadow:
+    0 0 32px rgba(168, 85, 247, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.gemEmoji {
+  font-size: 2.85rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.85));
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.crystalValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+.shatter .gemEmoji {
+  animation: shatter 0.45s ease-out forwards;
+}
+
+.shatter .crystalValue {
+  animation: fadeUp 0.45s ease-out forwards;
+}
+
+@keyframes flutter {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shatter {
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeUp {
+  to {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gemEmoji,
+  .batEmoji,
+  .sparkleEmoji {
+    animation: none;
+  }
+}

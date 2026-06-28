@@ -1,0 +1,217 @@
+.skyStage {
+  height: 360px;
+  border-color: #38bdf8;
+}
+
+.skyBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.35) 0%, transparent 28%),
+    linear-gradient(180deg, #0ea5e9 0%, #7dd3fc 42%, #86efac 88%, #4ade80 100%);
+}
+
+.skyStage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.15), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cloudEmoji {
+  position: absolute;
+  font-size: 2.15rem;
+  opacity: 0.9;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.35));
+  z-index: 2;
+}
+
+.cloudSlow {
+  animation: cloudDriftSlow 22s linear infinite !important;
+}
+
+.cloudFast {
+  animation: cloudDriftFast 16s linear infinite reverse !important;
+}
+
+.sunEmoji {
+  position: absolute;
+  top: 5%;
+  right: 7%;
+  font-size: 2.5rem;
+  pointer-events: none;
+  filter: drop-shadow(0 0 16px rgba(253, 224, 71, 0.65));
+  z-index: 2;
+  animation: spinSlow 24s linear infinite !important;
+}
+
+.grassEmoji {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.65rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.balloon {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 4;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  animation: float ease-in-out infinite !important;
+}
+
+.balloon:hover:not(:disabled) {
+  transform: scale(1.14);
+  filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.35));
+}
+
+.balloonEmoji {
+  font-size: 3.15rem;
+  line-height: 1;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.18));
+}
+
+.balloonValue {
+  margin-top: -0.7rem;
+  min-width: 2.15rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 2px solid rgba(99, 102, 241, 0.45);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  box-shadow: 0 3px 0 rgba(99, 102, 241, 0.2);
+}
+
+.popped {
+  animation: popOut 0.4s ease-out forwards !important;
+  pointer-events: none;
+}
+
+.shake {
+  animation: wrongShake 0.45s ease-in-out !important;
+}
+
+.popBurst {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.popParticle,
+.popEmoji {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  animation: popConfetti 0.85s ease-out forwards !important;
+}
+
+.popParticle {
+  border-radius: 2px;
+}
+
+.popEmoji {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+@keyframes popConfetti {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.35) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes wrongShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes popOut {
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes cloudDriftSlow {
+  0% {
+    transform: translateX(-8%);
+  }
+  100% {
+    transform: translateX(108%);
+  }
+}
+
+@keyframes cloudDriftFast {
+  0% {
+    transform: translateX(108%);
+  }
+  100% {
+    transform: translateX(-12%);
+  }
+}
+
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloudSlow,
+  .cloudFast,
+  .sunEmoji,
+  .balloon {
+    animation: none !important;
+  }
+
+  .popParticle,
+  .popEmoji {
+    animation-duration: 0.85s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

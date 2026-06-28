@@ -1,0 +1,50 @@
+.scale {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 520px) {
+  .scale {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.pan {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--color-scale-pan-bg);
+  border: 2px solid var(--color-scale-pan-border);
+}
+
+.panHead {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  min-height: 2.5rem;
+  justify-content: center;
+}
+
+.block {
+  font-size: 1.1rem;
+}
+
+.palette {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+}

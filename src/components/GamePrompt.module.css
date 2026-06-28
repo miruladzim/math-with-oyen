@@ -1,0 +1,131 @@
+.card {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.05rem;
+  text-align: center;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-play);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.22), transparent 45%);
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-bottom: 0.55rem;
+  position: relative;
+  z-index: 1;
+}
+
+.icon {
+  font-size: 1.45rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  color: white;
+  white-space: pre-line;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.sky {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 45%, #38bdf8 100%);
+  border-color: rgba(186, 230, 253, 0.55);
+}
+
+.sky .label {
+  color: #e0f2fe;
+}
+
+.space {
+  background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 50%, #6366f1 100%);
+  border-color: rgba(165, 180, 252, 0.45);
+}
+
+.space .label {
+  color: #c7d2fe;
+}
+
+.ocean {
+  background: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #0ea5e9 100%);
+  border-color: rgba(125, 211, 252, 0.5);
+}
+
+.ocean .label {
+  color: #bae6fd;
+}
+
+.cave {
+  background: linear-gradient(135deg, #4c1d95 0%, #7e22ce 55%, #9333ea 100%);
+  border-color: rgba(216, 180, 254, 0.45);
+}
+
+.cave .label {
+  color: #e9d5ff;
+}
+
+.kitchen {
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #f97316 100%);
+  border-color: rgba(254, 215, 170, 0.55);
+}
+
+.kitchen .label {
+  color: #ffedd5;
+}
+
+.arcade {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #6366f1 100%);
+  border-color: rgba(196, 181, 253, 0.45);
+}
+
+.arcade .label {
+  color: #ede9fe;
+}
+
+.fraction {
+  font-size: 2.35rem;
+  margin-top: 0.15rem;
+}
+
+.hint {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.questionOnly {
+  padding: 0.75rem 0.9rem 0.8rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+
+.questionOnly .body {
+  font-size: 1.35rem;
+}

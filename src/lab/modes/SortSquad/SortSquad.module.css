@@ -1,0 +1,50 @@
+.bins {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 520px) {
+  .bins {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.bin {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--color-dropzone-border);
+  background: var(--color-dropzone-bg);
+  text-align: left;
+  min-height: 5rem;
+}
+
+.binActive {
+  border-color: var(--color-dropzone-border-active);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.binLabel {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--color-dropzone-text);
+}
+
+.binCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.binCard {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: var(--color-chip-bg);
+  border: 1px solid var(--color-chip-border);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}

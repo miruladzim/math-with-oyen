@@ -1,0 +1,50 @@
+.fraction {
+  display: block;
+  font-size: 2.45rem;
+  margin-top: 0.15rem;
+}
+
+.hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.pizzaArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.65), transparent 50%),
+    linear-gradient(180deg, #fff7ed 0%, #ffedd5 45%, #ffffff 100%);
+  border-radius: var(--radius-xl);
+  padding: 1.35rem 1.15rem;
+  border: 3px solid #fb923c;
+  box-shadow: var(--shadow-play);
+  width: 100%;
+}
+
+.counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: var(--color-warning-text);
+  box-shadow: 0 3px 0 var(--color-warning-border);
+}
+
+.controls {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}

@@ -1,0 +1,404 @@
+.stageWrap {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.spaceStage {
+  --journey: 0;
+  height: 360px;
+  border-color: #312e81;
+}
+
+.spaceBg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 100%, #1e3a5f 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 0%, #1e1b4b 0%, #0f0a2e 45%, #030014 100%);
+}
+
+.nebula {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(99, 102, 241, 0.18) 0%, transparent 35%),
+    radial-gradient(circle at 78% 40%, rgba(168, 85, 247, 0.12) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.starDot {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: twinkle 2.8s ease-in-out infinite;
+}
+
+.starBright {
+  opacity: 0.95;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+.starEmoji {
+  position: absolute;
+  font-size: 0.9rem;
+  pointer-events: none;
+  animation: twinkle 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+.moonWrap {
+  position: absolute;
+  top: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moonEmoji {
+  font-size: 2.75rem;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 16px rgba(253, 224, 71, 0.55));
+}
+
+.moonGlow {
+  position: absolute;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.spaceStageLanded .moonGlow {
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.45) 0%, transparent 70%);
+  animation: moonPulse 1.2s ease-in-out infinite;
+}
+
+.landingMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 85%;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-lg);
+  background: rgba(15, 10, 46, 0.88);
+  border: 2px solid rgba(253, 224, 71, 0.55);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 24px rgba(253, 224, 71, 0.25);
+  text-align: center;
+  animation: landingPop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.landingIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.landingMessage p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: #fef9c3;
+}
+
+@keyframes landingPop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes moonPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.85;
+  }
+}
+
+.journeyPath {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  bottom: 20%;
+  width: 3px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  z-index: 1;
+  overflow: visible;
+}
+
+.journeyFill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--journey, 0) * 100%);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fde047, #818cf8);
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+  transition: height 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+.spaceStageFinishing .journeyFill {
+  transition-duration: 0.9s;
+}
+
+.waypoint {
+  position: absolute;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, 50%);
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.waypointDone {
+  background: #fde047;
+  border-color: #fbbf24;
+  box-shadow: 0 0 8px rgba(253, 224, 71, 0.7);
+}
+
+.rocketWrap {
+  position: absolute;
+  left: 50%;
+  bottom: calc(22% + var(--journey, 0) * 62%);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: bottom 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
+  z-index: 4;
+}
+
+.spaceStageFinishing .rocketWrap {
+  transition-duration: 0.9s;
+}
+
+.spaceStageLanded .rocketWrap {
+  bottom: calc(100% - 17%);
+}
+
+.rocketEmoji {
+  display: inline-block;
+  font-size: 3.25rem;
+  line-height: 1;
+  transform: rotate(-45deg);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+.earthWrap {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.launchPad {
+  width: 4.5rem;
+  height: 0.55rem;
+  margin-bottom: -0.15rem;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #64748b, #334155);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 2;
+}
+
+.earthEmoji {
+  font-size: 3.5rem;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  transform: translateY(28%);
+  filter: drop-shadow(0 -4px 12px rgba(59, 130, 246, 0.45));
+}
+
+.earthGlow {
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%;
+  height: 45%;
+  border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(59, 130, 246, 0.35) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.journeyGauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 48px;
+}
+
+.journeyLegend {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0.15rem 0 0;
+}
+
+.gaugeIcon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.gaugeTrack {
+  position: relative;
+  flex: 1;
+  width: 18px;
+  min-height: 220px;
+  border-radius: 999px;
+  background: #0f172a;
+  border: 2px solid #334155;
+  overflow: visible;
+}
+
+.gaugeFill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0 0 999px 999px;
+  background: linear-gradient(180deg, #818cf8, #4ade80);
+  transition: height 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
+  box-shadow: 0 0 10px rgba(129, 140, 248, 0.45);
+}
+
+.gaugeRocket {
+  position: absolute;
+  left: 50%;
+  display: inline-block;
+  transform: translate(-50%, 50%) rotate(-45deg);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: bottom 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.pod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.85rem 0.55rem;
+  border: 2px solid #c7d2fe;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #ffffff, #eef2ff);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+  box-shadow: 0 4px 0 #c7d2fe, var(--shadow-sm);
+}
+
+.pod:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: #818cf8;
+  box-shadow: 0 6px 0 #a5b4fc, var(--shadow-md);
+}
+
+.pod:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 #a5b4fc;
+}
+
+.podEmoji {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.podValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.podPicked {
+  animation: podFlash 0.4s ease-out;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes podFlash {
+  50% {
+    background: linear-gradient(180deg, #eef2ff, #c7d2fe);
+    border-color: #6366f1;
+  }
+}
+
+@media (max-width: 480px) {
+  .journeyGauge {
+    display: none;
+  }
+
+  .stageWrap {
+    grid-template-columns: 1fr;
+  }
+
+  .spaceStage {
+    height: 320px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starDot,
+  .starEmoji,
+  .rocketWrap,
+  .journeyFill,
+  .gaugeFill,
+  .gaugeRocket,
+  .landingMessage,
+  .spaceStageLanded .moonGlow {
+    animation: none;
+    transition: none;
+  }
+}

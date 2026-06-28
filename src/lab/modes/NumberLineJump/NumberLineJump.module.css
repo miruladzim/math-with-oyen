@@ -1,0 +1,62 @@
+.lineWrap {
+  position: relative;
+  min-height: 5.5rem;
+  padding: 1.5rem 0.5rem 2.5rem;
+}
+
+.line {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  top: 2.2rem;
+  height: 4px;
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+.marker {
+  position: absolute;
+  top: 0.75rem;
+  transform: translateX(-50%);
+  font-size: 1.6rem;
+  transition: left 0.15s ease;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+}
+
+.ticks {
+  position: relative;
+  min-height: 3rem;
+}
+
+.tick {
+  position: absolute;
+  transform: translateX(-50%);
+  top: 1.5rem;
+  min-width: 2rem;
+  padding: 0.15rem;
+  border: none;
+  background: transparent;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.tickActive {
+  color: var(--color-primary-text);
+  font-size: 1rem;
+}
+
+.tick::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 10px;
+  margin: 0 auto 0.2rem;
+  background: var(--color-primary-border-strong);
+}
+
+.tickActive::before {
+  background: var(--color-primary-dark);
+  height: 14px;
+}

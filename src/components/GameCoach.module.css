@@ -1,0 +1,41 @@
+.coach {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-md);
+  background: var(--gradient-surface);
+  border: 2px solid var(--color-primary-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.toggle {
+  min-height: 38px;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 2px solid var(--color-primary-border);
+  background: var(--color-surface);
+  color: var(--color-primary-text);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.72rem;
+  box-shadow: 0 2px 0 var(--color-primary-shadow);
+  transition: transform 0.1s ease, background 0.12s ease;
+}
+
+.toggle:hover {
+  background: var(--color-primary-soft);
+}
+
+.toggle:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--color-primary-shadow);
+}

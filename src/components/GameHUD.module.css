@@ -1,0 +1,125 @@
+.hud {
+  width: 100%;
+  background: var(--gradient-surface);
+  border-radius: var(--radius-lg);
+  padding: 0.8rem 0.95rem;
+  border: 2px solid var(--color-primary-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: var(--color-text);
+}
+
+.labelIcon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.extra {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.score {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--color-streak-bg);
+  border: 1px solid var(--color-streak-border);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.74rem;
+  color: var(--color-streak-text);
+  box-shadow: 0 2px 0 var(--color-streak-shadow);
+}
+
+.combo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-warning-soft), var(--color-warning-soft-2));
+  border: 1px solid var(--color-warning-border);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: var(--color-warning-text);
+  animation: comboPop 0.25s ease-out;
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.progressText {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  min-width: 2.6rem;
+}
+
+.progressTrack {
+  flex: 1;
+  height: 11px;
+  background: var(--color-primary-soft);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--color-primary-border);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 999px;
+  transition: width 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.35);
+}
+
+@keyframes comboPop {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combo,
+  .progressFill {
+    animation: none;
+    transition: none;
+  }
+}

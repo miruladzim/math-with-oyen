@@ -1,0 +1,29 @@
+.coach {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--color-surface), var(--color-surface-soft));
+  border: 2px solid var(--color-border);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.toggle {
+  min-height: 44px;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 2px solid var(--color-primary-border);
+  background: var(--color-surface);
+  color: var(--color-primary-text);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.78rem;
+}

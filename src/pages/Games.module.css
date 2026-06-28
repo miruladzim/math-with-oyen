@@ -1,0 +1,129 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+}
+
+.header {
+  padding: 0 0.15rem;
+}
+
+.title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+  font-size: 0.88rem;
+}
+
+.gameGrid {
+  display: grid;
+  gap: 8px;
+}
+
+@media (min-width: 560px) {
+  .gameGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gameCard {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.15rem 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  border: none;
+  overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: var(--shadow-sm);
+  color: white;
+  min-height: 88px;
+}
+
+.gameCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.gameCard:active {
+  transform: translateY(0);
+}
+
+.balloonTheme {
+  background: linear-gradient(145deg, #0ea5e9, #0284c7);
+}
+
+.matchTheme {
+  background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+}
+
+.pizzaTheme {
+  background: linear-gradient(145deg, #f59e0b, #ef4444);
+}
+
+.rocketTheme {
+  background: linear-gradient(145deg, #312e81, #6366f1);
+}
+
+.diveTheme {
+  background: linear-gradient(145deg, #0284c7, #06b6d4);
+}
+
+.crystalTheme {
+  background: linear-gradient(145deg, #7c3aed, #c026d3);
+}
+
+.gameArt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-left: 0.65rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 1.85rem;
+  flex-shrink: 0;
+}
+
+.gameInfo h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.15rem;
+}
+
+.gameInfo p {
+  font-size: 0.72rem;
+  opacity: 0.92;
+  line-height: 1.35;
+}
+
+.playBadge {
+  margin-right: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.68rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.gameArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gameCard:hover {
+    transform: none;
+  }
+}

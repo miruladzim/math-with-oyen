@@ -1,0 +1,37 @@
+.container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10100;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  top: -20px;
+  border-radius: 2px;
+  animation: confettiFall 2s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+html.reduce-motion .container .particle {
+  animation-duration: 1.6s !important;
+  animation-iteration-count: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container .particle {
+    animation-duration: 1.6s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -1,0 +1,46 @@
+.wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.22;
+}
+
+.blob1 {
+  width: 420px;
+  height: 420px;
+  background: #c7d2fe;
+  top: -120px;
+  left: -100px;
+}
+
+.blob2 {
+  width: 360px;
+  height: 360px;
+  background: #fbcfe8;
+  bottom: -80px;
+  right: -80px;
+}
+
+html.dark .blob1 {
+  background: #312e81;
+  opacity: 0.18;
+}
+
+html.dark .blob2 {
+  background: #581c87;
+  opacity: 0.15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+  }
+}
