@@ -11,20 +11,19 @@ import { KidHint } from '../components/KidHint';
 import { StarDisplay } from '../components/StarDisplay';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
-import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
+import { playSuccess } from '../lib/audio';
 import { buildFinalExam, getTopicEmoji, type ExamPaper } from '../lib/exam/examBuilder';
 import { EXAM_TOTAL_QUESTIONS } from '../lib/exam/examConfig';
 import {
   aggregateTopicResults,
   getFinalExamProgress,
   recordFinalExam,
+  type TopicExamResult,
 } from '../lib/exam/examProgress';
 import {
   getExamCheckpointHint,
   getExamIntroHint,
   getExamQuizHint,
-  getExamWrongHint,
-  getPracticeTopicHint,
 } from '../lib/hints';
 import { getTopicsForGrade } from '../lib/questions';
 import { getTopicProgress, starsFromAccuracy } from '../lib/progress';
@@ -39,10 +38,18 @@ interface AnswerRecord {
   sectionIndex: number;
 }
 
+interface CheckpointSnapshot {
+  sectionIndex: number;
+  sectionCorrect: number;
+  sectionTotal: number;
+  topicStats: TopicExamResult[];
+}
+
 export function FinalExam() {
   const navigate = useNavigate();
   const { progress, setProgress, gradeLevel } = useProgress();
   const { t, language, gradeLabel, topicLabel } = useLanguage();
+  const isPreschoolGrade = gradeLevel === 'preschool';
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [paper, setPaper] = useState<ExamPaper | null>(null);
@@ -54,6 +61,7 @@ export function FinalExam() {
   const [activeHint, setActiveHint] = useState<string | null>(null);
   const [boardResetKey, setBoardResetKey] = useState(0);
   const [waitingForContinue, setWaitingForContinue] = useState(false);
+  const [checkpointSnapshot, setCheckpointSnapshot] = useState<CheckpointSnapshot | null>(null);
   const examFinishedRef = useRef(false);
 
   const topics = useMemo(() => getTopicsForGrade(gradeLevel, language), [gradeLevel, language]);
@@ -73,6 +81,7 @@ export function FinalExam() {
     setActiveHint(null);
     setBoardResetKey(0);
     setWaitingForContinue(false);
+    setCheckpointSnapshot(null);
     examFinishedRef.current = false;
   }, []);
 
@@ -87,6 +96,7 @@ export function FinalExam() {
     setActiveHint(null);
     setBoardResetKey((k) => k + 1);
     setWaitingForContinue(false);
+    setCheckpointSnapshot(null);
     examFinishedRef.current = false;
     setPhase('quiz');
   };
@@ -114,10 +124,7 @@ export function FinalExam() {
     if (!currentQuestion || waitingForContinue) return;
     setWaitingForContinue(true);
     if (correct) {
-      playCorrect();
       setCorrectCount((c) => c + 1);
-    } else {
-      playIncorrect();
     }
     setAnswers((prev) => [
       ...prev,
@@ -143,7 +150,15 @@ export function FinalExam() {
     }
 
     if (nextIndex === 5 || nextIndex === 10) {
-      setCheckpointSection(Math.floor(questionIndex / 5));
+      const completedSection = Math.floor(questionIndex / 5);
+      const sectionSlice = answers.filter((a) => a.sectionIndex === completedSection);
+      setCheckpointSnapshot({
+        sectionIndex: completedSection,
+        sectionCorrect: sectionSlice.filter((a) => a.correct).length,
+        sectionTotal: sectionSlice.length,
+        topicStats: aggregateTopicResults(sectionSlice),
+      });
+      setCheckpointSection(completedSection);
       setQuestionIndex(nextIndex);
       setHintUsedThisSection(false);
       setBoardResetKey((k) => k + 1);
@@ -164,15 +179,20 @@ export function FinalExam() {
 
   const handleUseHint = () => {
     if (!currentQuestion || hintUsedThisSection) return;
-    const hint =
-      currentQuestion.hint ?? getPracticeTopicHint(language, currentQuestion.topicId);
-    setActiveHint(hint);
+    setActiveHint(t('exam.hintPowerText'));
     setHintUsedThisSection(true);
   };
 
-  const sectionAnswers = answers.filter((a) => a.sectionIndex === checkpointSection);
-  const sectionTopicStats = aggregateTopicResults(sectionAnswers);
-  const sectionCorrect = sectionAnswers.filter((a) => a.correct).length;
+  const checkpointData = checkpointSnapshot ?? {
+    sectionIndex: checkpointSection,
+    sectionCorrect: answers
+      .filter((a) => a.sectionIndex === checkpointSection)
+      .filter((a) => a.correct).length,
+    sectionTotal: answers.filter((a) => a.sectionIndex === checkpointSection).length,
+    topicStats: aggregateTopicResults(
+      answers.filter((a) => a.sectionIndex === checkpointSection),
+    ),
+  };
   const topicResults = aggregateTopicResults(answers);
   const resultsStars = starsFromAccuracy(
     answers.filter((a) => a.correct).length,
@@ -181,7 +201,23 @@ export function FinalExam() {
 
   let content: ReactNode;
 
-  if (phase === 'intro') {
+  if (isPreschoolGrade) {
+    content = (
+      <div className={styles.page}>
+        <BackButton label={t('exam.backHome')} onClick={() => navigate('/')} />
+        <header className={styles.hero}>
+          <span className={styles.heroIcon} aria-hidden="true">
+            🧸
+          </span>
+          <h1 className={styles.title}>{t('preschool.practiceBanner')}</h1>
+          <p className={styles.subtitle}>{t('home.labDescPreschool')}</p>
+        </header>
+        <BigButton onClick={() => navigate('/practice')} fullWidth>
+          {t('home.startPractice')}
+        </BigButton>
+      </div>
+    );
+  } else if (phase === 'intro') {
     content = (
       <div className={styles.page}>
         <BackButton label={t('exam.backHome')} onClick={() => navigate('/')} />
@@ -251,18 +287,10 @@ export function FinalExam() {
           hintUsed={hintUsedThisSection}
           onUseHint={handleUseHint}
           currentQuestion={currentQuestion}
+          hideCorrectScore
         />
 
-        <KidHint
-          variant="tip"
-          message={
-            waitingForContinue &&
-            answers.length > 0 &&
-            answers[answers.length - 1]?.correct === false
-              ? getExamWrongHint(language, currentQuestion.topicId)
-              : getExamQuizHint(language)
-          }
-        />
+        <KidHint variant="tip" message={getExamQuizHint(language)} />
 
         <ExamChoiceBoard
           question={currentQuestion}
@@ -274,6 +302,7 @@ export function FinalExam() {
           onContinue={handleContinue}
           disabled={false}
           resetKey={boardResetKey}
+          hideCorrectAnswer
         />
       </div>
     );
@@ -282,12 +311,16 @@ export function FinalExam() {
       <div className={styles.page}>
         <BackButton label={t('exam.quitExam')} onClick={resetExam} />
         <ExamCheckpoint
-          sectionIndex={checkpointSection}
-          sectionCorrect={sectionCorrect}
-          sectionTotal={sectionAnswers.length}
-          topicStats={sectionTopicStats}
+          sectionIndex={checkpointData.sectionIndex}
+          sectionCorrect={checkpointData.sectionCorrect}
+          sectionTotal={checkpointData.sectionTotal}
+          topicStats={checkpointData.topicStats}
           topicLabel={topicLabel}
-          coachMessage={getExamCheckpointHint(language, sectionCorrect, sectionAnswers.length)}
+          coachMessage={getExamCheckpointHint(
+            language,
+            checkpointData.sectionCorrect,
+            checkpointData.sectionTotal,
+          )}
           onContinue={handleCheckpointContinue}
         />
       </div>
@@ -320,7 +353,7 @@ export function FinalExam() {
   }
 
   return (
-    <FadeView viewKey={phase} scrollTopOnEnter>
+    <FadeView viewKey={isPreschoolGrade ? 'preschool-block' : phase} scrollTopOnEnter>
       {content}
     </FadeView>
   );

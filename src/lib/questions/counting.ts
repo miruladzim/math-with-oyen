@@ -1,4 +1,5 @@
 import type { Language } from '../i18n/types';
+import { COUNTING_EMOJI, emojiRepeat, pickRandomEmoji } from '../kidFriendlyEmojis';
 import type { Question } from '../types';
 import { getQuestionStrings } from '../i18n/translations';
 
@@ -18,10 +19,6 @@ function makeChoices(correct: number, count: number, spread: number): number[] {
   return Array.from(choices).sort(() => Math.random() - 0.5);
 }
 
-function emojiRepeat(emoji: string, count: number): string {
-  return Array(count).fill(emoji).join(' ');
-}
-
 const SHAPE_KEYS = ['circles', 'squares', 'triangles', 'stars'] as const;
 const SHAPE_EMOJI: Record<(typeof SHAPE_KEYS)[number], string> = {
   circles: '🔵',
@@ -30,11 +27,16 @@ const SHAPE_EMOJI: Record<(typeof SHAPE_KEYS)[number], string> = {
   stars: '⭐',
 };
 
-export function generateCountingQuestion(difficulty: number, lang: Language = 'en'): Question {
+export function generateCountingQuestion(
+  difficulty: number,
+  lang: Language = 'en',
+  options?: { preschool?: boolean },
+): Question {
   const qs = getQuestionStrings(lang);
-  const max = difficulty === 1 ? 10 : difficulty === 2 ? 15 : 20;
+  const preschool = options?.preschool ?? false;
+  const max = preschool ? 5 : difficulty === 1 ? 10 : difficulty === 2 ? 15 : 20;
   const count = randInt(1, max);
-  const emoji = ['⭐', '🍎', '🐶', '🌸', '🎈'][randInt(0, 4)];
+  const emoji = pickRandomEmoji(COUNTING_EMOJI);
 
   return {
     id: crypto.randomUUID(),
@@ -47,12 +49,17 @@ export function generateCountingQuestion(difficulty: number, lang: Language = 'e
   };
 }
 
-export function generateShapesQuestion(difficulty: number, lang: Language = 'en'): Question {
+export function generateShapesQuestion(
+  difficulty: number,
+  lang: Language = 'en',
+  options?: { preschool?: boolean },
+): Question {
   const qs = getQuestionStrings(lang);
+  const preschool = options?.preschool ?? false;
   const shapeKey = SHAPE_KEYS[randInt(0, SHAPE_KEYS.length - 1)];
   const shapeName = qs.shapes[shapeKey];
   const emoji = SHAPE_EMOJI[shapeKey];
-  const max = difficulty === 1 ? 5 : difficulty === 2 ? 8 : 10;
+  const max = preschool ? 4 : difficulty === 1 ? 5 : difficulty === 2 ? 8 : 10;
   const count = randInt(1, max);
   const others = SHAPE_KEYS.filter((k) => k !== shapeKey);
   const distractorKey = others[randInt(0, others.length - 1)];

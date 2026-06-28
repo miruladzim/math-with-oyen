@@ -17,6 +17,8 @@ interface ExamChoiceBoardProps {
   onContinue: () => void;
   disabled?: boolean;
   resetKey?: number;
+  /** When true, hide all right/wrong feedback until results (final exam mode). */
+  hideCorrectAnswer?: boolean;
 }
 
 export function ExamChoiceBoard({
@@ -29,6 +31,7 @@ export function ExamChoiceBoard({
   onContinue,
   disabled,
   resetKey = 0,
+  hideCorrectAnswer = false,
 }: ExamChoiceBoardProps) {
   const { t } = useLanguage();
   const [selected, setSelected] = useState<string | number | null>(null);
@@ -58,18 +61,35 @@ export function ExamChoiceBoard({
 
   const getChoiceClass = (choice: string | number) => {
     if (!revealed) return styles.choice;
-    if (isCorrectChoice(choice)) return `${styles.choice} ${styles.choiceCorrect}`;
-    if (String(choice) === String(selected)) return `${styles.choice} ${styles.choiceWrong}`;
+    const isSelected = String(choice) === String(selected);
+    const isCorrect = isCorrectChoice(choice);
+
+    if (hideCorrectAnswer) {
+      if (isSelected) return `${styles.choice} ${styles.choiceSelected}`;
+      return styles.choice;
+    }
+
+    if (isCorrect) return `${styles.choice} ${styles.choiceCorrect}`;
+    if (isSelected) return `${styles.choice} ${styles.choiceWrong}`;
     return styles.choice;
   };
 
+  const spotlightLabel =
+    question.examKind === 'story'
+      ? `📖 ${t('exam.kindStory')}`
+      : question.examKind === 'kbat'
+        ? `🧠 ${t('exam.kindKbat')}`
+        : topicLabel;
+
   return (
     <div className={styles.board}>
-      <div className={styles.spotlight}>
+      <div
+        className={`${styles.spotlight} ${question.examKind !== 'skill' ? styles.spotlightSpecial : ''}`}
+      >
         <span className={styles.topicEmoji} aria-hidden="true">
           {question.topicEmoji}
         </span>
-        <span className={styles.topicLabel}>{topicLabel}</span>
+        <span className={styles.topicLabel}>{spotlightLabel}</span>
       </div>
 
       <p className={styles.progress}>
@@ -101,9 +121,11 @@ export function ExamChoiceBoard({
       {readyForNext ? (
         <div className={styles.nextRow}>
           <BigButton onClick={onContinue} fullWidth>
-            {isCorrectChoice(selected as string | number)
+            {hideCorrectAnswer
               ? t('exam.continueBtn')
-              : t('exam.continueAnyway')}
+              : isCorrectChoice(selected as string | number)
+                ? t('exam.continueBtn')
+                : t('exam.continueAnyway')}
           </BigButton>
         </div>
       ) : null}

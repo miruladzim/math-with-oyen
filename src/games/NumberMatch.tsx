@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackButton } from '../components/BackButton';
+import { PreschoolShell } from '../components/preschool/PreschoolShell';
+import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
@@ -11,6 +13,11 @@ import { useProgress } from '../context/ProgressContext';
 import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
 import { recordSession } from '../lib/progress';
 import { generateAddSub10Question } from '../lib/questions/addSub';
+import {
+  buildPreschoolMatchDeck,
+  PRESCHOOL_MATCH_PAIRS,
+} from '../lib/questions/preschoolMatch';
+import { isPreschool } from '../lib/preschoolConfig';
 import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './NumberMatch.module.css';
@@ -23,10 +30,14 @@ interface MatchCard {
   id: string;
   text: string;
   pairId: string;
-  type: 'equation' | 'answer';
+  type: 'equation' | 'answer' | 'visual' | 'numeral' | 'shape' | 'name';
 }
 
-function buildDeck(language: 'en' | 'ms'): MatchCard[] {
+function buildDeck(language: 'en' | 'ms', preschool: boolean): MatchCard[] {
+  if (preschool) {
+    return buildPreschoolMatchDeck(language) as MatchCard[];
+  }
+
   const pairs: MatchCard[] = [];
   const usedAnswers = new Set<number>();
 
@@ -65,10 +76,12 @@ function matchEncouragement(stars: 0 | 1 | 2 | 3): 'perfect' | 'great' | 'good' 
 }
 
 export function NumberMatch({ onExit }: NumberMatchProps) {
-  const { progress, setProgress } = useProgress();
+  const { progress, setProgress, gradeLevel } = useProgress();
   const { t, language } = useLanguage();
+  const preschool = isPreschool(gradeLevel);
+  const pairTotal = preschool ? PRESCHOOL_MATCH_PAIRS : 3;
   const { schedule } = useGameTimers();
-  const [cards, setCards] = useState<MatchCard[]>(() => buildDeck(language));
+  const [cards, setCards] = useState<MatchCard[]>(() => buildDeck(language, preschool));
   const [flipped, setFlipped] = useState<string[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
   const [lock, setLock] = useState(false);
@@ -82,7 +95,7 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
   const allMatched = matched.length === cards.length && cards.length > 0;
 
   const resetGame = useCallback(() => {
-    setCards(buildDeck(language));
+    setCards(buildDeck(language, preschool));
     setFlipped([]);
     setMatched([]);
     setLock(false);
@@ -92,20 +105,22 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
     setMismatchHint(false);
     setFeedback(null);
     victoryRecorded.current = false;
-  }, [language]);
+  }, [language, preschool]);
 
   useEffect(() => {
     resetGame();
-  }, [language, resetGame]);
+  }, [language, preschool, resetGame]);
 
   useEffect(() => {
     if (!allMatched || done || victoryRecorded.current) return;
     victoryRecorded.current = true;
-    setProgress(recordSession(progress, 'addSub10', 3, 3));
+    setProgress(
+      recordSession(progress, preschool ? 'shapes' : 'addSub10', pairTotal, pairTotal),
+    );
     playSuccess();
     speak(t('games.matchAllSpeech'));
     setDone(true);
-  }, [allMatched, done, progress, setProgress, t]);
+  }, [allMatched, done, pairTotal, preschool, progress, setProgress, t]);
 
   const handleFlip = useCallback(
     (cardId: string) => {
@@ -131,24 +146,42 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
           setFeedback(null);
         } else {
           playIncorrect();
-          speak(t('games.matchWrong'));
+          speak(preschool ? t('preschool.matchTryAgain') : t('games.matchWrong'));
           setMismatchHint(true);
-          setFeedback(createGameFeedback('error', t('games.matchWrong')));
+          setFeedback(
+            createGameFeedback(
+              'error',
+              preschool ? t('preschool.matchTryAgain') : t('games.matchWrong'),
+            ),
+          );
           schedule(() => {
             setFlipped([]);
             setLock(false);
             setFeedback(null);
-          }, 900);
+          }, preschool ? 1100 : 900);
         }
       }
     },
-    [cards, done, flipped, lock, matched, schedule, t],
+    [cards, done, flipped, lock, matched, preschool, schedule, t],
   );
 
   if (done) {
     const stars = (moves <= 8 ? 3 : moves <= 12 ? 2 : 1) as 0 | 1 | 2 | 3;
     const encouragementKey = matchEncouragement(stars);
-    return (
+    const victory = (
+      <PreschoolVictoryScreen
+        title={t('games.matchVictory')}
+        encouragement={t(`victory.${encouragementKey}`)}
+        subtitle={t('games.matchVictorySub', { moves })}
+        stars={stars}
+        onPlayAgain={resetGame}
+        onExit={onExit}
+        backLabel={t('games.backGames')}
+      />
+    );
+    return preschool ? (
+      <PreschoolShell banner={t('preschool.gamesBanner')}>{victory}</PreschoolShell>
+    ) : (
       <VictoryScreen
         title={t('games.matchVictory')}
         encouragement={t(`victory.${encouragementKey}`)}
@@ -161,14 +194,14 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
     );
   }
 
-  return (
+  const gameBody = (
     <div className={shared.shell}>
       <BackButton label={t('games.backGames')} onClick={onExit} />
       <GameHUD
         icon="🃏"
         label={t('games.numberMatch')}
         current={pairsFound}
-        total={3}
+        total={pairTotal}
         score={pairsFound}
         extra={t('games.movesBadge', { moves })}
       />
@@ -177,59 +210,73 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
         game="match"
         round={moves}
         wrongHelp={mismatchHint}
-        wrongMessage={t('games.matchWrong')}
+        wrongMessage={preschool ? t('preschool.matchTryAgain') : t('games.matchWrong')}
       />
 
       {feedback && <GameFeedbackPopup feedback={feedback} onDismiss={() => setFeedback(null)} />}
 
       <div className={shared.workBlock}>
         <GamePrompt icon="🃏" label={t('games.match.title')} theme="arcade" variant="questionOnly">
-          {t('games.match.desc')}
+          {preschool ? t('games.match.descPreschool') : t('games.match.desc')}
         </GamePrompt>
 
         <div className={`${styles.board} ${shared.workBlockFollow}`}>
-        <div className={styles.grid} role="group" aria-label={t('games.numberMatch')}>
-        {cards.map((card) => {
-          const isFlipped = flipped.includes(card.id) || matched.includes(card.id);
-          const isMatched = matched.includes(card.id);
+          <div className={styles.grid} role="group" aria-label={t('games.numberMatch')}>
+            {cards.map((card) => {
+              const isFlipped = flipped.includes(card.id) || matched.includes(card.id);
+              const isMatched = matched.includes(card.id);
+              const isVisual = card.type === 'visual' || card.type === 'shape';
 
-          return (
-            <button
-              key={card.id}
-              type="button"
-              className={`${styles.cardWrap} ${isMatched ? styles.cardMatched : ''}`}
-              onClick={() => handleFlip(card.id)}
-              disabled={isMatched || lock}
-              aria-label={isFlipped ? card.text : t('games.match.hiddenCard')}
-            >
-              <div className={`${styles.cardInner} ${isFlipped ? styles.cardInnerFlipped : ''}`}>
-                <div className={`${styles.cardFace} ${styles.cardBack}`}>
-                  <span className={styles.cardEmoji}>🎴</span>
-                </div>
-                <div
-                  className={`${styles.cardFace} ${styles.cardFront} ${card.type === 'equation' ? styles.cardEquation : styles.cardAnswer}`}
+              return (
+                <button
+                  key={card.id}
+                  type="button"
+                  className={`${styles.cardWrap} ${isMatched ? styles.cardMatched : ''}`}
+                  onClick={() => handleFlip(card.id)}
+                  disabled={isMatched || lock}
+                  aria-label={isFlipped ? card.text : t('games.match.hiddenCard')}
                 >
-                  {isMatched ? (
-                    <span className={styles.matchEmoji}>✅</span>
-                  ) : card.type === 'equation' ? (
-                    <>
-                      <span className={styles.typeEmoji}>➕</span>
-                      {card.text}
-                    </>
-                  ) : (
-                    <>
-                      <span className={styles.typeEmoji}>🔢</span>
-                      {card.text}
-                    </>
-                  )}
-                </div>
-              </div>
-            </button>
-          );
-        })}
+                  <div className={`${styles.cardInner} ${isFlipped ? styles.cardInnerFlipped : ''}`}>
+                    <div className={`${styles.cardFace} ${styles.cardBack}`}>
+                      <span className={styles.cardEmoji}>🎴</span>
+                    </div>
+                    <div
+                      className={`${styles.cardFace} ${styles.cardFront} ${card.type === 'equation' ? styles.cardEquation : styles.cardAnswer}`}
+                    >
+                      {isMatched ? (
+                        <span className={styles.matchEmoji}>✅</span>
+                      ) : isVisual ? (
+                        <span className={styles.typeEmoji}>{card.text}</span>
+                      ) : card.type === 'equation' ? (
+                        <>
+                          <span className={styles.typeEmoji}>➕</span>
+                          {card.text}
+                        </>
+                      ) : card.type === 'name' ? (
+                        <>
+                          <span className={styles.typeEmoji}>🔷</span>
+                          {card.text}
+                        </>
+                      ) : (
+                        <>
+                          <span className={styles.typeEmoji}>🔢</span>
+                          {card.text}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
-      </div>
     </div>
+  );
+
+  return preschool ? (
+    <PreschoolShell banner={t('preschool.gamesBanner')}>{gameBody}</PreschoolShell>
+  ) : (
+    gameBody
   );
 }

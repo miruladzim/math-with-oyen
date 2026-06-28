@@ -38,6 +38,7 @@ const TOPIC_EMOJI: Record<TopicId, string> = {
 };
 
 const GRADE_TOPICS: Record<GradeLevel, TopicId[]> = {
+  preschool: getTopicIdsForGrade('preschool'),
   k1: getTopicIdsForGrade('k1'),
   grade2: getTopicIdsForGrade('grade2'),
   grade3: getTopicIdsForGrade('grade3'),
@@ -46,9 +47,14 @@ const GRADE_TOPICS: Record<GradeLevel, TopicId[]> = {
 
 export interface GenerateOptions {
   bondTargetMax?: number;
+  preschool?: boolean;
 }
 
-type Generator = (difficulty: number, lang: Language, options?: GenerateOptions) => Question;
+type Generator = (
+  difficulty: number,
+  lang: Language,
+  options?: GenerateOptions & { preschool?: boolean },
+) => Question;
 
 const GENERATORS: Record<TopicId, Generator> = {
   counting: generateCountingQuestion,
@@ -92,6 +98,9 @@ export function generateQuestion(
   const d = Math.max(1, Math.min(3, difficulty));
   if (topicId === 'numberBonds') {
     return generateNumberBondsQuestion(d, lang, options?.bondTargetMax);
+  }
+  if (options?.preschool && (topicId === 'counting' || topicId === 'shapes' || topicId === 'compare' || topicId === 'patterns')) {
+    return GENERATORS[topicId](d, lang, { preschool: true });
   }
   return GENERATORS[topicId](d, lang, options);
 }

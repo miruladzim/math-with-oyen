@@ -1,5 +1,6 @@
 import type { AppProgress, AppSettings, GradeLevel, LabModeId, LabModeProgress, TopicId, TopicProgress } from './types';
 import { getPracticePath, getPracticeUnit, getTopicIdsForGrade } from './curriculum/practicePath';
+import { VALID_GRADES } from './preschoolConfig';
 import { getLabModeMeta } from './lab/labConfig';
 
 const STORAGE_KEY = 'math-adventure-progress';
@@ -91,7 +92,8 @@ export function loadProgress(): AppProgress {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return createDefaultProgress();
     const parsed = JSON.parse(raw) as AppProgress;
-    const base = createDefaultProgress(parsed.gradeLevel);
+    const gradeLevel = VALID_GRADES.includes(parsed.gradeLevel) ? parsed.gradeLevel : 'k1';
+    const base = createDefaultProgress(gradeLevel);
     return {
       ...base,
       ...parsed,

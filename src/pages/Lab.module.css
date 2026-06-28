@@ -108,3 +108,27 @@
 .stepsTheme {
   background: linear-gradient(145deg, #312e81, #7c3aed);
 }
+
+.gardenTheme {
+  background: linear-gradient(145deg, #4ade80, #22c55e);
+}
+
+.coveTheme {
+  background: linear-gradient(145deg, #22d3ee, #0891b2);
+}
+
+.matchTheme {
+  background: linear-gradient(145deg, #a78bfa, #6366f1);
+}
+
+.storyTheme {
+  background: linear-gradient(145deg, #818cf8, #4f46e5);
+}
+
+.traceTheme {
+  background: linear-gradient(145deg, #fcd34d, #f59e0b);
+}
+
+.puzzleTheme {
+  background: linear-gradient(145deg, #f472b6, #db2777);
+}

@@ -4,13 +4,21 @@ import { FadeView } from '../components/FadeView';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
+import { isPreschool } from '../lib/preschoolConfig';
+import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { getLabModesForGrade } from '../lib/lab/labConfig';
 import type { LabModeId } from '../lib/types';
+import { CompareCove } from '../lab/modes/CompareCove/CompareCove';
+import { ShapeMatch } from '../lab/modes/ShapeMatch/ShapeMatch';
+import { StoryWalk } from '../lab/modes/StoryWalk/StoryWalk';
+import { NumberTrace } from '../lab/modes/NumberTrace/NumberTrace';
+import { PuzzlePatch } from '../lab/modes/PuzzlePatch/PuzzlePatch';
 import { PatternStudio } from '../lab/modes/PatternStudio/PatternStudio';
 import { SortSquad } from '../lab/modes/SortSquad/SortSquad';
 import { NumberLineJump } from '../lab/modes/NumberLineJump/NumberLineJump';
 import { EquationBuilder } from '../lab/modes/EquationBuilder/EquationBuilder';
 import { BalanceScale } from '../lab/modes/BalanceScale/BalanceScale';
+import { TapGarden } from '../lab/modes/TapGarden/TapGarden';
 import { ThinkSteps } from '../lab/modes/ThinkSteps/ThinkSteps';
 import styles from './Lab.module.css';
 
@@ -21,11 +29,18 @@ const THEME_CLASS: Record<string, string> = {
   scale: styles.scaleTheme,
   sort: styles.sortTheme,
   steps: styles.stepsTheme,
+  garden: styles.gardenTheme,
+  cove: styles.coveTheme,
+  match: styles.matchTheme,
+  story: styles.storyTheme,
+  trace: styles.traceTheme,
+  puzzle: styles.puzzleTheme,
 };
 
 export function Lab() {
   const { t } = useLanguage();
   const { gradeLevel } = useProgress();
+  const preschoolMode = isPreschool(gradeLevel);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeMode, setActiveMode] = useState<LabModeId | null>(null);
 
@@ -43,7 +58,43 @@ export function Lab() {
 
   let content: ReactNode;
 
-  if (activeMode === 'patternStudio') {
+  if (activeMode === 'tapGarden') {
+    content = (
+      <div className={styles.modeArea}>
+        <TapGarden onExit={exitMode} />
+      </div>
+    );
+  } else if (activeMode === 'compareCove') {
+    content = (
+      <div className={styles.modeArea}>
+        <CompareCove onExit={exitMode} />
+      </div>
+    );
+  } else if (activeMode === 'shapeMatch') {
+    content = (
+      <div className={styles.modeArea}>
+        <ShapeMatch onExit={exitMode} />
+      </div>
+    );
+  } else if (activeMode === 'storyWalk') {
+    content = (
+      <div className={styles.modeArea}>
+        <StoryWalk onExit={exitMode} />
+      </div>
+    );
+  } else if (activeMode === 'numberTrace') {
+    content = (
+      <div className={styles.modeArea}>
+        <NumberTrace onExit={exitMode} />
+      </div>
+    );
+  } else if (activeMode === 'puzzlePatch') {
+    content = (
+      <div className={styles.modeArea}>
+        <PuzzlePatch onExit={exitMode} />
+      </div>
+    );
+  } else if (activeMode === 'patternStudio') {
     content = (
       <div className={styles.modeArea}>
         <PatternStudio onExit={exitMode} />
@@ -80,14 +131,19 @@ export function Lab() {
       </div>
     );
   } else {
-    content = (
+    const hub = (
       <div className={styles.page}>
         <div className={styles.header}>
           <h1 className={styles.title}>{t('lab.hubTitle')}</h1>
-          <p className={styles.subtitle}>{t('lab.hubSubtitle')}</p>
+          <p className={styles.subtitle}>
+            {preschoolMode ? t('home.labDescPreschool') : t('lab.hubSubtitle')}
+          </p>
         </div>
 
-        <KidHint variant="howTo" message={t('lab.hubSubtitle')} />
+        <KidHint
+          variant="howTo"
+          message={preschoolMode ? t('preschool.labBanner') : t('lab.hubSubtitle')}
+        />
 
         <div className={styles.modeGrid}>
           {modes.map((mode) => (
@@ -110,6 +166,11 @@ export function Lab() {
           ))}
         </div>
       </div>
+    );
+    content = preschoolMode ? (
+      <PreschoolShell banner={t('preschool.labBanner')}>{hub}</PreschoolShell>
+    ) : (
+      hub
     );
   }
 

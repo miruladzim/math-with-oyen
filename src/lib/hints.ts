@@ -1,7 +1,7 @@
 import { translations, type TranslationTree } from './i18n/translations';
 import { getOyenAskGameHint, getOyenAskPracticeHint } from './i18n/oyenAsk';
 import type { Language } from './i18n/types';
-import type { TopicId } from './types';
+import type { LabModeId, TopicId } from './types';
 
 export type GameHintId = keyof TranslationTree['hints']['games'];
 
@@ -88,17 +88,17 @@ export function pickEncouragement(lang: Language, seed: number): string {
 
 export type LabHintId = keyof TranslationTree['hints']['lab'];
 
-export function getLabHowTo(lang: Language, mode: LabHintId): string {
-  return translations[lang].hints.lab[mode].howTo;
+export function getLabHowTo(lang: Language, mode: LabModeId): string {
+  return translations[lang].hints.lab[mode as LabHintId].howTo;
 }
 
-export function getLabTip(lang: Language, mode: LabHintId, round: number): string {
-  const tips = translations[lang].hints.lab[mode].tips;
+export function getLabTip(lang: Language, mode: LabModeId, round: number): string {
+  const tips = translations[lang].hints.lab[mode as LabHintId].tips;
   return tips[round % tips.length];
 }
 
-export function getLabWrongHelp(lang: Language, mode: LabHintId): string {
-  return translations[lang].hints.lab[mode].wrong;
+export function getLabWrongHelp(lang: Language, mode: LabModeId): string {
+  return translations[lang].hints.lab[mode as LabHintId].wrong;
 }
 
 export function getTeacherLockHint(lang: Language): string {

@@ -1,0 +1,34 @@
+.wrap {
+  position: relative;
+}
+
+.stickerBurst {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.sticker {
+  font-size: 1.65rem;
+  animation: stickerPop 0.55s ease both;
+}
+
+@keyframes stickerPop {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-12deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker {
+    animation: none;
+  }
+}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BigButton } from '../../../components/BigButton';
+import { PreschoolVictoryScreen } from '../../../components/preschool/PreschoolVictoryScreen';
 import { VictoryScreen } from '../../../components/VictoryScreen';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useProgress } from '../../../context/ProgressContext';
@@ -17,17 +18,18 @@ interface PatternStudioProps {
 }
 
 export function PatternStudio({ onExit }: PatternStudioProps) {
-  const { progress, setProgress } = useProgress();
+  const { progress, setProgress, gradeLevel } = useProgress();
   const { t, language } = useLanguage();
   const meta = getLabModeMeta('patternStudio');
+  const preschool = gradeLevel === 'preschool';
   const session = useLabSession({ modeId: 'patternStudio', progress, setProgress });
   const [selected, setSelected] = useState<string | null>(null);
   const [placed, setPlaced] = useState<string | null>(null);
   const [mistakeIdx, setMistakeIdx] = useState(0);
 
   const challenge = useMemo(
-    () => buildPatternStudioChallenge(session.roundDifficulty, language, session.round),
-    [language, session.round, session.roundDifficulty],
+    () => buildPatternStudioChallenge(session.roundDifficulty, language, session.round, preschool),
+    [language, preschool, session.round, session.roundDifficulty],
   );
 
   useEffect(() => {
@@ -59,16 +61,19 @@ export function PatternStudio({ onExit }: PatternStudioProps) {
   };
 
   if (session.done) {
-    return (
-      <VictoryScreen
-        title={t('practice.sessionComplete')}
-        subtitle={t('lab.victorySub', { correct: session.correct, total: session.rounds })}
-        encouragement={t(`victory.${session.encouragementKey}`)}
-        stars={session.stars}
-        onPlayAgain={session.restart}
-        onExit={onExit}
-        backLabel={t('lab.backLab')}
-      />
+    const victoryProps = {
+      title: t('practice.sessionComplete'),
+      subtitle: t('lab.victorySub', { correct: session.correct, total: session.rounds }),
+      encouragement: t(`victory.${session.encouragementKey}`),
+      stars: session.stars,
+      onPlayAgain: session.restart,
+      onExit,
+      backLabel: t('lab.backLab'),
+    };
+    return preschool ? (
+      <PreschoolVictoryScreen {...victoryProps} />
+    ) : (
+      <VictoryScreen {...victoryProps} />
     );
   }
 

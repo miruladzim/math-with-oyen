@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackButton } from '../components/BackButton';
+import { PreschoolShell } from '../components/preschool/PreschoolShell';
+import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
 import { GameHUD } from '../components/GameHUD';
@@ -11,11 +13,13 @@ import { useGameRounds } from '../hooks/useGameRounds';
 import { useGameTimers } from '../hooks/useGameTimers';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
-import { gameDifficulty } from '../lib/gameConfig';
+import { gameDifficulty, preschoolGameDifficulty } from '../lib/gameConfig';
 import { playCorrect, playIncorrect, playPop, playSuccess } from '../lib/audio';
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateMultiplicationQuestion } from '../lib/questions/multiply';
 import { generateAddSub10Question } from '../lib/questions/addSub';
+import { generateCountingQuestion } from '../lib/questions/counting';
+import { isPreschool } from '../lib/preschoolConfig';
 import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './BalloonPop.module.css';
@@ -101,15 +105,21 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
 
   const setupRound = useCallback(
     (roundIndex: number) => {
-      const diff = gameDifficulty(consecutiveWrong, 2);
+      const diff = isPreschool(gradeLevel)
+        ? preschoolGameDifficulty(consecutiveWrong)
+        : gameDifficulty(consecutiveWrong, 2);
       const q =
-        gradeLevel === 'k1'
-          ? generateAddSub10Question(diff, language)
-          : generateMultiplicationQuestion(diff, language);
+        isPreschool(gradeLevel)
+          ? generateCountingQuestion(diff, language, { preschool: true })
+          : gradeLevel === 'k1'
+            ? generateAddSub10Question(diff, language)
+            : generateMultiplicationQuestion(diff, language);
       const correctAnswer = Number(q.correctAnswer);
+      const wrongTarget = isPreschool(gradeLevel) ? 2 : 3;
       const wrong = new Set<number>();
-      while (wrong.size < 3) {
-        const w = correctAnswer + Math.floor(Math.random() * 7) - 3;
+      while (wrong.size < wrongTarget) {
+        const spread = isPreschool(gradeLevel) ? 3 : 7;
+        const w = correctAnswer + Math.floor(Math.random() * spread) - Math.floor(spread / 2);
         if (w >= 0 && w !== correctAnswer) wrong.add(w);
       }
       const values = [correctAnswer, ...Array.from(wrong)].sort(() => Math.random() - 0.5);
@@ -149,7 +159,11 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
 
   const finishGame = useCallback(
     (finalCorrect: number, attempts: number) => {
-      const topicId = gradeLevel === 'k1' ? 'addSub10' : 'multiplication';
+      const topicId = isPreschool(gradeLevel)
+        ? 'counting'
+        : gradeLevel === 'k1'
+          ? 'addSub10'
+          : 'multiplication';
       setProgress(recordSession(progress, topicId, finalCorrect, attempts));
       playSuccess();
       setDone(true);
@@ -215,21 +229,28 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
   };
 
   if (done) {
-    return (
-      <VictoryScreen
-        title={t('games.balloonVictory')}
-        encouragement={t(`victory.${encouragementKey}`)}
-        subtitle={t('games.balloonVictorySub', { correct, total: rounds })}
-        stars={stars}
-        onPlayAgain={restart}
-        onExit={handleExit}
-        backLabel={t('games.backGames')}
-      />
+    const victoryProps = {
+      title: isPreschool(gradeLevel) ? t('preschool.stickerTitle') : t('games.balloonVictory'),
+      encouragement: t(`victory.${encouragementKey}`),
+      subtitle: isPreschool(gradeLevel)
+        ? t('preschool.stickerSub')
+        : t('games.balloonVictorySub', { correct, total: rounds }),
+      stars,
+      onPlayAgain: restart,
+      onExit: handleExit,
+      backLabel: t('games.backGames'),
+    };
+    return isPreschool(gradeLevel) ? (
+      <PreschoolShell banner={t('preschool.gamesBanner')}>
+        <PreschoolVictoryScreen {...victoryProps} />
+      </PreschoolShell>
+    ) : (
+      <VictoryScreen {...victoryProps} />
     );
   }
 
-  return (
-    <div className={shared.shell}>
+  const gameBody = (
+    <div className={`${shared.shell} ${isPreschool(gradeLevel) ? styles.preschoolShell : ''}`}>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={screenConfetti.burstKey} count={45} />
       <GameHUD
@@ -318,5 +339,11 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
       </div>
       </div>
     </div>
+  );
+
+  return isPreschool(gradeLevel) ? (
+    <PreschoolShell banner={t('preschool.gamesBanner')}>{gameBody}</PreschoolShell>
+  ) : (
+    gameBody
   );
 }

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useConfettiBurst } from './useConfettiBurst';
 import { useGameTimers } from './useGameTimers';
 import { useLanguage } from '../context/LanguageContext';
-import { LAB_ROUNDS } from '../lib/lab/labConfig';
+import { getLabRounds, isPreschool } from '../lib/preschoolConfig';
 import { pickEncouragement } from '../lib/hints';
 import { getVictoryEncouragement, recordLabSession, starsFromAccuracy } from '../lib/progress';
 import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
@@ -34,17 +34,18 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
   const { schedule, clearAll } = useGameTimers();
   const confetti = useConfettiBurst();
 
-  const sessionTotal = LAB_ROUNDS + wrongCount;
+  const roundsTotal = getLabRounds(progress.gradeLevel);
+  const sessionTotal = roundsTotal + wrongCount;
   const stars = starsFromAccuracy(correct, sessionTotal);
   const encouragementKey = getVictoryEncouragement(correct, sessionTotal);
 
   const finishSession = useCallback(
     (finalCorrect: number) => {
-      setProgress(recordLabSession(progress, modeId, finalCorrect, LAB_ROUNDS + wrongCount));
+      setProgress(recordLabSession(progress, modeId, finalCorrect, roundsTotal + wrongCount));
       playSuccess();
       setDone(true);
     },
-    [modeId, progress, setProgress, wrongCount],
+    [modeId, progress, setProgress, wrongCount, roundsTotal],
   );
 
   const dismissFeedbackPopup = useCallback(() => {
@@ -71,7 +72,7 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
         setCombo((c) => c + 1);
         schedule(() => {
           setRound((r) => {
-            if (r + 1 >= LAB_ROUNDS) {
+            if (r + 1 >= roundsTotal) {
               finishSession(next);
               return r;
             }
@@ -84,7 +85,7 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
         return next;
       });
     },
-    [confetti, consecutiveWrong, correct, finishSession, language, locked, round, schedule],
+    [confetti, consecutiveWrong, correct, finishSession, language, locked, round, roundsTotal, schedule],
   );
 
   const handleWrong = useCallback(
@@ -97,14 +98,15 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
       setWrongHelp(true);
       setMistakeAlert(mistakeHint);
       playIncorrect();
-      setFeedback(createGameFeedback('error', message));
+      const gentle = isPreschool(progress.gradeLevel);
+      setFeedback(createGameFeedback('error', gentle ? message.replace(/not quite/gi, 'almost') : message));
       speak(message);
       schedule(() => {
         setLocked(false);
         setFeedback(null);
       }, 900);
     },
-    [locked, schedule],
+    [locked, progress.gradeLevel, schedule],
   );
 
   const restart = useCallback(() => {
@@ -150,6 +152,6 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
     restart,
     clearFeedback,
     dismissFeedbackPopup,
-    rounds: LAB_ROUNDS,
+    rounds: roundsTotal,
   };
 }

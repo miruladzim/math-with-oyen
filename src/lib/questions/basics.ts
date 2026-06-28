@@ -1,6 +1,7 @@
 import type { Language } from '../i18n/types';
 import type { Question } from '../types';
 import { getQuestionStrings } from '../i18n/translations';
+import { buildCompareVisual } from './preschoolVisual';
 
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -29,9 +30,14 @@ function makeCompareChoices(correct: number, a: number, b: number): number[] {
   return Array.from(choices).sort(() => Math.random() - 0.5);
 }
 
-export function generateCompareQuestion(difficulty: number, lang: Language = 'en'): Question {
+export function generateCompareQuestion(
+  difficulty: number,
+  lang: Language = 'en',
+  options?: { preschool?: boolean },
+): Question {
   const qs = getQuestionStrings(lang);
-  const max = difficulty === 1 ? 10 : difficulty === 2 ? 30 : 50;
+  const preschool = options?.preschool ?? false;
+  const max = preschool ? 5 : difficulty === 1 ? 10 : difficulty === 2 ? 30 : 50;
   let a = randInt(1, max);
   let b = randInt(1, max);
   while (a === b) {
@@ -40,6 +46,22 @@ export function generateCompareQuestion(difficulty: number, lang: Language = 'en
 
   const askBigger = Math.random() > 0.5;
   const correct = askBigger ? Math.max(a, b) : Math.min(a, b);
+
+  if (preschool) {
+    const visualMeta = buildCompareVisual(a, b, askBigger);
+    const prompt = askBigger ? qs.whichGroupMore : qs.whichGroupLess;
+    return {
+      id: crypto.randomUUID(),
+      topicId: 'compare',
+      prompt,
+      correctAnswer: correct,
+      choices: makeCompareChoices(correct, a, b),
+      inputType: 'choice',
+      difficulty,
+      visualMeta,
+    };
+  }
+
   const prompt = (askBigger ? qs.whichIsBigger : qs.whichIsSmaller)
     .replace('{a}', String(a))
     .replace('{b}', String(b));
@@ -143,8 +165,31 @@ export function generatePlaceValueQuestion(difficulty: number, lang: Language = 
   };
 }
 
-export function generatePatternsQuestion(difficulty: number, lang: Language = 'en'): Question {
+export function generatePatternsQuestion(
+  difficulty: number,
+  lang: Language = 'en',
+  options?: { preschool?: boolean },
+): Question {
   const qs = getQuestionStrings(lang);
+  const preschool = options?.preschool ?? false;
+
+  if (preschool) {
+    const shapes = ['🔴', '🔵', '🟡', '⭐'] as const;
+    const pattern = [shapes[randInt(0, shapes.length - 1)], shapes[randInt(0, shapes.length - 1)]];
+    const seq = [...pattern, ...pattern].slice(0, 3);
+    const correct = pattern[seq.length % pattern.length];
+    return {
+      id: crypto.randomUUID(),
+      topicId: 'patterns',
+      prompt: `${qs.whatComesNext}\n${[...seq, '?'].join(' ')}`,
+      correctAnswer: correct,
+      choices: Array.from(new Set([correct, ...shapes.filter((s) => s !== correct)])).slice(0, 4),
+      inputType: 'choice',
+      difficulty,
+      visualMeta: { kind: 'pattern', sequence: [...seq, '?'] },
+    };
+  }
+
   const step = difficulty === 1 ? 1 : 2;
   const startMax = difficulty === 1 ? 10 : 15;
   const start = randInt(1, startMax);

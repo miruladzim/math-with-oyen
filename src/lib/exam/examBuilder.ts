@@ -5,8 +5,12 @@ import type { GradeLevel, Question, TopicId } from '../types';
 import {
   EXAM_SECTION_CONFIG,
   EXAM_TOTAL_QUESTIONS,
-  QUESTIONS_PER_SECTION,
 } from './examConfig';
+import {
+  generateExamKbatQuestion,
+  generateExamStoryQuestion,
+  type ExamQuestionKind,
+} from './examQuestions';
 
 const TOPIC_EMOJI: Record<TopicId, string> = {
   counting: '🔢',
@@ -24,6 +28,15 @@ const TOPIC_EMOJI: Record<TopicId, string> = {
   placeValue: '🏠',
   patterns: '🔁',
 };
+
+/** Each section: 3 skill drills, 1 cerita, 1 KBAT */
+const SECTION_BLUEPRINT: { kind: ExamQuestionKind; skillIndex?: number }[] = [
+  { kind: 'skill', skillIndex: 0 },
+  { kind: 'skill', skillIndex: 1 },
+  { kind: 'story' },
+  { kind: 'kbat' },
+  { kind: 'skill', skillIndex: 2 },
+];
 
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -80,6 +93,7 @@ export function ensureChoiceQuestion(
 export interface ExamQuestion extends Question {
   sectionIndex: number;
   topicEmoji: string;
+  examKind: ExamQuestionKind;
 }
 
 export interface ExamSection {
@@ -100,11 +114,10 @@ function rolesForSection(sectionIndex: number): PracticeUnitRole[] {
   return ['core', 'review', 'stretch'];
 }
 
-function pickTopicsForSection(
+function pickSkillTopicsForSection(
   path: ReturnType<typeof getPracticePath>,
   sectionIndex: number,
   count: number,
-  startOffset: number,
 ): TopicId[] {
   const allowedRoles = rolesForSection(sectionIndex);
   const pool = path.filter((unit) => allowedRoles.includes(unit.role));
@@ -112,7 +125,7 @@ function pickTopicsForSection(
   const source = pool.length > 0 ? pool : fallback;
 
   return Array.from({ length: count }, (_, i) => {
-    const unit = source[(startOffset + i) % source.length];
+    const unit = source[(sectionIndex * 2 + i) % source.length];
     return unit.topicId;
   });
 }
@@ -139,12 +152,63 @@ function uniqueQuestion(
   return question;
 }
 
+function uniqueSpecialQuestion(
+  grade: GradeLevel,
+  kind: 'story' | 'kbat',
+  difficulty: 1 | 2 | 3,
+  lang: Language,
+  usedPrompts: Set<string>,
+): Question {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const question =
+      kind === 'story'
+        ? generateExamStoryQuestion(grade, difficulty, lang)
+        : generateExamKbatQuestion(grade, difficulty, lang);
+    if (question.choices && question.choices.length >= 4 && !usedPrompts.has(question.prompt)) {
+      usedPrompts.add(question.prompt);
+      return question;
+    }
+  }
+  const question =
+    kind === 'story'
+      ? generateExamStoryQuestion(grade, difficulty, lang)
+      : generateExamKbatQuestion(grade, difficulty, lang);
+  usedPrompts.add(question.prompt);
+  return question;
+}
+
+function toExamQuestion(
+  question: Question,
+  grade: GradeLevel,
+  sectionIndex: number,
+  topicId: TopicId,
+  examKind: ExamQuestionKind,
+): ExamQuestion {
+  return {
+    ...question,
+    id: `${grade}-${sectionIndex}-${examKind}-${topicId}-${question.id}`,
+    sectionIndex,
+    topicEmoji: TOPIC_EMOJI[topicId],
+    examKind,
+  };
+}
+
 export function buildFinalExam(grade: GradeLevel, lang: Language = 'en'): ExamPaper {
   const path = getPracticePath(grade);
   const usedPrompts = new Set<string>();
   const sections: ExamSection[] = EXAM_SECTION_CONFIG.map((config, sectionIndex) => {
-    const topicIds = pickTopicsForSection(path, sectionIndex, QUESTIONS_PER_SECTION, sectionIndex);
-    const questions: ExamQuestion[] = topicIds.map((topicId) => {
+    const skillTopics = pickSkillTopicsForSection(path, sectionIndex, 3);
+    const questions: ExamQuestion[] = SECTION_BLUEPRINT.map((slot) => {
+      if (slot.kind === 'story') {
+        const raw = uniqueSpecialQuestion(grade, 'story', config.difficulty, lang, usedPrompts);
+        return toExamQuestion(raw, grade, sectionIndex, 'wordProblems', 'story');
+      }
+      if (slot.kind === 'kbat') {
+        const raw = uniqueSpecialQuestion(grade, 'kbat', config.difficulty, lang, usedPrompts);
+        return toExamQuestion(raw, grade, sectionIndex, raw.topicId, 'kbat');
+      }
+
+      const topicId = skillTopics[slot.skillIndex ?? 0];
       const unit = getPracticeUnit(grade, topicId);
       const options = unit?.bondTargetMax ? { bondTargetMax: unit.bondTargetMax } : undefined;
       let question = ensureChoiceQuestion(topicId, config.difficulty, lang, options);
@@ -153,12 +217,7 @@ export function buildFinalExam(grade: GradeLevel, lang: Language = 'en'): ExamPa
       } else {
         usedPrompts.add(question.prompt);
       }
-      return {
-        ...question,
-        id: `${grade}-${sectionIndex}-${topicId}-${question.id}`,
-        sectionIndex,
-        topicEmoji: TOPIC_EMOJI[topicId],
-      };
+      return toExamQuestion(question, grade, sectionIndex, topicId, 'skill');
     });
 
     return {
@@ -180,3 +239,5 @@ export function buildFinalExam(grade: GradeLevel, lang: Language = 'en'): ExamPa
 export function getTopicEmoji(topicId: TopicId): string {
   return TOPIC_EMOJI[topicId];
 }
+
+export type { ExamQuestionKind };

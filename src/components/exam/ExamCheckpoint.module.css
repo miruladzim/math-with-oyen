@@ -1,5 +1,5 @@
 .screen {
-  padding: 0.5rem 0 1rem;
+  padding: 0.15rem 0 1.5rem;
 }
 
 .theme_warm,
@@ -12,41 +12,68 @@
   background: var(--gradient-surface);
   border: 2px solid var(--color-card-border);
   border-radius: var(--radius-xl);
-  padding: 1.35rem 1.15rem;
+  padding: 1.15rem 1.05rem 1.25rem;
   box-shadow: var(--shadow-play);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
 .badge {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   display: block;
-  margin-bottom: 0.35rem;
+  line-height: 1;
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: 1.55rem;
-  margin: 0 0 0.25rem;
+  font-size: 1.45rem;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .sectionName {
-  margin: 0 0 0.35rem;
+  margin: 0;
   color: var(--color-text-muted);
   font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.scoreBox {
+  display: flex;
+  justify-content: center;
 }
 
 .score {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   font-weight: 900;
   color: var(--color-primary);
-  margin: 0 0 1rem;
+  margin: 0;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary-border);
+  line-height: 1.2;
+}
+
+.coach {
+  text-align: left;
+}
+
+.coach :global(.bubble::before) {
+  display: none;
+}
+
+.coach :global(.bubble) {
+  border-radius: var(--radius-lg);
 }
 
 .topicList {
   list-style: none;
   padding: 0;
-  margin: 0 0 1.15rem;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
@@ -67,4 +94,18 @@
 
 .chipScore {
   color: var(--color-primary);
+}
+
+.actions {
+  padding-top: 0.15rem;
+}
+
+@media (max-width: 420px) {
+  .card {
+    padding-inline: 0.9rem;
+  }
+
+  .score {
+    font-size: 1.45rem;
+  }
 }

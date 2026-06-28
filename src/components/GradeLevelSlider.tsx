@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import styles from './GradeLevelSlider.module.css';
 
 const GRADES: { id: GradeLevel; emoji: string; tone: string }[] = [
+  { id: 'preschool', emoji: '🧸', tone: styles.gradePreschool },
   { id: 'k1', emoji: '🌱', tone: styles.gradeK1 },
   { id: 'grade2', emoji: '🧭', tone: styles.grade2 },
   { id: 'grade3', emoji: '🔨', tone: styles.grade3 },

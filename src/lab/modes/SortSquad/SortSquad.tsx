@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BigButton } from '../../../components/BigButton';
+import { PreschoolVictoryScreen } from '../../../components/preschool/PreschoolVictoryScreen';
 import { VictoryScreen } from '../../../components/VictoryScreen';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useProgress } from '../../../context/ProgressContext';
@@ -16,16 +17,17 @@ interface SortSquadProps {
 }
 
 export function SortSquad({ onExit }: SortSquadProps) {
-  const { progress, setProgress } = useProgress();
+  const { progress, setProgress, gradeLevel } = useProgress();
   const { t, language } = useLanguage();
   const meta = getLabModeMeta('sortSquad');
+  const preschool = gradeLevel === 'preschool';
   const session = useLabSession({ modeId: 'sortSquad', progress, setProgress });
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [assignments, setAssignments] = useState<Record<string, string>>({});
   const [mistakeIdx, setMistakeIdx] = useState(0);
 
   const challenge = useMemo(
-    () => buildSortSquadChallenge(session.roundDifficulty, language, session.round),
+    () => buildSortSquadChallenge(session.roundDifficulty, language, session.round, preschool),
     [language, session.round, session.roundDifficulty],
   );
 
@@ -60,16 +62,19 @@ export function SortSquad({ onExit }: SortSquadProps) {
   };
 
   if (session.done) {
-    return (
-      <VictoryScreen
-        title={t('practice.sessionComplete')}
-        subtitle={t('lab.victorySub', { correct: session.correct, total: session.rounds })}
-        encouragement={t(`victory.${session.encouragementKey}`)}
-        stars={session.stars}
-        onPlayAgain={session.restart}
-        onExit={onExit}
-        backLabel={t('lab.backLab')}
-      />
+    const victoryProps = {
+      title: t('practice.sessionComplete'),
+      subtitle: t('lab.victorySub', { correct: session.correct, total: session.rounds }),
+      encouragement: t(`victory.${session.encouragementKey}`),
+      stars: session.stars,
+      onPlayAgain: session.restart,
+      onExit,
+      backLabel: t('lab.backLab'),
+    };
+    return preschool ? (
+      <PreschoolVictoryScreen {...victoryProps} />
+    ) : (
+      <VictoryScreen {...victoryProps} />
     );
   }
 

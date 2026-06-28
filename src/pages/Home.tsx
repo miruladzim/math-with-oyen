@@ -9,6 +9,7 @@ import { GRADE_GAME_PICK } from '../lib/gameConfig';
 import { getAllTopics, getTopicsForGrade } from '../lib/questions';
 import { getNextPracticeSteps, getTopicProgress } from '../lib/progress';
 import { getFinalExamProgress } from '../lib/exam/examProgress';
+import { isPreschool } from '../lib/preschoolConfig';
 import type { GradeLevel } from '../lib/types';
 import styles from './Home.module.css';
 
@@ -67,7 +68,16 @@ export function Home() {
         </div>
       </header>
 
-      {showLevelHint ? <KidHint variant="howTo" message={t('home.chooseLevelHint')} /> : null}
+      {showLevelHint ? (
+        <KidHint
+          variant="howTo"
+          message={
+            isPreschool(gradeLevel)
+              ? t('home.chooseLevelHintPreschool')
+              : t('home.chooseLevelHint')
+          }
+        />
+      ) : null}
 
       <section className={styles.levelSection} aria-labelledby="grade-heading">
         <h2 id="grade-heading" className={styles.sectionLabel}>
@@ -98,7 +108,9 @@ export function Home() {
         </section>
       ) : null}
 
-      {gradeStars >= 10 && !getFinalExamProgress(progress, gradeLevel)?.passed ? (
+      {gradeLevel !== 'preschool' &&
+      gradeStars >= 10 &&
+      !getFinalExamProgress(progress, gradeLevel)?.passed ? (
         <section className={styles.examNudge}>
           <Link to="/exam" className={styles.examNudgeLink}>
             {t('home.examReady')} 🎓
@@ -123,7 +135,9 @@ export function Home() {
           </span>
           <div className={styles.tileContent}>
             <h2 className={styles.tileTitle}>{t('home.practiceTitle')}</h2>
-            <p className={styles.tileDesc}>{t('home.practiceDesc')}</p>
+            <p className={styles.tileDesc}>
+              {isPreschool(gradeLevel) ? t('home.practiceDescPreschool') : t('home.practiceDesc')}
+            </p>
             {recommendedTopic ? (
               <p className={styles.tileMeta}>
                 {t('home.recommendedTopic')}: {recommendedTopic.emoji}{' '}
@@ -146,7 +160,9 @@ export function Home() {
           </span>
           <div className={styles.tileContent}>
             <h2 className={styles.tileTitle}>{t('home.gamesTitle')}</h2>
-            <p className={styles.tileDesc}>{t('home.gamesDesc')}</p>
+            <p className={styles.tileDesc}>
+              {isPreschool(gradeLevel) ? t('home.gamesDescPreschool') : t('home.gamesDesc')}
+            </p>
             <p className={styles.tileMeta}>
               {t('home.recommendedGame')}: {GAME_EMOJI[recommendedGameId]}
             </p>
@@ -168,10 +184,13 @@ export function Home() {
           </span>
           <div className={styles.tileContent}>
             <h2 className={styles.tileTitle}>{t('lab.homeTitle')}</h2>
-            <p className={styles.tileDesc}>{t('lab.homeDesc')}</p>
+            <p className={styles.tileDesc}>
+              {isPreschool(gradeLevel) ? t('home.labDescPreschool') : t('lab.homeDesc')}
+            </p>
           </div>
         </Link>
 
+        {gradeLevel !== 'preschool' ? (
         <Link
           to="/exam"
           className={`${styles.tile} ${styles.tileWide} ${styles.examTile}`}
@@ -188,6 +207,7 @@ export function Home() {
             <p className={styles.tileDesc}>{t('home.examDesc')}</p>
           </div>
         </Link>
+        ) : null}
 
         <Link to="/progress" className={`${styles.tile} ${styles.starsTile}`}>
           <span className={styles.tileIcon} aria-hidden="true">

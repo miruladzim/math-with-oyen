@@ -39,26 +39,34 @@ export function ExamCheckpoint({
         </span>
         <h2 className={styles.title}>{t('exam.checkpointTitle')}</h2>
         <p className={styles.sectionName}>{t(section.labelKey)}</p>
-        <p className={styles.score}>
-          {t('exam.sectionScore', { correct: sectionCorrect, total: sectionTotal })}
-        </p>
+        <div className={styles.scoreBox} aria-live="polite">
+          <p className={styles.score}>
+            {t('exam.sectionScore', { correct: sectionCorrect, total: sectionTotal })}
+          </p>
+        </div>
 
-        <KidHint variant={celebrate ? 'encourage' : 'tip'} message={coachMessage} />
+        <div className={styles.coach}>
+          <KidHint variant={celebrate ? 'encourage' : 'tip'} message={coachMessage} compact />
+        </div>
 
-        <ul className={styles.topicList}>
-          {topicStats.map((stat) => (
-            <li key={stat.topicId} className={styles.topicChip}>
-              <span>{topicLabel(stat.topicId)}</span>
-              <span className={styles.chipScore}>
-                {stat.correct}/{stat.total}
-              </span>
-            </li>
-          ))}
-        </ul>
+        {topicStats.length > 0 ? (
+          <ul className={styles.topicList}>
+            {topicStats.map((stat) => (
+              <li key={stat.topicId} className={styles.topicChip}>
+                <span>{topicLabel(stat.topicId)}</span>
+                <span className={styles.chipScore}>
+                  {stat.correct}/{stat.total}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
 
-        <BigButton onClick={onContinue} fullWidth>
-          {sectionIndex >= 2 ? t('exam.seeResults') : t('exam.continueQuest')}
-        </BigButton>
+        <div className={styles.actions}>
+          <BigButton onClick={onContinue} fullWidth>
+            {t('exam.continueQuest')}
+          </BigButton>
+        </div>
       </div>
     </div>
   );

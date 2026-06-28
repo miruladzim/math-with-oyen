@@ -7,7 +7,11 @@ import { BigButton } from '../components/BigButton';
 import { FadeView } from '../components/FadeView';
 import { HintButton } from '../components/HintButton';
 import { KidHint, type HintMood } from '../components/KidHint';
-import { QuestionCard } from '../components/QuestionCard';
+import { PreschoolShell } from '../components/preschool/PreschoolShell';
+import { PreschoolVictory } from '../components/preschool/PreschoolVictory';
+import { TapToCountBoard } from '../components/preschool/TapToCountBoard';
+import { CompareBoard } from '../components/preschool/CompareBoard';
+import { PatternBoard } from '../components/preschool/PatternBoard';
 import { StarDisplay } from '../components/StarDisplay';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
@@ -35,10 +39,16 @@ import {
 } from '../lib/hints';
 import { generateQuestion, getTopicsForGrade } from '../lib/questions';
 import { speak } from '../lib/speech';
+import {
+  getPracticeSessionSize,
+  isCompareTopic,
+  isPatternTopic,
+  isPreschool,
+  isTapCountTopic,
+} from '../lib/preschoolConfig';
 import type { LabModeId, Question, TopicId } from '../lib/types';
+import { QuestionCard } from '../components/QuestionCard';
 import styles from './Practice.module.css';
-
-const SESSION_SIZE = 10;
 const REVIEW_MIX_SIZE = 5;
 
 type Phase = 'pick' | 'quiz' | 'recap' | 'done';
@@ -121,7 +131,8 @@ export function Practice() {
   const generateOptions = useCallback(
     (id: TopicId) => {
       const unit = getPracticeUnit(gradeLevel, id);
-      return unit?.bondTargetMax ? { bondTargetMax: unit.bondTargetMax } : undefined;
+      const base = unit?.bondTargetMax ? { bondTargetMax: unit.bondTargetMax } : {};
+      return isPreschool(gradeLevel) ? { ...base, preschool: true } : Object.keys(base).length ? base : undefined;
     },
     [gradeLevel],
   );
@@ -220,7 +231,7 @@ export function Practice() {
       clearAdvanceTimer();
       const savedDifficulty = getTopicProgress(progress, id).savedDifficulty ?? 1;
       const startDiff = Math.max(1, Math.min(3, savedDifficulty));
-      const count = reviewMix ? REVIEW_MIX_SIZE : SESSION_SIZE;
+      const count = reviewMix ? REVIEW_MIX_SIZE : getPracticeSessionSize(gradeLevel);
       const opts = generateOptions(id);
 
       const initialQuestions = Array.from({ length: count }, () =>
@@ -463,12 +474,19 @@ export function Practice() {
       return tp.totalAnswered > 0 && tp.stars < 2;
     }) && progress.weeklyAnswered >= 5;
 
+  const preschoolMode = isPreschool(gradeLevel);
+  const useTapBoard =
+    preschoolMode && topicId && isTapCountTopic(topicId) && currentQuestion;
+  const useCompareBoard =
+    preschoolMode && topicId && isCompareTopic(topicId) && currentQuestion;
+  const usePatternBoard =
+    preschoolMode && topicId && isPatternTopic(topicId) && currentQuestion;
+
   let content: ReactNode;
 
   if (phase === 'pick') {
     const recommendedTopic = topics.find((topic) => topic.id === recommendedTopicId);
-
-    content = (
+    const pickContent = (
       <div className={styles.page}>
         <BackButton label={t('practice.backHome')} to="/" />
 
@@ -550,6 +568,11 @@ export function Practice() {
         </div>
       </div>
     );
+    content = preschoolMode ? (
+      <PreschoolShell banner={t('preschool.practiceBanner')}>{pickContent}</PreschoolShell>
+    ) : (
+      pickContent
+    );
   } else if (phase === 'recap') {
     content = (
       <div className={styles.page}>
@@ -587,7 +610,51 @@ export function Practice() {
     const stars = starsFromAccuracy(correctCount, sessionSize);
     const mastery = topicId ? getTopicProgress(progress, topicId).masteryLevel ?? 0 : 0;
 
-    content = (
+    content = preschoolMode ? (
+      <PreschoolShell banner={t('preschool.practiceBanner')}>
+        <PreschoolVictory>
+          <div className={styles.page}>
+            <BackButton label={t('practice.backTopics')} onClick={reset} />
+            <Confetti active count={stars >= 2 ? 50 : 25} />
+            <div className={styles.resultCard}>
+              <p className={styles.subtitle}>{t('preschool.stickerTitle')}</p>
+              <span className={styles.resultTrophy} aria-hidden="true">
+                {stars === 3 ? '🏆' : stars >= 1 ? '🌟' : '💪'}
+              </span>
+              <h1 className={styles.title}>
+                {progress.studentName
+                  ? t('practice.sessionCompleteNamed', { name: progress.studentName })
+                  : t('practice.sessionComplete')}
+              </h1>
+              <p className={styles.resultScore}>
+                {correctCount}/{sessionSize}
+              </p>
+              <StarDisplay count={stars} large />
+              {mastery > 0 && !isReviewMix ? (
+                <p className={styles.masteryBadge}>
+                  {t('practice.masteryLabel')} {mastery}/3
+                </p>
+              ) : null}
+              <p className={styles.subtitle} style={{ marginTop: '1rem' }}>
+                {stars === 3
+                  ? t('practice.perfectScore')
+                  : stars >= 1
+                    ? t('preschool.stickerSub')
+                    : t('practice.keepGoing')}
+              </p>
+              <div className={styles.resultActions}>
+                <BigButton onClick={() => topicId && startTopic(topicId)} fullWidth>
+                  {t('practice.tryAgain')}
+                </BigButton>
+                <BigButton onClick={reset} variant="outline" fullWidth>
+                  {t('practice.pickAnother')}
+                </BigButton>
+              </div>
+            </div>
+          </div>
+        </PreschoolVictory>
+      </PreschoolShell>
+    ) : (
       <div className={styles.page}>
         <BackButton label={t('practice.backTopics')} onClick={reset} />
         <Confetti active count={stars >= 2 ? 50 : 25} />
@@ -626,7 +693,7 @@ export function Practice() {
       </div>
     );
   } else {
-    content = (
+    const quizContent = (
     <div className={styles.page}>
       <BackButton label={t('practice.backTopics')} onClick={reset} />
 
@@ -669,7 +736,34 @@ export function Practice() {
           </div>
         ) : null}
 
-        {currentQuestion ? (
+        {useTapBoard ? (
+          <TapToCountBoard
+            question={currentQuestion}
+            questionNumber={currentIndex + 1}
+            totalQuestions={sessionSize}
+            onAnswer={handleAnswer}
+            disabled={waiting && !awaitingAction}
+            resetKey={questionResetKey}
+          />
+        ) : useCompareBoard ? (
+          <CompareBoard
+            question={currentQuestion}
+            questionNumber={currentIndex + 1}
+            totalQuestions={sessionSize}
+            onAnswer={handleAnswer}
+            disabled={waiting && !awaitingAction}
+            resetKey={questionResetKey}
+          />
+        ) : usePatternBoard ? (
+          <PatternBoard
+            question={currentQuestion}
+            questionNumber={currentIndex + 1}
+            totalQuestions={sessionSize}
+            onAnswer={handleAnswer}
+            disabled={waiting && !awaitingAction}
+            resetKey={questionResetKey}
+          />
+        ) : currentQuestion ? (
           <QuestionCard
             question={currentQuestion}
             questionNumber={currentIndex + 1}
@@ -681,6 +775,11 @@ export function Practice() {
         ) : null}
       </div>
     </div>
+    );
+    content = preschoolMode ? (
+      <PreschoolShell banner={t('preschool.practiceBanner')}>{quizContent}</PreschoolShell>
+    ) : (
+      quizContent
     );
   }
 

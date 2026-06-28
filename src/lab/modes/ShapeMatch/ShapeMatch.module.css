@@ -1,0 +1,53 @@
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0 0.25rem;
+}
+
+.shapeCard {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  border: 3px solid #c4b5fd;
+  box-shadow: 0 4px 0 #7c3aed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.75rem;
+}
+
+.hint {
+  margin: 0;
+  font-weight: 800;
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.bins {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 18rem;
+}
+
+.bin {
+  min-height: calc(var(--touch-target) + 6px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #ddd6fe, #a78bfa);
+  border: 3px solid #7c3aed;
+  box-shadow: 0 4px 0 #5b21b6;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 900;
+  color: white;
+  text-transform: capitalize;
+}
+
+.bin:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #5b21b6;
+}

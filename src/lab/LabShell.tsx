@@ -22,6 +22,12 @@ const THEME_MAP: Record<string, PromptTheme> = {
   studio: 'arcade',
   sort: 'ocean',
   steps: 'space',
+  garden: 'ocean',
+  cove: 'ocean',
+  match: 'arcade',
+  story: 'space',
+  trace: 'sky',
+  puzzle: 'cave',
 };
 
 interface LabShellProps {

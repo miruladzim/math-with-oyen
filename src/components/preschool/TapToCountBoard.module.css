@@ -1,0 +1,180 @@
+.board {
+  background: linear-gradient(160deg, rgba(251, 207, 232, 0.35), rgba(191, 219, 254, 0.35));
+  border-radius: var(--radius-xl);
+  padding: 1.15rem 1rem 1.35rem;
+  border: 3px solid rgba(244, 114, 182, 0.35);
+  box-shadow: var(--shadow-play);
+}
+
+.progress {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  margin: 0 0 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.promptBox {
+  background: var(--color-surface);
+  border: 2px solid rgba(244, 114, 182, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 0.75rem;
+  margin-bottom: 0.85rem;
+  text-align: center;
+}
+
+.prompt {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 0 0 0.35rem;
+  color: var(--color-prompt-text);
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-bottom: 0.85rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  border: 2px solid var(--color-primary-border);
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.counterEmoji {
+  font-size: 1.2rem;
+}
+
+.counterValue {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.counterLabel {
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.itemGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+  min-height: 5.5rem;
+}
+
+.item {
+  width: 3.35rem;
+  height: 3.35rem;
+  border-radius: 18px;
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+  box-shadow: 0 4px 0 var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+  animation: popIn 0.35s ease both;
+}
+
+.itemEmoji {
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.item:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--color-border);
+}
+
+.itemTapped {
+  background: linear-gradient(180deg, #fde68a, #fbbf24);
+  border-color: #f59e0b;
+  box-shadow: 0 4px 0 #d97706;
+  transform: scale(1.05);
+}
+
+.pickLabel {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  margin: 0 0 0.65rem;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+}
+
+.choiceBtn {
+  min-height: calc(var(--touch-target) + 8px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--color-primary-soft), rgba(99, 102, 241, 0.12));
+  border: 3px solid var(--color-primary-border);
+  box-shadow: 0 4px 0 var(--color-primary-shadow-deep);
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.choiceBtn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--color-primary-shadow-deep);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    animation: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .item {
+    width: 2.85rem;
+    height: 2.85rem;
+  }
+
+  .itemEmoji {
+    font-size: 1.4rem;
+  }
+}

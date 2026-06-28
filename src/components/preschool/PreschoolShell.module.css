@@ -1,0 +1,85 @@
+.shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+  padding: 0.15rem 0 1.5rem;
+}
+
+.shell[data-preschool='true'] {
+  --touch-target: 52px;
+}
+
+.shell[data-preschool='true'] button {
+  min-height: var(--touch-target);
+}
+
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.sparkles span {
+  position: absolute;
+  font-size: 1.1rem;
+  opacity: 0.35;
+  animation: floatSpark 6s ease-in-out infinite;
+}
+
+.sparkles span:nth-child(1) {
+  top: 4%;
+  left: 6%;
+}
+
+.sparkles span:nth-child(2) {
+  top: 12%;
+  right: 8%;
+  animation-delay: 1.5s;
+}
+
+.sparkles span:nth-child(3) {
+  bottom: 18%;
+  left: 12%;
+  animation-delay: 3s;
+}
+
+.banner {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(244, 114, 182, 0.15));
+  border: 2px dashed rgba(244, 114, 182, 0.45);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.92rem;
+  text-align: center;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+.shell > :not(.sparkles):not(.banner) {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes floatSpark {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkles span {
+    animation: none;
+  }
+}

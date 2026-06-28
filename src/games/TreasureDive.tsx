@@ -11,11 +11,14 @@ import { useGameRounds } from '../hooks/useGameRounds';
 import { useGameTimers } from '../hooks/useGameTimers';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
-import { gameDifficulty } from '../lib/gameConfig';
+import { gameDifficulty, preschoolGameDifficulty } from '../lib/gameConfig';
 import { playCorrect, playIncorrect, playSplash, playSuccess } from '../lib/audio';
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateAddSub10Question } from '../lib/questions/addSub';
 import { generateCountingQuestion } from '../lib/questions/counting';
+import { isPreschool } from '../lib/preschoolConfig';
+import { PreschoolShell } from '../components/preschool/PreschoolShell';
+import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './TreasureDive.module.css';
@@ -62,11 +65,15 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
 
   const setupRound = useCallback(
     (roundIndex: number) => {
-      const diff = gameDifficulty(consecutiveWrong, 2);
+      const diff = isPreschool(gradeLevel)
+        ? preschoolGameDifficulty(consecutiveWrong)
+        : gameDifficulty(consecutiveWrong, 2);
       const q =
-        gradeLevel === 'k1'
-          ? generateCountingQuestion(diff, language)
-          : generateAddSub10Question(diff, language);
+        gradeLevel === 'preschool'
+          ? generateCountingQuestion(diff, language, { preschool: true })
+          : gradeLevel === 'k1'
+            ? generateCountingQuestion(diff, language)
+            : generateAddSub10Question(diff, language);
       const correctAnswer = Number(q.correctAnswer);
       setPrompt(q.prompt);
       setAnswer(correctAnswer);
@@ -97,7 +104,7 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       setProgress(
         recordSession(
           progress,
-          gradeLevel === 'k1' ? 'counting' : 'addSub10',
+          gradeLevel === 'k1' || gradeLevel === 'preschool' ? 'counting' : 'addSub10',
           finalCorrect,
           attempts,
         ),
@@ -164,20 +171,25 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
   };
 
   if (done) {
-    return (
-      <VictoryScreen
-        title={t('games.diveVictory')}
-        encouragement={t(`victory.${encouragementKey}`)}
-        subtitle={t('games.diveVictorySub', { correct, total: rounds })}
-        stars={stars}
-        onPlayAgain={restart}
-        onExit={handleExit}
-        backLabel={t('games.backGames')}
-      />
+    const victoryProps = {
+      title: t('games.diveVictory'),
+      encouragement: t(`victory.${encouragementKey}`),
+      subtitle: t('games.diveVictorySub', { correct, total: rounds }),
+      stars,
+      onPlayAgain: restart,
+      onExit: handleExit,
+      backLabel: t('games.backGames'),
+    };
+    return isPreschool(gradeLevel) ? (
+      <PreschoolShell banner={t('preschool.gamesBanner')}>
+        <PreschoolVictoryScreen {...victoryProps} />
+      </PreschoolShell>
+    ) : (
+      <VictoryScreen {...victoryProps} />
     );
   }
 
-  return (
+  const gameBody = (
     <div className={shared.shell}>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={screenConfetti.burstKey} count={25} />
@@ -251,5 +263,11 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       </div>
       </div>
     </div>
+  );
+
+  return isPreschool(gradeLevel) ? (
+    <PreschoolShell banner={t('preschool.gamesBanner')}>{gameBody}</PreschoolShell>
+  ) : (
+    gameBody
   );
 }

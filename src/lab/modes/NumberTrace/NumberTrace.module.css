@@ -1,0 +1,73 @@
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0 0.25rem;
+}
+
+.hint {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.traceArea {
+  position: relative;
+  width: 100%;
+  max-width: 14rem;
+  height: 11rem;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, #fef3c7, #fde68a);
+  border: 3px solid #f59e0b;
+  box-shadow: 0 4px 0 #d97706;
+}
+
+.ghostDigit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 7rem;
+  font-weight: 900;
+  color: rgba(217, 119, 6, 0.18);
+  pointer-events: none;
+  user-select: none;
+}
+
+.dot {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  margin-left: -1rem;
+  margin-top: -1rem;
+  border-radius: 999px;
+  background: white;
+  border: 3px solid #f59e0b;
+  box-shadow: 0 3px 0 #d97706;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: #b45309;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.dotNext {
+  transform: scale(1.12);
+  background: #fef08a;
+}
+
+.dotDone {
+  background: #fbbf24;
+  color: white;
+  border-color: #d97706;
+}
+
+.dot:active:not(:disabled) {
+  transform: scale(1.05);
+}

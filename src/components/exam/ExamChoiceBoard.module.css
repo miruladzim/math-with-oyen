@@ -28,6 +28,11 @@
   letter-spacing: 0.04em;
 }
 
+.spotlightSpecial {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(99, 102, 241, 0.12));
+  border-color: var(--color-primary-border-strong);
+}
+
 .progress {
   text-align: center;
   color: var(--color-text-muted);
@@ -144,6 +149,16 @@
   background: linear-gradient(180deg, var(--color-error-soft), var(--color-error-soft-2));
   border-color: var(--color-error);
   animation: choiceIn 0.35s ease both, shakeWrong 0.4s ease;
+}
+
+.choiceSelected {
+  background: linear-gradient(180deg, var(--color-primary-soft), rgba(99, 102, 241, 0.14));
+  border-color: var(--color-primary);
+  box-shadow: 0 3px 0 var(--color-primary-shadow-deep);
+}
+
+.choiceSettled {
+  opacity: 0.72;
 }
 
 @keyframes pulseCorrect {

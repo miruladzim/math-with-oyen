@@ -44,7 +44,7 @@ export function Teacher() {
   const gradeTopics = useMemo(() => getTopicsForGrade(worksheetGrade, language), [worksheetGrade, language]);
   const progressTopics = useMemo(() => {
     const source = showAllGrades
-      ? (['k1', 'grade2', 'grade3', 'grade45'] as GradeLevel[]).flatMap((grade) =>
+      ? (['preschool', 'k1', 'grade2', 'grade3', 'grade45'] as GradeLevel[]).flatMap((grade) =>
           getTopicsForGrade(grade, language).map((topic) => ({ ...topic, grade })),
         )
       : getTopicsForGrade(progress.gradeLevel, language).map((topic) => ({
@@ -55,7 +55,7 @@ export function Teacher() {
     return source;
   }, [language, progress.gradeLevel, showAllGrades]);
 
-  const gradeOptions = ['k1', 'grade2', 'grade3', 'grade45'] as GradeLevel[];
+  const gradeOptions = ['preschool', 'k1', 'grade2', 'grade3', 'grade45'] as GradeLevel[];
 
   const worksheetNameLine = progress.studentName
     ? t('teacher.nameLineFilled', { name: progress.studentName })

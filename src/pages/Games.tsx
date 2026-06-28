@@ -9,7 +9,10 @@ import { TreasureDive } from '../games/TreasureDive';
 import { FadeView } from '../components/FadeView';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
+import { useProgress } from '../context/ProgressContext';
 import { getArcadeHint } from '../lib/hints';
+import { getGamesForGrade, isPreschool } from '../lib/preschoolConfig';
+import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import styles from './Games.module.css';
 
 type GameId = 'balloon' | 'match' | 'pizza' | 'rocket' | 'dive' | 'crystal' | null;
@@ -18,16 +21,19 @@ const VALID_GAMES: GameId[] = ['balloon', 'match', 'pizza', 'rocket', 'dive', 'c
 
 export function Games() {
   const { t, language } = useLanguage();
+  const { gradeLevel } = useProgress();
+  const preschoolMode = isPreschool(gradeLevel);
+  const allowedGames = getGamesForGrade(gradeLevel);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeGame, setActiveGame] = useState<GameId>(null);
 
   useEffect(() => {
     const play = searchParams.get('play');
-    if (play && VALID_GAMES.includes(play as GameId)) {
+    if (play && VALID_GAMES.includes(play as GameId) && allowedGames.includes(play)) {
       setActiveGame(play as GameId);
       setSearchParams({}, { replace: true });
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, allowedGames]);
 
   const exitGame = () => setActiveGame(null);
 
@@ -115,17 +121,19 @@ export function Games() {
       </div>
     );
   } else {
-    content = (
+    const hub = (
       <div className={styles.page}>
         <div className={styles.header}>
           <h1 className={styles.title}>{t('games.arcadeTitle')}</h1>
-          <p className={styles.subtitle}>{t('games.arcadeSubtitle')}</p>
+          <p className={styles.subtitle}>
+            {preschoolMode ? t('home.gamesDescPreschool') : t('games.arcadeSubtitle')}
+          </p>
         </div>
 
         <KidHint variant="howTo" message={getArcadeHint(language)} />
 
         <div className={styles.gameGrid}>
-          {GAMES.map((game) => (
+          {GAMES.filter((game) => allowedGames.includes(game.id)).map((game) => (
             <button
               key={game.id}
               type="button"
@@ -144,6 +152,11 @@ export function Games() {
           ))}
         </div>
       </div>
+    );
+    content = preschoolMode ? (
+      <PreschoolShell banner={t('preschool.gamesBanner')}>{hub}</PreschoolShell>
+    ) : (
+      hub
     );
   }
 

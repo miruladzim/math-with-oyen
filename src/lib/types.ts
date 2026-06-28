@@ -1,14 +1,20 @@
 import type { Language } from './i18n/types';
 
-export type GradeLevel = 'k1' | 'grade2' | 'grade3' | 'grade45';
+export type GradeLevel = 'preschool' | 'k1' | 'grade2' | 'grade3' | 'grade45';
 
 export type LabModeId =
+  | 'tapGarden'
   | 'numberLine'
   | 'equationBuilder'
   | 'balanceScale'
   | 'patternStudio'
   | 'sortSquad'
-  | 'thinkSteps';
+  | 'thinkSteps'
+  | 'compareCove'
+  | 'shapeMatch'
+  | 'storyWalk'
+  | 'numberTrace'
+  | 'puzzlePatch';
 
 export type TopicId =
   | 'counting'
@@ -32,6 +38,15 @@ export interface TopicInfo {
   emoji: string;
 }
 
+export interface PreschoolVisualMeta {
+  kind: 'compare' | 'pattern';
+  emoji?: string;
+  groupA?: number;
+  groupB?: number;
+  sequence?: string[];
+  askBigger?: boolean;
+}
+
 export interface Question {
   id: string;
   topicId: TopicId;
@@ -41,6 +56,7 @@ export interface Question {
   inputType: 'choice' | 'number';
   difficulty: number;
   hint?: string;
+  visualMeta?: PreschoolVisualMeta;
 }
 
 export interface TopicProgress {
@@ -95,6 +111,7 @@ export interface AppProgress {
 }
 
 export const GRADE_LABELS: Record<GradeLevel, string> = {
+  preschool: 'Preschool (Ages 5–6)',
   k1: 'Sprout (K–1)',
   grade2: 'Explorer (Grade 2)',
   grade3: 'Builder (Grade 3)',
@@ -102,6 +119,7 @@ export const GRADE_LABELS: Record<GradeLevel, string> = {
 };
 
 export const GRADE_DESCRIPTIONS: Record<GradeLevel, string> = {
+  preschool: 'Play-based counting, shapes, compare, and patterns',
   k1: 'Counting, shapes, and add/sub within 10',
   grade2: 'Add/sub within 100, skip counting, word problems',
   grade3: 'Multiplication tables and intro division',

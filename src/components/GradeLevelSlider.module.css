@@ -248,6 +248,12 @@
   line-height: 1.35;
 }
 
+.gradePreschool {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.28), transparent 55%),
+    linear-gradient(155deg, #fbcfe8 0%, #f472b6 45%, #c026d3 100%);
+}
+
 .gradeK1 {
   background:
     radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.18), transparent 55%),

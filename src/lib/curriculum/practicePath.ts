@@ -11,6 +11,12 @@ export interface PracticeUnit {
 }
 
 const PRACTICE_PATH: Record<GradeLevel, PracticeUnit[]> = {
+  preschool: [
+    { topicId: 'counting', role: 'core', labModeId: 'numberTrace' },
+    { topicId: 'shapes', role: 'core', labModeId: 'tapGarden' },
+    { topicId: 'compare', role: 'core', labModeId: 'compareCove' },
+    { topicId: 'patterns', role: 'stretch', labModeId: 'patternStudio' },
+  ],
   k1: [
     { topicId: 'counting', role: 'core', labModeId: 'numberLine' },
     { topicId: 'shapes', role: 'core' },

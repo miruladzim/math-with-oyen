@@ -7,21 +7,75 @@ export interface LabModeMeta {
   emoji: string;
   grades: GradeLevel[];
   topicForProgress: TopicId;
-  theme: 'path' | 'workshop' | 'scale' | 'studio' | 'sort' | 'steps';
+  theme:
+    | 'path'
+    | 'workshop'
+    | 'scale'
+    | 'studio'
+    | 'sort'
+    | 'steps'
+    | 'garden'
+    | 'cove'
+    | 'match'
+    | 'story'
+    | 'trace'
+    | 'puzzle';
 }
 
 export const LAB_MODES: LabModeMeta[] = [
   {
+    id: 'tapGarden',
+    emoji: '🌻',
+    grades: ['preschool'],
+    topicForProgress: 'counting',
+    theme: 'garden',
+  },
+  {
+    id: 'numberTrace',
+    emoji: '✏️',
+    grades: ['preschool'],
+    topicForProgress: 'counting',
+    theme: 'trace',
+  },
+  {
+    id: 'compareCove',
+    emoji: '🐚',
+    grades: ['preschool'],
+    topicForProgress: 'compare',
+    theme: 'cove',
+  },
+  {
+    id: 'shapeMatch',
+    emoji: '🔷',
+    grades: ['preschool'],
+    topicForProgress: 'shapes',
+    theme: 'match',
+  },
+  {
+    id: 'storyWalk',
+    emoji: '📖',
+    grades: ['preschool'],
+    topicForProgress: 'wordProblems',
+    theme: 'story',
+  },
+  {
+    id: 'puzzlePatch',
+    emoji: '🧩',
+    grades: ['preschool'],
+    topicForProgress: 'patterns',
+    theme: 'puzzle',
+  },
+  {
     id: 'patternStudio',
     emoji: '🎨',
-    grades: ['k1', 'grade2'],
+    grades: ['preschool', 'k1', 'grade2'],
     topicForProgress: 'skipCounting',
     theme: 'studio',
   },
   {
     id: 'numberLine',
     emoji: '📏',
-    grades: ['k1', 'grade2'],
+    grades: ['preschool', 'k1', 'grade2'],
     topicForProgress: 'addSub10',
     theme: 'path',
   },
@@ -42,7 +96,7 @@ export const LAB_MODES: LabModeMeta[] = [
   {
     id: 'sortSquad',
     emoji: '🗂️',
-    grades: ['grade2', 'grade45'],
+    grades: ['preschool', 'grade2', 'grade45'],
     topicForProgress: 'addSub100',
     theme: 'sort',
   },

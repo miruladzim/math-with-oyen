@@ -42,7 +42,6 @@ export function FadeView({
     pendingKeyRef.current = viewKey;
 
     if (viewKey === renderedKey) {
-      setVisibleContent(contentRef.current);
       return;
     }
 
@@ -74,9 +73,11 @@ export function FadeView({
     .filter(Boolean)
     .join(' ');
 
+  const showLiveContent = viewKey === renderedKey && phase === 'in';
+
   return (
     <div className={shellClass} onAnimationEnd={handleAnimationEnd}>
-      {visibleContent}
+      {showLiveContent ? children : visibleContent}
     </div>
   );
 }

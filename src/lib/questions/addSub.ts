@@ -1,6 +1,6 @@
 import type { Language } from '../i18n/types';
 import type { Question } from '../types';
-import { getQuestionStrings, pickRandom } from '../i18n/translations';
+import { getQuestionStrings, interpolate, pickRandom } from '../i18n/translations';
 
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -118,19 +118,11 @@ export function generateWordProblemQuestion(difficulty: number, lang: Language =
 
   if (isAdd) {
     correct = a + b;
-    prompt = qs.wordAdd
-      .replace('{name}', name)
-      .replace('{a}', String(a))
-      .replace('{b}', String(b))
-      .replaceAll('{item}', item);
+    prompt = interpolate(qs.wordAdd, { name, a, b, item });
   } else {
     if (a < b) [a, b] = [b, a];
     correct = a - b;
-    prompt = qs.wordSub
-      .replace('{name}', name)
-      .replace('{a}', String(a))
-      .replace('{b}', String(b))
-      .replaceAll('{item}', item);
+    prompt = interpolate(qs.wordSub, { name, a, b, item });
   }
 
   const useChoices = difficulty <= 2;

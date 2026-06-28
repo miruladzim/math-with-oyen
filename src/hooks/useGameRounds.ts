@@ -1,5 +1,7 @@
-import { NORMAL_ROUNDS } from '../lib/gameConfig';
+import { getGameRounds } from '../lib/gameConfig';
+import { useProgress } from '../context/ProgressContext';
 
 export function useGameRounds(): number {
-  return NORMAL_ROUNDS;
+  const { gradeLevel } = useProgress();
+  return getGameRounds(gradeLevel);
 }

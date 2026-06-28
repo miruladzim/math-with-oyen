@@ -65,8 +65,34 @@ const en = {
     examTitle: 'Final Exam',
     examDesc: '15 mixed-topic questions — earn your certificate!',
     examReady: 'Ready for the Final Exam?',
+    practiceDescPreschool: 'Tap-to-count adventures — 5 playful rounds!',
+    gamesDescPreschool: 'Treasure dives, matching & balloons — learn while playing!',
+    labDescPreschool: 'Tap the garden, sort, patterns & number hops — explore freely!',
+    chooseLevelHintPreschool:
+      'Meow! Slide to Preschool for ages 5–6 — big buttons, playful games, and gentle math fun!',
+  },
+  preschool: {
+    tapEachOne: 'Tap each one to count!',
+    tapped: 'tapped',
+    pickNumber: 'How many? Pick a number!',
+    countObjects: 'Objects to count',
+    tryAgain: 'Almost! Let’s count together again.',
+    greatCount: 'Wonderful counting!',
+    gardenComplete: 'Garden adventure complete!',
+    practiceBanner: 'Tap, play, and explore — learning feels like a game!',
+    gamesBanner: 'Mini games full of colors, sounds, and happy surprises!',
+    labBanner: 'Touch, drag, and discover — no grades, just curiosity!',
+    tapBiggerGroup: 'Tap the group that matches the question!',
+    pickMissingPiece: 'Pick the missing piece!',
+    matchTryAgain: 'Try another pair!',
+    stickerTitle: 'Sticker star!',
+    stickerSub: 'You earned a happy sticker from Oyen!',
   },
   grades: {
+    preschool: {
+      label: 'Preschool (Ages 5–6)',
+      desc: 'Play-based counting, shapes, compare & patterns',
+    },
     k1: { label: 'Sprout (K–1)', desc: 'Counting, shapes, compare, bonds, and gentle patterns' },
     grade2: { label: 'Explorer (Grade 2)', desc: 'Add/sub to 100, place value, word problems, and patterns' },
     grade3: { label: 'Builder (Grade 3)', desc: 'Times tables, division, place value, and story problems' },
@@ -154,7 +180,12 @@ const en = {
     backGames: '← Back to games',
     play: 'PLAY',
     balloon: { title: 'Balloon Pop', desc: 'Float up and pop the right answer!' },
-    match: { title: 'Number Match', desc: 'Flip cards — match equations to answers', hiddenCard: 'Face-down card' },
+    match: {
+      title: 'Number Match',
+      desc: 'Flip cards — match equations to answers',
+      descPreschool: 'Flip cards — match pictures to numbers!',
+      hiddenCard: 'Face-down card',
+    },
     pizza: { title: 'Fraction Pizza', desc: 'Top the pizza with the right fraction' },
     rocket: { title: 'Rocket Launch', desc: 'Fuel up with the right answer — blast off!' },
     dive: { title: 'Treasure Dive', desc: 'Swim deep and grab the correct gem chest' },
@@ -217,6 +248,7 @@ const en = {
     readinessTitle: 'Your readiness checklist',
     bestScore: 'Your best score',
     liveScore: '{correct} correct · {answered} answered',
+    answeredProgress: '{answered} / {total} answered',
     journeyAria: 'Exam progress',
     difficultyLabel: 'Level {level}',
     hintPowerUp: 'Use hint power-up (1 per section)',
@@ -224,6 +256,9 @@ const en = {
     continueBtn: 'Next question',
     continueAnyway: 'Keep going',
     continueQuest: 'Continue the quest',
+    wrongEncourage:
+      'Not quite — that is okay! Read the question again, then tap Keep going when you are ready.',
+    hintPowerText: 'Read the question once more. Rule out answers that clearly do not fit.',
     seeResults: 'See my results',
     checkpointTitle: 'Section complete!',
     sectionScore: '{correct} / {total} correct',
@@ -237,6 +272,8 @@ const en = {
     topicBreakdown: 'Skills breakdown',
     practiceWeak: 'Practice these topics',
     tryAgain: 'Try exam again',
+    kindStory: 'Story',
+    kindKbat: 'Think!',
     sections: {
       warmUp: 'Warm-up round',
       challenge: 'Challenge round',
@@ -431,6 +468,15 @@ const en = {
       },
     },
     lab: {
+      tapGarden: {
+        howTo: 'Tap each picture once to count, then pick the matching number.',
+        tips: [
+          'Use your finger — one tap for each friend.',
+          'Say the numbers out loud as you tap.',
+          'Count slowly so you do not skip any.',
+        ],
+        wrong: 'Let’s count together again — tap every picture once.',
+      },
       patternStudio: {
         howTo: 'Find the pattern rule, then drag the missing tile into the empty spot.',
         tips: [
@@ -485,6 +531,51 @@ const en = {
         ],
         wrong: 'Reread the story — did you pick the right numbers and operation?',
       },
+      compareCove: {
+        howTo: 'Compare both groups and tap the one that matches the question.',
+        tips: [
+          'Look side by side — which row is longer?',
+          'Count each group if you need help.',
+          'More or less — read the question carefully.',
+        ],
+        wrong: 'Compare both groups again — which matches the question?',
+      },
+      shapeMatch: {
+        howTo: 'Look at the shape, then tap the bin with the matching name.',
+        tips: [
+          'Say the shape name out loud.',
+          'Read every bin label before you tap.',
+          'Round shapes are circles — squares have four corners.',
+        ],
+        wrong: 'Read the bin names again — which one matches the shape?',
+      },
+      storyWalk: {
+        howTo: 'Read each story beat, tap to count, then pick the number.',
+        tips: [
+          'One tap for each picture.',
+          'Five stops — take them one at a time.',
+          'Pick the number that matches your taps.',
+        ],
+        wrong: 'Tap every picture once, then pick the matching number.',
+      },
+      numberTrace: {
+        howTo: 'Tap the dots in order from 1 to the last dot.',
+        tips: [
+          'Start at dot 1 every time.',
+          'Follow the big faint number.',
+          'Go slowly — order matters!',
+        ],
+        wrong: 'Start at dot 1 and tap each dot in order.',
+      },
+      puzzlePatch: {
+        howTo: 'Look at the picture grid and pick the piece that fits the empty spot.',
+        tips: [
+          'What pattern do the other squares show?',
+          'Compare each choice to the gap.',
+          'Same emoji often fills the missing square.',
+        ],
+        wrong: 'Look at the whole grid — what piece completes the pattern?',
+      },
     },
   },
   common: {
@@ -507,6 +598,8 @@ const en = {
     whatComesNext: 'What comes next?',
     whichIsBigger: 'Which is bigger: {a} or {b}?',
     whichIsSmaller: 'Which is smaller: {a} or {b}?',
+    whichGroupMore: 'Which group has more?',
+    whichGroupLess: 'Which group has less?',
     numberBondMissing: '? + {part} = {target}',
     numberBondMissingFirst: '{part} + ? = {target}',
     numberBondHint: 'Think: {part} + ? = {target}',
@@ -538,6 +631,17 @@ const en = {
       pencils: 'pencils',
     },
     names: ['Sam', 'Alex', 'Jordan', 'Taylor', 'Casey'],
+    exam: {
+      storyMult: 'Each bag has {n} {item}. There are {bags} bags. How many {item} altogether?',
+      storyShare: '{total} {item} are shared equally among {groups} friends. How many does each friend get?',
+      storyTwoStep:
+        '{name} has {a} {item}, gets {b} more, then gives {c} away. How many {item} are left?',
+      kbatHowManyMore: '{name} has {a} {item}. How many more {item} to make {target}?',
+      kbatDifference:
+        '{name1} has {a} {item}. {name2} has {b} {item}. How many more does {name1} have?',
+      kbatMissingFactor: '? × {b} = {product}. What is the missing number?',
+      kbatWhichFractionGreater: 'Which fraction is greater: {f1} or {f2}?',
+    },
   },
 };
 
@@ -605,8 +709,34 @@ const ms: TranslationTree = {
     examTitle: 'Peperiksaan Akhir',
     examDesc: '15 soalan campuran — dapatkan sijil awak!',
     examReady: 'Sedia untuk Peperiksaan Akhir?',
+    practiceDescPreschool: 'Pengembaraan kira sentuh — 5 pusingan seronok!',
+    gamesDescPreschool: 'Selam harta, padanan & belon — belajar sambil main!',
+    labDescPreschool: 'Taman sentuh, isih, corak & lompat nombor — teroka bebas!',
+    chooseLevelHintPreschool:
+      'Meow~ Leret ke Prasekolah untuk umur 5–6 — butang besar, permainan ceria, dan matematik lembut!',
+  },
+  preschool: {
+    tapEachOne: 'Sentuh setiap satu untuk kira!',
+    tapped: 'disentuh',
+    pickNumber: 'Berapa banyak? Pilih nombor!',
+    countObjects: 'Benda untuk dikira',
+    tryAgain: 'Hampir! Jom kira sekali lagi.',
+    greatCount: 'Hebat kira awak!',
+    gardenComplete: 'Pengembaraan taman selesai!',
+    practiceBanner: 'Sentuh, main, dan teroka — belajar rasa macam main!',
+    gamesBanner: 'Mini permainan penuh warna, bunyi, dan kejutan!',
+    labBanner: 'Sentuh, seret, dan teroka — tiada gred, hanya rasa ingin tahu!',
+    tapBiggerGroup: 'Sentuh kumpulan yang betul!',
+    pickMissingPiece: 'Pilih kepingan yang hilang!',
+    matchTryAgain: 'Cuba pasangan lain!',
+    stickerTitle: 'Bintang pelekat!',
+    stickerSub: 'Awak dapat pelekat gembira dari Oyen!',
   },
   grades: {
+    preschool: {
+      label: 'Prasekolah (Umur 5–6)',
+      desc: 'Mengira, bentuk, banding & corak bercorak main',
+    },
     k1: { label: 'Pemula (Tahun K–1)', desc: 'Mengira, bentuk, banding, ikatan nombor, dan corak mudah' },
     grade2: { label: 'Penjelajah (Tahun 2)', desc: 'Tambah tolak hingga 100, nilai tempat, cerita, dan corak' },
     grade3: { label: 'Pembina (Tahun 3)', desc: 'Sifir darab, bahagi, nilai tempat, dan soalan cerita' },
@@ -694,7 +824,12 @@ const ms: TranslationTree = {
     backGames: '← Kembali ke permainan',
     play: 'MAIN',
     balloon: { title: 'Letup Belon', desc: 'Letupkan belon dengan jawapan betul!' },
-    match: { title: 'Padanan Nombor', desc: 'Balik kad — padankan persamaan dengan jawapan', hiddenCard: 'Kad tertutup' },
+    match: {
+      title: 'Padanan Nombor',
+      desc: 'Balik kad — padankan persamaan dengan jawapan',
+      descPreschool: 'Balik kad — padankan gambar dengan nombor!',
+      hiddenCard: 'Kad tertutup',
+    },
     pizza: { title: 'Piza Pecahan', desc: 'Letakkan pecahan yang betul pada piza' },
     rocket: { title: 'Lancaran Roket', desc: 'Isi bahan api — lancarkan roket!' },
     dive: { title: 'Selam Harta', desc: 'Selam dan ambil peti harta dengan jawapan betul' },
@@ -757,6 +892,7 @@ const ms: TranslationTree = {
     readinessTitle: 'Senarai semak kesiapsiagaan',
     bestScore: 'Skor terbaik awak',
     liveScore: '{correct} betul · {answered} dijawab',
+    answeredProgress: '{answered} / {total} dijawab',
     journeyAria: 'Kemajuan peperiksaan',
     difficultyLabel: 'Tahap {level}',
     hintPowerUp: 'Guna petua (1 setiap bahagian)',
@@ -764,6 +900,9 @@ const ms: TranslationTree = {
     continueBtn: 'Soalan seterusnya',
     continueAnyway: 'Teruskan',
     continueQuest: 'Teruskan misi',
+    wrongEncourage:
+      'Belum betul — tak pe! Baca soalan sekali lagi, lepas tu tekan Teruskan bila dah sedia.',
+    hintPowerText: 'Baca soalan sekali lagi. Buang jawapan yang memang tak sesuai.',
     seeResults: 'Lihat keputusan',
     checkpointTitle: 'Bahagian selesai!',
     sectionScore: '{correct} / {total} betul',
@@ -777,6 +916,8 @@ const ms: TranslationTree = {
     topicBreakdown: 'Ringkasan kemahiran',
     practiceWeak: 'Latih topik ini',
     tryAgain: 'Cuba peperiksaan lagi',
+    kindStory: 'Cerita',
+    kindKbat: 'KBAT',
     sections: {
       warmUp: 'Pemanasan',
       challenge: 'Cabaran',
@@ -971,6 +1112,15 @@ const ms: TranslationTree = {
       },
     },
     lab: {
+      tapGarden: {
+        howTo: 'Sentuh setiap gambar sekali untuk kira, lepas tu pilih nombor yang sama.',
+        tips: [
+          'Guna jari — satu sentuhan untuk setiap kawan.',
+          'Sebut nombor dengan kuat semasa sentuh.',
+          'Kira perlahan supaya tak skip mana-mana.',
+        ],
+        wrong: 'Jom kira sekali lagi — sentuh setiap gambar sekali.',
+      },
       patternStudio: {
         howTo: 'Cari peraturan corak, lepas tu seret keping yang hilang ke tempat kosong.',
         tips: [
@@ -1025,6 +1175,51 @@ const ms: TranslationTree = {
         ],
         wrong: 'Baca cerita semula — nombor dan operasi betul tak?',
       },
+      compareCove: {
+        howTo: 'Banding kedua-dua kumpulan dan sentuh yang padan soalan.',
+        tips: [
+          'Tengok bersebelahan — baris mana lebih panjang?',
+          'Kira setiap kumpulan kalau perlu.',
+          'Lebih atau kurang — baca soalan dengan teliti.',
+        ],
+        wrong: 'Banding semula — kumpulan mana padan soalan?',
+      },
+      shapeMatch: {
+        howTo: 'Tengok bentuk, lepas sentuh tong dengan nama yang sama.',
+        tips: [
+          'Sebut nama bentuk dengan kuat.',
+          'Baca setiap label tong sebelum sentuh.',
+          'Bulat = bulatan — segi empat ada empat sudut.',
+        ],
+        wrong: 'Baca nama tong lagi — yang mana padan bentuk?',
+      },
+      storyWalk: {
+        howTo: 'Baca setiap bahagian, sentuh untuk kira, pilih nombor.',
+        tips: [
+          'Satu sentuhan setiap gambar.',
+          'Lima hentian — satu demi satu.',
+          'Pilih nombor yang sama dengan tap awak.',
+        ],
+        wrong: 'Sentuh setiap gambar sekali, lepas pilih nombor yang betul.',
+      },
+      numberTrace: {
+        howTo: 'Sentuh titik mengikut turutan dari 1 hingga akhir.',
+        tips: [
+          'Mula di titik 1 setiap kali.',
+          'Ikut nombor besar pudar.',
+          'Perlahan — turutan penting!',
+        ],
+        wrong: 'Mula di titik 1 dan sentuh setiap titik mengikut turutan.',
+      },
+      puzzlePatch: {
+        howTo: 'Tengok grid gambar dan pilih keping yang muat di tempat kosong.',
+        tips: [
+          'Apakah corak petak yang lain?',
+          'Banding setiap pilihan dengan lubang.',
+          'Emoji sama selalu isi petak hilang.',
+        ],
+        wrong: 'Tengok seluruh grid — keping mana lengkapkan corak?',
+      },
     },
   },
   common: {
@@ -1047,6 +1242,8 @@ const ms: TranslationTree = {
     whatComesNext: 'Apakah nombor seterusnya?',
     whichIsBigger: 'Yang manakah lebih besar: {a} atau {b}?',
     whichIsSmaller: 'Yang manakah lebih kecil: {a} atau {b}?',
+    whichGroupMore: 'Kumpulan manakah lebih banyak?',
+    whichGroupLess: 'Kumpulan manakah lebih sedikit?',
     numberBondMissing: '? + {part} = {target}',
     numberBondMissingFirst: '{part} + ? = {target}',
     numberBondHint: 'Fikir: {part} + ? = {target}',
@@ -1078,6 +1275,18 @@ const ms: TranslationTree = {
       pencils: 'pensel',
     },
     names: ['Ali', 'Siti', 'Ahmad', 'Fatimah', 'Hafiz'],
+    exam: {
+      storyMult: 'Setiap beg ada {n} {item}. Ada {bags} beg. Berapa {item} semuanya?',
+      storyShare:
+        '{total} {item} diagih sama rata kepada {groups} orang kawan. Berapa setiap orang?',
+      storyTwoStep:
+        '{name} ada {a} {item}, dapat {b} lagi, lepas tu beri {c}. Berapa {item} yang tinggal?',
+      kbatHowManyMore: '{name} ada {a} {item}. Berapa lagi {item} untuk jadi {target}?',
+      kbatDifference:
+        '{name1} ada {a} {item}. {name2} ada {b} {item}. Berapa banyak lagi {name1} ada?',
+      kbatMissingFactor: '? × {b} = {product}. Apakah nombor yang hilang?',
+      kbatWhichFractionGreater: 'Pecahan manakah lebih besar: {f1} atau {f2}?',
+    },
   },
 };
 

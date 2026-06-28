@@ -15,15 +15,16 @@ interface NumberLineJumpProps {
 }
 
 export function NumberLineJump({ onExit }: NumberLineJumpProps) {
-  const { progress, setProgress } = useProgress();
+  const { progress, setProgress, gradeLevel } = useProgress();
   const { t, language } = useLanguage();
   const meta = getLabModeMeta('numberLine');
+  const preschool = gradeLevel === 'preschool';
   const session = useLabSession({ modeId: 'numberLine', progress, setProgress });
   const [position, setPosition] = useState(0);
   const [mistakeIdx, setMistakeIdx] = useState(0);
 
   const challenge = useMemo(
-    () => buildNumberLineChallenge(session.roundDifficulty, language, session.round),
+    () => buildNumberLineChallenge(session.roundDifficulty, language, session.round, preschool),
     [language, session.round, session.roundDifficulty],
   );
 

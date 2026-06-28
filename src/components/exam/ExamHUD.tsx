@@ -13,6 +13,8 @@ interface ExamHUDProps {
   hintUsed: boolean;
   onUseHint: () => void;
   currentQuestion?: ExamQuestion;
+  /** When true, hide live correct count during the quiz (final exam mode). */
+  hideCorrectScore?: boolean;
 }
 
 export function ExamHUD({
@@ -24,6 +26,7 @@ export function ExamHUD({
   hintAvailable,
   hintUsed,
   onUseHint,
+  hideCorrectScore = false,
 }: ExamHUDProps) {
   const { t } = useLanguage();
   const section = getExamSectionConfig(sectionIndex);
@@ -38,7 +41,12 @@ export function ExamHUD({
           </span>
         </div>
         <p className={styles.score} aria-live="polite">
-          {t('exam.liveScore', { correct: correctCount, answered: answeredCount })}
+          {hideCorrectScore
+            ? t('exam.answeredProgress', {
+                answered: answeredCount,
+                total: totalQuestions,
+              })
+            : t('exam.liveScore', { correct: correctCount, answered: answeredCount })}
         </p>
       </div>
 
