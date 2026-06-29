@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BigButton } from '../components/BigButton';
+import { BackButton } from '../components/BackButton';
 import { CollapsibleSection } from '../components/CollapsibleSection';
 import { KidHint } from '../components/KidHint';
 import { StarDisplay } from '../components/StarDisplay';
@@ -143,6 +144,7 @@ export function Teacher() {
   if (!unlocked) {
     return (
       <div className={styles.page}>
+        <BackButton label={t('practice.backHome')} to="/" />
         <div className={styles.header}>
           <p className={styles.eyebrow}>{t('teacher.lockEyebrow')}</p>
           <h1 className={styles.title}>{t('teacher.title')}</h1>
@@ -183,6 +185,7 @@ export function Teacher() {
 
   return (
     <div className={styles.page}>
+      <BackButton label={t('practice.backHome')} to="/" />
       <div className={`${styles.header} no-print`}>
         <h1 className={styles.title}>{t('teacher.dashboardTitle')}</h1>
         <p className={styles.subtitle}>{t('teacher.dashboardSubtitle')}</p>

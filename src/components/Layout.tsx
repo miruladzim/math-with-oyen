@@ -19,16 +19,6 @@ export function Layout({ children }: LayoutProps) {
   const { t } = useLanguage();
   const displayName = progress.studentName || t('appName');
 
-  const NAV = [
-    { to: '/', end: true, label: t('nav.home') },
-    { to: '/practice', label: t('nav.practice') },
-    { to: '/games', label: t('nav.games') },
-    { to: '/lab', label: t('nav.lab') },
-    { to: '/exam', label: t('nav.exam') },
-    { to: '/progress', label: t('nav.stars') },
-    { to: '/teacher', label: t('nav.teacher') },
-  ];
-
   useEffect(() => {
     setSpeechEnabled(progress.settings.speechEnabled);
     setSoundEnabled(progress.settings.soundEnabled);
@@ -116,21 +106,6 @@ export function Layout({ children }: LayoutProps) {
               </button>
             </div>
           </div>
-
-          <nav className={styles.nav} aria-label="Main navigation">
-            {NAV.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
         </div>
       </header>
 

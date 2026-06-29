@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FadeView } from '../components/FadeView';
+import { BackButton } from '../components/BackButton';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
@@ -133,6 +134,7 @@ export function Lab() {
   } else {
     const hub = (
       <div className={styles.page}>
+        <BackButton label={t('practice.backHome')} to="/" />
         <div className={styles.header}>
           <h1 className={styles.title}>{t('lab.hubTitle')}</h1>
           <p className={styles.subtitle}>

@@ -7,6 +7,7 @@ import { NumberMatch } from '../games/NumberMatch';
 import { RocketLaunch } from '../games/RocketLaunch';
 import { TreasureDive } from '../games/TreasureDive';
 import { FadeView } from '../components/FadeView';
+import { BackButton } from '../components/BackButton';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
@@ -131,6 +132,7 @@ export function Games() {
   } else {
     const hub = (
       <div className={styles.page}>
+        <BackButton label={t('practice.backHome')} to="/" />
         <div className={styles.header}>
           <h1 className={styles.title}>{t('games.arcadeTitle')}</h1>
           <p className={styles.subtitle}>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { BackButton } from '../components/BackButton';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
 import { getFinalExamProgress } from '../lib/exam/examProgress';
@@ -60,6 +61,7 @@ export function ProgressPage() {
 
   return (
     <div className={styles.page}>
+      <BackButton label={t('practice.backHome')} to="/" />
       <div className={styles.header}>
         <h1 className={styles.title}>{t('progress.title')}</h1>
         <p className={styles.subtitle}>
