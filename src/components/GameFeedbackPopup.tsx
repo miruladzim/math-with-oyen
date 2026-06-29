@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { CORRECT_FEEDBACK_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 import styles from './GameFeedbackPopup.module.css';
 
 export interface GameFeedback {
@@ -22,8 +23,8 @@ interface GameFeedbackPopupProps {
 }
 
 const DEFAULT_DURATION = {
-  success: 1100,
-  error: 900,
+  success: CORRECT_FEEDBACK_MS,
+  error: WRONG_FEEDBACK_MS,
 } as const;
 
 export function GameFeedbackPopup({ feedback, onDismiss, durationMs }: GameFeedbackPopupProps) {

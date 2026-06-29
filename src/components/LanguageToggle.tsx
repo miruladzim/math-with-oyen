@@ -1,5 +1,5 @@
 import { useLanguage } from '../context/LanguageContext';
-import { LANGUAGE_FLAGS, LANGUAGE_LABELS, type Language } from '../lib/i18n/types';
+import { LANGUAGE_LABELS, LANGUAGE_SHORT, type Language } from '../lib/i18n/types';
 import styles from './LanguageToggle.module.css';
 
 interface LanguageToggleProps {
@@ -29,7 +29,7 @@ export function LanguageToggle({ compact = false, embedded = false }: LanguageTo
             aria-label={t('language.switchTo', { lang: LANGUAGE_LABELS[lang] })}
             title={LANGUAGE_LABELS[lang]}
           >
-            {LANGUAGE_FLAGS[lang]}
+            {LANGUAGE_SHORT[lang]}
           </button>
         ))}
       </div>
@@ -49,10 +49,7 @@ export function LanguageToggle({ compact = false, embedded = false }: LanguageTo
             aria-pressed={language === lang}
             aria-label={t('language.switchTo', { lang: LANGUAGE_LABELS[lang] })}
           >
-            <span className={styles.flag} aria-hidden="true">
-              {LANGUAGE_FLAGS[lang]}
-            </span>
-            {LANGUAGE_LABELS[lang]}
+            {LANGUAGE_SHORT[lang]}
           </button>
         ))}
       </div>

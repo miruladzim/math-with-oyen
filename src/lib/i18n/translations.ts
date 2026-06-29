@@ -229,6 +229,8 @@ const en = {
     rocketVictorySub: 'You launched {correct} out of {total} missions!',
     journeyLegend: 'Earth → Moon',
     divePrompt: 'Grab the treasure!',
+    diveCountOnly: 'Count only these treasures — then pick the matching chest!',
+    diveCountObjects: 'Treasures to count',
     diveCorrect: '💎 Treasure found!',
     diveWrong: '🫧 Empty chest — try again!',
     diveVictory: 'Deep Sea Hero!',
@@ -711,7 +713,7 @@ const ms: TranslationTree = {
     examReady: 'Sedia untuk Peperiksaan Akhir?',
     practiceDescPreschool: 'Pengembaraan kira sentuh — 5 pusingan seronok!',
     gamesDescPreschool: 'Selam harta, padanan & belon — belajar sambil main!',
-    labDescPreschool: 'Taman sentuh, isih, corak & lompat nombor — teroka bebas!',
+    labDescPreschool: 'Taman sentuh, isi, corak & lompat nombor — teroka bebas!',
     chooseLevelHintPreschool:
       'Meow~ Leret ke Prasekolah untuk umur 5–6 — butang besar, permainan ceria, dan matematik lembut!',
   },
@@ -873,6 +875,8 @@ const ms: TranslationTree = {
     rocketVictorySub: 'Awak lancarkan {correct} daripada {total} misi!',
     journeyLegend: 'Bumi → Bulan',
     divePrompt: 'Ambil harta karun!',
+    diveCountOnly: 'Kira harta ini sahaja — lepas itu pilih peti yang sepadan!',
+    diveCountObjects: 'Harta untuk dikira',
     diveCorrect: '💎 Harta dijumpai!',
     diveWrong: '🫧 Peti kosong — cuba lagi!',
     diveVictory: 'Wira Laut Dalam!',
@@ -1158,13 +1162,13 @@ const ms: TranslationTree = {
         wrong: 'Dulang mana perlukan lebih blok untuk capai sasaran?',
       },
       sortSquad: {
-        howTo: 'Tekan kad, lepas tu tekan tong yang betul. Hantar bila semua diisih.',
+        howTo: 'Tekan kad, lepas tu tekan kotak yang betul. Hantar bila semua diisi.',
         tips: [
-          'Baca label tong — itu peraturannya.',
+          'Baca label kotak — itu peraturannya.',
           'Banding setiap kad dengan nombor had.',
           'Semak semula nombor yang hampir dengan had.',
         ],
-        wrong: 'Ada kad dalam tong yang salah — banding dengan peraturan.',
+        wrong: 'Ada kad dalam kotak yang salah — banding dengan peraturan.',
       },
       thinkSteps: {
         howTo: 'Selesaikan tiga langkah: nombor, operasi, lepas tu jawapan.',
@@ -1185,13 +1189,13 @@ const ms: TranslationTree = {
         wrong: 'Banding semula — kumpulan mana padan soalan?',
       },
       shapeMatch: {
-        howTo: 'Tengok bentuk, lepas sentuh tong dengan nama yang sama.',
+        howTo: 'Tengok bentuk, lepas sentuh kotak dengan nama yang sama.',
         tips: [
           'Sebut nama bentuk dengan kuat.',
-          'Baca setiap label tong sebelum sentuh.',
+          'Baca setiap label kotak sebelum sentuh.',
           'Bulat = bulatan — segi empat ada empat sudut.',
         ],
-        wrong: 'Baca nama tong lagi — yang mana padan bentuk?',
+        wrong: 'Baca nama kotak lagi — yang mana padan bentuk?',
       },
       storyWalk: {
         howTo: 'Baca setiap bahagian, sentuh untuk kira, pilih nombor.',

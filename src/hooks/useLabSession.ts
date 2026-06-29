@@ -10,6 +10,7 @@ import { speak } from '../lib/speech';
 import type { LabModeId } from '../lib/types';
 import type { AppProgress } from '../lib/types';
 import { createGameFeedback, type GameFeedback } from '../components/GameFeedbackPopup';
+import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 
 interface UseLabSessionOptions {
   modeId: LabModeId;
@@ -81,7 +82,7 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
             setFeedback(null);
             return r + 1;
           });
-        }, 1400);
+        }, CORRECT_ADVANCE_MS);
         return next;
       });
     },
@@ -104,7 +105,7 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
       schedule(() => {
         setLocked(false);
         setFeedback(null);
-      }, 900);
+      }, WRONG_FEEDBACK_MS);
     },
     [locked, progress.gradeLevel, schedule],
   );

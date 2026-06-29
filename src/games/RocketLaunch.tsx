@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackButton } from '../components/BackButton';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
+import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -186,10 +187,10 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
               LANDING_MESSAGE_DELAY_MS + VICTORY_AFTER_LANDING_MS,
             );
           } else {
-            schedule(() => finishGame(newCorrect, attempts), 1200);
+            schedule(() => finishGame(newCorrect, attempts), CORRECT_ADVANCE_MS);
           }
         } else {
-          schedule(() => setRound((r) => r + 1), 950);
+          schedule(() => setRound((r) => r + 1), CORRECT_ADVANCE_MS);
         }
 
         return newCorrect;
@@ -205,7 +206,7 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
         setLocked(false);
         setPickedId(null);
         setFeedback(null);
-      }, 900);
+      }, WRONG_FEEDBACK_MS);
     }
   };
 

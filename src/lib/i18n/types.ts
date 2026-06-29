@@ -5,7 +5,10 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ms: 'Bahasa Melayu',
 };
 
-export const LANGUAGE_FLAGS: Record<Language, string> = {
+export const LANGUAGE_SHORT: Record<Language, string> = {
   en: 'EN',
-  ms: '🇲🇾',
+  ms: 'BM',
 };
+
+/** @deprecated Use LANGUAGE_SHORT in UI; kept for aria labels via LANGUAGE_LABELS */
+export const LANGUAGE_FLAGS = LANGUAGE_SHORT;

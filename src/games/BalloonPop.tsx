@@ -4,6 +4,7 @@ import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
+import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -193,7 +194,7 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
         schedule(() => {
           if (round + 1 >= rounds) finishGame(newCorrect, rounds + wrongCount);
           else setRound((r) => r + 1);
-        }, 900);
+        }, CORRECT_ADVANCE_MS);
 
         return newCorrect;
       });
@@ -209,7 +210,7 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
         setShakingId(null);
         setLocked(false);
         setFeedback(null);
-      }, 900);
+      }, WRONG_FEEDBACK_MS);
     }
   };
 

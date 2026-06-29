@@ -3,6 +3,48 @@
   border-color: #0284c7;
 }
 
+.countZone {
+  margin-bottom: 0.75rem;
+  padding: 0.85rem 1rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 3px solid #fbbf24;
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+  box-shadow: 0 4px 0 #d97706, var(--shadow-sm);
+  text-align: center;
+}
+
+.countZonePrompt {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.countGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-md);
+  background: rgba(2, 132, 199, 0.08);
+  border: 2px dashed #0284c7;
+}
+
+.countItem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  font-size: 2rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
 .oceanBg {
   position: absolute;
   inset: 0;
@@ -28,15 +70,6 @@
   opacity: 0.75;
   pointer-events: none;
   animation: rise 4s linear infinite;
-  z-index: 1;
-}
-
-.fishEmoji {
-  position: absolute;
-  font-size: 1.85rem;
-  pointer-events: none;
-  animation: swim 4s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
   z-index: 1;
 }
 
@@ -71,17 +104,6 @@
 
 .diverDown .diverEmoji {
   transform: rotate(75deg);
-}
-
-.sandEmoji {
-  position: absolute;
-  bottom: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.35rem;
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 1;
 }
 
 .oceanStage .chestRow,
@@ -126,11 +148,6 @@
   line-height: 1;
 }
 
-.gemEmoji {
-  font-size: 1.05rem;
-  line-height: 1;
-}
-
 .chestValue {
   font-family: var(--font-display);
   font-weight: 800;
@@ -145,19 +162,8 @@
   }
 }
 
-@keyframes swim {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(12px);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .bubbleEmoji,
-  .fishEmoji,
   .diver,
   .diverEmoji {
     animation: none;

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackButton } from '../components/BackButton';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
+import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -133,7 +134,7 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
         schedule(() => {
           if (round + 1 >= rounds) finishGame(newCorrect, rounds + wrongCount);
           else setRound((r) => r + 1);
-        }, 950);
+        }, CORRECT_ADVANCE_MS);
 
         return newCorrect;
       });
@@ -148,7 +149,7 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
         setLocked(false);
         setShatterId(null);
         setFeedback(null);
-      }, 900);
+      }, WRONG_FEEDBACK_MS);
     }
   };
 

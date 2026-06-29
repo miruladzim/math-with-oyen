@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackButton } from '../components/BackButton';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
+import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -16,7 +17,7 @@ import { playCorrect, playIncorrect, playSplash, playSuccess } from '../lib/audi
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateAddSub10Question } from '../lib/questions/addSub';
 import { generateCountingQuestion } from '../lib/questions/counting';
-import { isPreschool } from '../lib/preschoolConfig';
+import { isPreschool, parseCountingVisual } from '../lib/preschoolConfig';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { speak } from '../lib/speech';
@@ -51,6 +52,7 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
   const [correct, setCorrect] = useState(0);
   const [combo, setCombo] = useState(0);
   const [prompt, setPrompt] = useState('');
+  const [countItems, setCountItems] = useState<string[]>([]);
   const [answer, setAnswer] = useState(0);
   const [chests, setChests] = useState<Chest[]>([]);
   const [feedback, setFeedback] = useState<GameFeedback | null>(null);
@@ -62,6 +64,8 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
   const [locked, setLocked] = useState(false);
   const [diverX, setDiverX] = useState(50);
   const [diving, setDiving] = useState(false);
+
+  const isCountingRound = countItems.length > 0;
 
   const setupRound = useCallback(
     (roundIndex: number) => {
@@ -75,16 +79,20 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
             ? generateCountingQuestion(diff, language)
             : generateAddSub10Question(diff, language);
       const correctAnswer = Number(q.correctAnswer);
-      setPrompt(q.prompt);
+      const items = parseCountingVisual(q.prompt);
+      const promptLine = q.prompt.split('\n')[0] ?? q.prompt;
+
+      setPrompt(items.length > 0 ? promptLine : q.prompt);
+      setCountItems(items);
       setAnswer(correctAnswer);
       setChests(buildChests(correctAnswer, roundIndex));
       setFeedback(null);
       setLocked(false);
       setDiving(false);
       setDiverX(50);
-      speak(q.prompt);
+      speak(items.length > 0 ? `${promptLine} ${t('games.diveCountOnly')}` : q.prompt);
     },
-    [consecutiveWrong, gradeLevel, language],
+    [consecutiveWrong, gradeLevel, language, t],
   );
 
   useEffect(() => {
@@ -135,7 +143,7 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
         schedule(() => {
           if (round + 1 >= rounds) finishGame(newCorrect, rounds + wrongCount);
           else setRound((r) => r + 1);
-        }, 1000);
+        }, CORRECT_ADVANCE_MS);
 
         return newCorrect;
       });
@@ -151,7 +159,7 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
         setDiving(false);
         setDiverX(50);
         setFeedback(null);
-      }, 900);
+      }, WRONG_FEEDBACK_MS);
     }
   };
 
@@ -208,59 +216,76 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
 
       <div className={shared.workBlock}>
         <GamePrompt icon="🏊" label={t('games.divePrompt')} theme="ocean" variant="questionOnly">
-          {prompt}
+          {isCountingRound ? t('games.diveCountOnly') : prompt}
         </GamePrompt>
 
-        <div className={`${shared.stage} ${shared.workBlockFollow} ${styles.oceanStage}`}>
-        <div className={styles.oceanBg} />
-        <span className={styles.sunEmoji}>☀️</span>
-        {['🫧', '🫧', '🫧', '🫧', '🫧', '🫧'].map((b, i) => (
-          <span
-            key={i}
-            className={styles.bubbleEmoji}
-            style={{ left: `${8 + i * 14}%`, animationDelay: `${i * 0.4}s` }}
+        {isCountingRound ? (
+          <div
+            className={styles.countZone}
+            role="group"
+            aria-label={t('games.diveCountObjects')}
           >
-            {b}
-          </span>
-        ))}
-        <span className={styles.fishEmoji} style={{ top: '35%', left: '8%' }}>
-          🐠
-        </span>
-        <span className={styles.fishEmoji} style={{ top: '45%', right: '10%' }}>
-          🐡
-        </span>
-        <span className={styles.plantEmoji} style={{ bottom: '18%', left: '6%' }}>
-          🌿
-        </span>
-        <span className={styles.plantEmoji} style={{ bottom: '16%', right: '8%' }}>
-          🪸
-        </span>
-        <div
-          className={`${styles.diver} ${diving ? styles.diverDown : ''}`}
-          style={{ left: `${diverX}%` }}
-          aria-hidden="true"
-        >
-          <span className={styles.diverEmoji}>🏊</span>
-        </div>
-        <span className={styles.sandEmoji}>🏖️</span>
+            <p className={styles.countZonePrompt}>{prompt}</p>
+            <div className={styles.countGrid}>
+              {countItems.map((emoji, index) => (
+                <span
+                  key={`${round}-${index}`}
+                  className={styles.countItem}
+                  aria-hidden="true"
+                >
+                  {emoji}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
-        <div className={styles.chestRow} role="group" aria-label={t('games.divePrompt')}>
-          {chests.map((chest, index) => (
-            <button
-              key={chest.id}
-              type="button"
-              className={styles.chestBtn}
-              onClick={() => handleChest(chest, index)}
-              disabled={locked}
-              aria-label={String(chest.value)}
+        <div className={`${shared.stage} ${shared.workBlockFollow} ${styles.oceanStage}`}>
+          <div className={styles.oceanBg} />
+          <span className={styles.sunEmoji}>☀️</span>
+          {['🫧', '🫧', '🫧', '🫧'].map((bubble, i) => (
+            <span
+              key={i}
+              className={styles.bubbleEmoji}
+              style={{ left: `${10 + i * 20}%`, animationDelay: `${i * 0.4}s` }}
             >
-              <span className={styles.chestEmoji}>🧰</span>
-              <span className={styles.gemEmoji}>💎</span>
-              <span className={styles.chestValue}>{chest.value}</span>
-            </button>
+              {bubble}
+            </span>
           ))}
+          <span className={styles.plantEmoji} style={{ bottom: '18%', left: '6%' }}>
+            🪸
+          </span>
+          <span className={styles.plantEmoji} style={{ bottom: '16%', right: '8%' }}>
+            🪸
+          </span>
+          <div
+            className={`${styles.diver} ${diving ? styles.diverDown : ''}`}
+            style={{ left: `${diverX}%` }}
+            aria-hidden="true"
+          >
+            <span className={styles.diverEmoji}>🏊</span>
+          </div>
+
+          <div
+            className={styles.chestRow}
+            role="group"
+            aria-label={isCountingRound ? t('games.diveCountObjects') : t('games.divePrompt')}
+          >
+            {chests.map((chest, index) => (
+              <button
+                key={chest.id}
+                type="button"
+                className={styles.chestBtn}
+                onClick={() => handleChest(chest, index)}
+                disabled={locked}
+                aria-label={String(chest.value)}
+              >
+                <span className={styles.chestEmoji}>🧰</span>
+                <span className={styles.chestValue}>{chest.value}</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );

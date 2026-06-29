@@ -24,6 +24,7 @@ import {
 } from '../lib/curriculum/practicePath';
 import { pickRandom, translations } from '../lib/i18n/translations';
 import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
+import { CORRECT_FEEDBACK_MS } from '../lib/feedbackTiming';
 import {
   getNextPracticeSteps,
   getRecommendedTopic,
@@ -321,7 +322,7 @@ export function Practice() {
           } else {
             advanceQuestion(true, true);
           }
-        }, 1200);
+        }, CORRECT_FEEDBACK_MS);
         return;
       }
 

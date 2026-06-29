@@ -3,6 +3,7 @@ import { BackButton } from '../components/BackButton';
 import { BigButton } from '../components/BigButton';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
+import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -98,7 +99,7 @@ export function FractionPizza({ onExit }: FractionPizzaProps) {
           } else {
             setRound((r) => r + 1);
           }
-        }, 1000);
+        }, CORRECT_ADVANCE_MS);
 
         return newCorrect;
       });
@@ -115,7 +116,7 @@ export function FractionPizza({ onExit }: FractionPizzaProps) {
       schedule(() => {
         setFeedback(null);
         setChecking(false);
-      }, 900);
+      }, WRONG_FEEDBACK_MS);
     }
   };
 
