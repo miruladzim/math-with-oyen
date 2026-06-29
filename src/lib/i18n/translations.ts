@@ -45,10 +45,8 @@ const en = {
     namePlaceholder: 'Type your name',
     greeting: 'Hi, {name}! 👋',
     namePrompt: "What's your name?",
-    startHere: '👋 Start here!',
-    startHereDesc: 'We picked the best topic for your level. Tap to begin your adventure!',
+    tipTitle: 'Did you know...',
     startPractice: 'Start Practice',
-    tryGame: 'Try a mini-game',
     parentGuide: 'Guide for parents & teachers',
     parentGuideText:
       'Sprout (K–1): Counting & Balloon Pop · Explorer (G2): Add/Subtract & Treasure Dive · Builder (G3): Multiplication & Rocket Launch · Champion (G4–5): Fractions & Crystal Cave',
@@ -691,10 +689,8 @@ const ms: TranslationTree = {
     namePlaceholder: 'Taip nama awak',
     greeting: 'Hai, {name}! 👋',
     namePrompt: 'Siapa nama awak?',
-    startHere: '👋 Mula di sini!',
-    startHereDesc: 'Kami pilih topik terbaik untuk tahap awak. Tekan untuk mula!',
+    tipTitle: 'Tahukah anda...',
     startPractice: 'Mula Latihan',
-    tryGame: 'Cuba mini permainan',
     parentGuide: 'Panduan ibu bapa & guru',
     parentGuideText:
       'Pemula (Tahun 1): Mengira & Letupkan Belon · Penjelajah (T2): Tambah/Tolak & Jom Menyelam · Pembina (T3): Pendaraban & Pelancaran Roket · Juara (T4–5): Pecahan & Gua Misteri',

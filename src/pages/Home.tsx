@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import { GradeLevelSlider } from '../components/GradeLevelSlider';
 import { KidHint } from '../components/KidHint';
 import { OyenAvatar } from '../components/OyenAvatar';
@@ -10,6 +10,8 @@ import { GRADE_GAME_PICK } from '../lib/gameConfig';
 import { getAllTopics, getTopicsForGrade } from '../lib/questions';
 import { getNextPracticeSteps, getTopicProgress } from '../lib/progress';
 import { getFinalExamProgress } from '../lib/exam/examProgress';
+import { getMathTips } from '../lib/mathTips';
+import { pickRandom } from '../lib/i18n/translations';
 import { isPreschool } from '../lib/preschoolConfig';
 import type { GradeLevel } from '../lib/types';
 import styles from './Home.module.css';
@@ -24,10 +26,11 @@ const GAME_EMOJI: Record<string, string> = {
 };
 
 export function Home() {
-  const { gradeLevel, setGradeLevel, progress, patchSettings } = useProgress();
+  const { gradeLevel, setGradeLevel, progress } = useProgress();
   const { t, language, topicLabel } = useLanguage();
-  const navigate = useNavigate();
   const [showLevelHint, setShowLevelHint] = useState(true);
+
+  const dailyTip = useMemo(() => pickRandom(getMathTips(language)), [language]);
 
   const topics = getAllTopics(language);
   const gradeTopics = getTopicsForGrade(gradeLevel, language);
@@ -44,12 +47,6 @@ export function Home() {
     (sum, topic) => sum + (getTopicProgress(progress, topic.id).stars ?? 0),
     0,
   );
-
-  const startRecommendedPractice = () => {
-    if (!primaryStep) return;
-    patchSettings({ onboardingDone: true });
-    navigate(`/practice?topic=${primaryStep.topicId}`);
-  };
 
   const selectGrade = (id: GradeLevel) => {
     setGradeLevel(id);
@@ -198,27 +195,12 @@ export function Home() {
       </div>
       </section>
 
-      {!progress.settings.onboardingDone && recommendedTopic ? (
-        <section className={styles.startHere} aria-labelledby="start-here-heading">
-          <h2 id="start-here-heading" className={styles.startHereTitle}>
-            {t('home.startHere')}
-          </h2>
-          <p className={styles.startHereDesc}>{t('home.startHereDesc')}</p>
-          <div className={styles.startHereActions}>
-            <button type="button" className={styles.startHereBtn} onClick={startRecommendedPractice}>
-              <span aria-hidden="true">{recommendedTopic.emoji}</span>
-              {t('home.startPractice')} — {topicLabel(recommendedTopic.id)}
-            </button>
-            <Link
-              to={`/games?play=${recommendedGameId}`}
-              className={styles.startHereLink}
-              onClick={() => patchSettings({ onboardingDone: true })}
-            >
-              {t('home.tryGame')} {GAME_EMOJI[recommendedGameId]}
-            </Link>
-          </div>
-        </section>
-      ) : null}
+      <section className={styles.mathTip} aria-labelledby="math-tip-heading">
+        <h2 id="math-tip-heading" className={styles.mathTipTitle}>
+          {t('home.tipTitle')}
+        </h2>
+        <p className={styles.mathTipBody}>{dailyTip}</p>
+      </section>
 
       {gradeLevel !== 'preschool' &&
       gradeStars >= 10 &&
