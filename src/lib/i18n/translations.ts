@@ -682,7 +682,7 @@ const ms: TranslationTree = {
     mascotBubble: 'Meow!',
     chooseLevel: 'Pilih tahap awak',
     chooseLevelHint:
-      'Meow~ Leret ke tahun sekolah awak dulu — lepas tu Latihan, Permainan, dan Makmal akan tunjuk matematik yang sesuai!',
+      'Meow! Pilih tahun sekolah anda dahulu, kemudian pilih samada Latihan, Permainan, Makmal atau mana mana yang anda suka!',
     slideLevelHint: 'Terus leret — tahap akan berulang',
     prevLevel: 'Tahap sebelum',
     nextLevel: 'Tahap seterusnya',

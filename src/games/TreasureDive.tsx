@@ -21,6 +21,7 @@ import { isPreschool, parseCountingVisual } from '../lib/preschoolConfig';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { speak } from '../lib/speech';
+import { DIVER_IMAGE } from '../lib/gameAssets';
 import shared from './shared.module.css';
 import styles from './TreasureDive.module.css';
 
@@ -44,6 +45,10 @@ function buildChests(correct: number, round: number): Chest[] {
     .map((value, i) => ({ id: `${round}-${i}`, value }));
 }
 
+function chestX(index: number) {
+  return 16 + index * 34;
+}
+
 export function TreasureDive({ onExit }: TreasureDiveProps) {
   const { gradeLevel, progress, setProgress } = useProgress();
   const { t, language } = useLanguage();
@@ -63,7 +68,9 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
   const [done, setDone] = useState(false);
   const [locked, setLocked] = useState(false);
   const [diverX, setDiverX] = useState(50);
+  const [diverFacingLeft, setDiverFacingLeft] = useState(false);
   const [diving, setDiving] = useState(false);
+  const [winChestId, setWinChestId] = useState<string | null>(null);
 
   const isCountingRound = countItems.length > 0;
 
@@ -88,8 +95,10 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       setChests(buildChests(correctAnswer, roundIndex));
       setFeedback(null);
       setLocked(false);
-      setDiving(false);
       setDiverX(50);
+      setDiverFacingLeft(false);
+      setDiving(false);
+      setWinChestId(null);
       speak(items.length > 0 ? `${promptLine} ${t('games.diveCountOnly')}` : q.prompt);
     },
     [consecutiveWrong, gradeLevel, language, t],
@@ -126,11 +135,15 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
   const handleChest = (chest: Chest, index: number) => {
     if (locked) return;
     setLocked(true);
-    setDiverX(16 + index * 34);
+
+    const targetX = chestX(index);
+    setDiverFacingLeft(targetX < diverX);
+    setDiverX(targetX);
     setDiving(true);
 
     if (chest.value === answer) {
       setConsecutiveWrong(0);
+      setWinChestId(chest.id);
       playSplash();
       setCorrect((prev) => {
         const newCorrect = prev + 1;
@@ -158,6 +171,7 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
         setLocked(false);
         setDiving(false);
         setDiverX(50);
+        setDiverFacingLeft(false);
         setFeedback(null);
       }, WRONG_FEEDBACK_MS);
     }
@@ -197,12 +211,14 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
     );
   }
 
+  const promptText = isCountingRound ? t('games.diveCountOnly') : prompt;
+
   const gameBody = (
     <div className={shared.shell} data-play-session>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={screenConfetti.burstKey} count={25} />
       <GameHUD
-        icon="🏊"
+        icon="🤿"
         label={t('games.treasureDive')}
         current={round + 1}
         total={rounds}
@@ -215,75 +231,92 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       {feedback && <GameFeedbackPopup feedback={feedback} onDismiss={() => setFeedback(null)} />}
 
       <div className={shared.workBlock}>
-        <GamePrompt icon="🏊" label={t('games.divePrompt')} theme="ocean" variant="questionOnly">
-          {isCountingRound ? t('games.diveCountOnly') : prompt}
+        <GamePrompt icon="🤿" label={t('games.divePrompt')} theme="ocean" variant="questionOnly">
+          {promptText}
         </GamePrompt>
 
-        {isCountingRound ? (
-          <div
-            className={styles.countZone}
-            role="group"
-            aria-label={t('games.diveCountObjects')}
-          >
-            <p className={styles.countZonePrompt}>{prompt}</p>
-            <div className={styles.countGrid}>
-              {countItems.map((emoji, index) => (
-                <span
-                  key={`${round}-${index}`}
-                  className={styles.countItem}
-                  aria-hidden="true"
-                >
-                  {emoji}
-                </span>
-              ))}
+        <div
+          className={`${shared.stage} ${shared.workBlockFollow} ${styles.oceanStage} ${isCountingRound ? styles.oceanStageCounting : ''}`}
+        >
+          <div className={styles.skyStrip} aria-hidden="true">
+            <span className={styles.sun}>☀️</span>
+            <div className={styles.waves}>
+              <span />
+              <span />
             </div>
           </div>
-        ) : null}
 
-        <div className={`${shared.stage} ${shared.workBlockFollow} ${styles.oceanStage}`}>
-          <div className={styles.oceanBg} />
-          <span className={styles.sunEmoji}>☀️</span>
-          {['🫧', '🫧', '🫧', '🫧'].map((bubble, i) => (
-            <span
-              key={i}
-              className={styles.bubbleEmoji}
-              style={{ left: `${10 + i * 20}%`, animationDelay: `${i * 0.4}s` }}
-            >
-              {bubble}
+          <div className={styles.waterBody}>
+            <div className={styles.oceanBg} aria-hidden="true" />
+            <div className={styles.caustics} aria-hidden="true" />
+            <div className={styles.lightRays} aria-hidden="true" />
+
+            {isCountingRound ? (
+              <div className={styles.countShelf} role="group" aria-label={t('games.diveCountObjects')}>
+                <p className={styles.countShelfLabel}>{prompt}</p>
+                <div className={styles.countGrid}>
+                  {countItems.map((emoji, index) => (
+                    <span key={`${round}-${index}`} className={styles.countGem} aria-hidden="true">
+                      {emoji}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {['🫧', '✨', '🫧', '✨'].map((bubble, i) => (
+              <span
+                key={i}
+                className={styles.bubble}
+                style={{ left: `${8 + i * 22}%`, animationDelay: `${i * 0.55}s` }}
+                aria-hidden="true"
+              >
+                {bubble}
+              </span>
+            ))}
+
+            <span className={styles.kelp} style={{ left: '4%' }} aria-hidden="true">
+              🌿
             </span>
-          ))}
-          <span className={styles.plantEmoji} style={{ bottom: '18%', left: '6%' }}>
-            🪸
-          </span>
-          <span className={styles.plantEmoji} style={{ bottom: '16%', right: '8%' }}>
-            🪸
-          </span>
-          <div
-            className={`${styles.diver} ${diving ? styles.diverDown : ''}`}
-            style={{ left: `${diverX}%` }}
-            aria-hidden="true"
-          >
-            <span className={styles.diverEmoji}>🏊</span>
+            <span className={styles.kelp} style={{ right: '5%' }} aria-hidden="true">
+              🪸
+            </span>
+
+            <div
+              className={`${styles.diver} ${diving ? styles.diverDown : ''} ${diverFacingLeft ? styles.diverFacingLeft : ''}`}
+              style={{ left: `${diverX}%` }}
+              aria-hidden="true"
+            >
+              <img src={DIVER_IMAGE} alt="" className={styles.diverImg} />
+            </div>
           </div>
 
-          <div
-            className={styles.chestRow}
-            role="group"
-            aria-label={isCountingRound ? t('games.diveCountObjects') : t('games.divePrompt')}
-          >
-            {chests.map((chest, index) => (
-              <button
-                key={chest.id}
-                type="button"
-                className={styles.chestBtn}
-                onClick={() => handleChest(chest, index)}
-                disabled={locked}
-                aria-label={String(chest.value)}
-              >
-                <span className={styles.chestEmoji}>🧰</span>
-                <span className={styles.chestValue}>{chest.value}</span>
-              </button>
-            ))}
+          <div className={styles.seabed}>
+            <div
+              className={styles.chestRow}
+              role="group"
+              aria-label={t('games.divePrompt')}
+            >
+              {chests.map((chest, index) => {
+                const won = winChestId === chest.id;
+                return (
+                  <button
+                    key={chest.id}
+                    type="button"
+                    className={`${styles.chestBtn} ${won ? styles.chestWon : ''}`}
+                    onClick={() => handleChest(chest, index)}
+                    disabled={locked}
+                    aria-label={String(chest.value)}
+                  >
+                    <span className={styles.chestLid} aria-hidden="true" />
+                    <span className={styles.chestBody} aria-hidden="true">
+                      <span className={styles.chestGem}>💎</span>
+                    </span>
+                    <span className={styles.chestValue}>{chest.value}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

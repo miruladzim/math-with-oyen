@@ -1,170 +1,415 @@
 .oceanStage {
-  border-color: #0284c7;
+  display: flex;
+  flex-direction: column;
+  border-color: #0ea5e9;
+  overflow: hidden;
+  background: #082f49;
 }
 
-.countZone {
-  margin-bottom: 0.75rem;
-  padding: 0.85rem 1rem 1rem;
-  border-radius: var(--radius-lg);
-  border: 3px solid #fbbf24;
-  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
-  box-shadow: 0 4px 0 #d97706, var(--shadow-sm);
+.skyStrip {
+  position: relative;
+  flex: 0 0 auto;
+  height: 18%;
+  min-height: 2.75rem;
+  background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 55%, #0ea5e9 100%);
+  overflow: hidden;
+}
+
+.sun {
+  position: absolute;
+  top: 12%;
+  right: 10%;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  filter: drop-shadow(0 0 12px rgba(253, 224, 71, 0.65));
+  z-index: 2;
+}
+
+.waves {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 42%;
+  overflow: hidden;
+}
+
+.waves span {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 140%;
+  border-radius: 45%;
+  background: rgba(14, 165, 233, 0.55);
+}
+
+.waves span:first-child {
+  bottom: 8%;
+  animation: waveDrift 5s ease-in-out infinite;
+}
+
+.waves span:last-child {
+  bottom: -18%;
+  background: rgba(2, 132, 199, 0.7);
+  animation: waveDrift 7s ease-in-out infinite reverse;
+}
+
+.waterBody {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.oceanBg,
+.caustics,
+.lightRays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.oceanBg {
+  background: linear-gradient(
+    180deg,
+    rgba(56, 189, 248, 0.35) 0%,
+    #0284c7 28%,
+    #0369a1 58%,
+    #0c4a6e 100%
+  );
+}
+
+.caustics {
+  opacity: 0.22;
+  background:
+    radial-gradient(ellipse 40% 30% at 20% 20%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(ellipse 35% 25% at 70% 35%, rgba(255, 255, 255, 0.35), transparent 55%),
+    radial-gradient(ellipse 30% 20% at 45% 60%, rgba(255, 255, 255, 0.25), transparent 50%);
+  animation: causticShift 8s ease-in-out infinite alternate;
+}
+
+.lightRays {
+  top: 0;
+  height: 55%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    transparent 100%
+  );
+}
+
+.countShelf {
+  position: relative;
+  z-index: 3;
+  margin: 0.45rem 0.55rem 0;
+  padding: 0.45rem 0.55rem 0.55rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   text-align: center;
 }
 
-.countZonePrompt {
-  margin: 0 0 0.65rem;
+.oceanStageCounting .waterBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.countShelfLabel {
+  margin: 0 0 0.4rem;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1rem;
-  color: var(--color-text);
+  font-size: clamp(0.78rem, 3.2vw, 0.92rem);
+  color: #f0f9ff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .countGrid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.45rem;
-  padding: 0.55rem 0.65rem;
-  border-radius: var(--radius-md);
-  background: rgba(2, 132, 199, 0.08);
-  border: 2px dashed #0284c7;
+  gap: 0.35rem;
 }
 
-.countItem {
+.countGem {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
-  font-size: 2rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  font-size: clamp(1.35rem, 4.5vw, 1.65rem);
   line-height: 1;
-  border-radius: var(--radius-sm);
-  background: #ffffff;
-  box-shadow: var(--shadow-sm);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-.oceanBg {
+.bubble {
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.25) 0%, transparent 30%),
-    linear-gradient(180deg, #38bdf8 0%, #0284c7 38%, #0c4a6e 72%, #082f49 100%);
-}
-
-.sunEmoji {
-  position: absolute;
-  top: 4%;
-  left: 10%;
-  font-size: 1.85rem;
+  bottom: 5%;
+  font-size: 0.95rem;
+  opacity: 0.7;
   pointer-events: none;
-  filter: drop-shadow(0 0 10px rgba(253, 224, 71, 0.5));
-  z-index: 1;
+  z-index: 2;
+  animation: bubbleRise 5s linear infinite;
 }
 
-.bubbleEmoji {
+.kelp {
   position: absolute;
-  bottom: -10%;
-  font-size: 1.15rem;
-  opacity: 0.75;
+  bottom: 8%;
+  font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+  opacity: 0.85;
   pointer-events: none;
-  animation: rise 4s linear infinite;
-  z-index: 1;
-}
-
-.plantEmoji {
-  position: absolute;
-  font-size: 1.55rem;
-  pointer-events: none;
-  z-index: 1;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
 }
 
 .diver {
   position: absolute;
-  top: 22%;
+  top: 28%;
   transform: translateX(-50%);
-  transition: left 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), top 0.4s ease;
   z-index: 4;
   pointer-events: none;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+  transition:
+    left 0.55s cubic-bezier(0.34, 1.2, 0.64, 1),
+    top 0.45s ease;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
 }
 
-.diverEmoji {
-  display: inline-block;
-  font-size: 2.65rem;
-  line-height: 1;
-  transform: rotate(-15deg);
-  transition: transform 0.4s ease;
+.oceanStageCounting .diver {
+  top: 50%;
+}
+
+.diverImg {
+  display: block;
+  width: clamp(3.25rem, 17vw, 4.75rem);
+  height: auto;
+  object-fit: contain;
+  transform: scaleX(1);
+  transition: transform 0.25s ease;
+}
+
+.diverFacingLeft .diverImg {
+  transform: scaleX(-1);
 }
 
 .diverDown {
-  top: 48%;
+  top: 56%;
 }
 
-.diverDown .diverEmoji {
-  transform: rotate(75deg);
+.oceanStageCounting .diverDown {
+  top: 68%;
 }
 
-.oceanStage .chestRow,
-.chestRow {
-  position: absolute;
-  bottom: 14%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 1.5rem);
+.seabed {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.65rem 0.55rem;
+  background: linear-gradient(180deg, #0c4a6e 0%, #c4a574 38%, #d4b896 62%, #b8956a 100%);
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
   z-index: 3;
+}
+
+.seabed::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 8px,
+    rgba(255, 255, 255, 0.08) 8px,
+    rgba(255, 255, 255, 0.08) 16px
+  );
+  pointer-events: none;
+}
+
+.chestRow {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.7rem;
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 auto;
 }
 
 .chestBtn {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  padding: 0.65rem 0.4rem;
-  border: 2px solid #fbbf24;
-  border-radius: var(--radius-md);
-  background: linear-gradient(180deg, #fffbeb, #ffffff);
+  gap: 0.2rem;
+  padding: 0.35rem 0.25rem 0.45rem;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: 0 4px 0 #d97706, var(--shadow-sm);
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
 
 .chestBtn:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 6px 0 #d97706, var(--shadow-md);
+  transform: translateY(-4px) scale(1.04);
+  filter: drop-shadow(0 6px 12px rgba(251, 191, 36, 0.45));
 }
 
 .chestBtn:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: 0 2px 0 #d97706;
+  transform: translateY(-1px) scale(0.98);
 }
 
-.chestEmoji {
-  font-size: 1.45rem;
+.chestBtn:disabled {
+  cursor: default;
+}
+
+.chestLid {
+  display: block;
+  width: 2.6rem;
+  height: 0.85rem;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, #fcd34d, #d97706);
+  border: 2px solid #92400e;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.chestBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 1.65rem;
+  margin-top: -2px;
+  border-radius: 4px 4px 8px 8px;
+  background: linear-gradient(180deg, #b45309, #78350f);
+  border: 2px solid #92400e;
+  border-top: none;
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.25),
+    0 3px 0 #713f12;
+}
+
+.chestGem {
+  font-size: 0.85rem;
   line-height: 1;
+  filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.8));
 }
 
 .chestValue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid #38bdf8;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.2rem;
-  color: var(--color-primary);
+  font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+  color: #0369a1;
+  box-shadow: 0 2px 0 #0284c7;
 }
 
-@keyframes rise {
+.chestWon .chestBody {
+  animation: chestPop 0.45s ease-out;
+}
+
+.chestWon .chestGem {
+  animation: gemSparkle 0.6s ease-out;
+}
+
+.chestWon .chestValue {
+  background: #ecfdf5;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+@keyframes waveDrift {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(3%) rotate(1deg);
+  }
+}
+
+@keyframes causticShift {
+  from {
+    transform: translateX(-2%) scale(1);
+  }
   to {
-    transform: translateY(-380px);
+    transform: translateX(2%) scale(1.03);
+  }
+}
+
+@keyframes bubbleRise {
+  from {
+    transform: translateY(0);
+    opacity: 0.75;
+  }
+  to {
+    transform: translateY(-120px);
     opacity: 0;
   }
 }
 
+@keyframes chestPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes gemSparkle {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 1));
+  }
+}
+
+@media (max-height: 820px) {
+  .skyStrip {
+    min-height: 2.25rem;
+    height: 16%;
+  }
+
+  .countGem {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.25rem;
+  }
+
+  .chestLid {
+    width: 2.25rem;
+    height: 0.7rem;
+  }
+
+  .chestBody {
+    width: 2.6rem;
+    height: 1.4rem;
+  }
+
+  .diverImg {
+    width: clamp(2.75rem, 14vw, 3.75rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bubbleEmoji,
+  .waves span,
+  .caustics,
+  .bubble,
   .diver,
-  .diverEmoji {
+  .diverImg,
+  .chestWon .chestBody,
+  .chestWon .chestGem {
     animation: none;
     transition: none;
   }

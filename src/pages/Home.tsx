@@ -116,7 +116,7 @@ export function Home() {
         </Link>
 
         <Link
-          to={`/games?play=${recommendedGameId}`}
+          to="/games"
           className={`${styles.tile} ${styles.tileWide} ${styles.gamesTile}`}
         >
           <div className={`${styles.tileDecor} ${styles.gamesDecor}`} aria-hidden="true">
