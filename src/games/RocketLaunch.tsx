@@ -216,8 +216,7 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
     [correct, sessionTotal],
   );
   const encouragementKey = getVictoryEncouragement(correct, sessionTotal);
-  const journeyProgress = correct / rounds;
-  const journeyPct = journeyProgress * 100;
+  const journeyProgress = rounds > 0 ? Math.min(1, correct / rounds) : 0;
 
   const restart = () => {
     clearAll();
@@ -266,10 +265,12 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
 
       {feedback && <GameFeedbackPopup feedback={feedback} onDismiss={() => setFeedback(null)} />}
 
-      <div className={styles.stageWrap}>
+      <div
+        className={styles.stageWrap}
+        style={{ '--journey': journeyProgress } as React.CSSProperties}
+      >
         <div
           className={`${shared.stage} ${styles.spaceStage} ${landed ? styles.spaceStageLanded : ''} ${finishing ? styles.spaceStageFinishing : ''}`}
-          style={{ '--journey': journeyProgress } as React.CSSProperties}
           aria-label={t('games.rocketJourney')}
         >
           <div className={styles.spaceBg} />
@@ -340,8 +341,8 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
         <div className={styles.journeyGauge} aria-hidden="true">
           <span className={styles.gaugeIcon}>🌙</span>
           <div className={styles.gaugeTrack}>
-            <div className={styles.gaugeFill} style={{ height: `${journeyPct}%` }} />
-            <span className={styles.gaugeRocket} style={{ bottom: `${journeyPct}%` }} aria-hidden="true">
+            <div className={styles.gaugeFill} />
+            <span className={styles.gaugeRocket} aria-hidden="true">
               🚀
             </span>
           </div>

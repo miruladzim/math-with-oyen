@@ -20,13 +20,13 @@ export function Layout({ children }: LayoutProps) {
   const displayName = progress.studentName || t('appName');
 
   const NAV = [
-    { to: '/', end: true, icon: '🏠', label: t('nav.home') },
-    { to: '/practice', icon: '📝', label: t('nav.practice') },
-    { to: '/games', icon: '🎮', label: t('nav.games') },
-    { to: '/lab', icon: '🧪', label: t('nav.lab') },
-    { to: '/exam', icon: '🎓', label: t('nav.exam') },
-    { to: '/progress', icon: '⭐', label: t('nav.stars') },
-    { to: '/teacher', icon: '👩‍🏫', label: t('nav.teacher') },
+    { to: '/', end: true, label: t('nav.home') },
+    { to: '/practice', label: t('nav.practice') },
+    { to: '/games', label: t('nav.games') },
+    { to: '/lab', label: t('nav.lab') },
+    { to: '/exam', label: t('nav.exam') },
+    { to: '/progress', label: t('nav.stars') },
+    { to: '/teacher', label: t('nav.teacher') },
   ];
 
   useEffect(() => {
@@ -67,17 +67,55 @@ export function Layout({ children }: LayoutProps) {
       <SceneBackground />
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <NavLink to="/" className={styles.logo} aria-label={t('nav.homeAria')}>
-            <span className={styles.logoMark} aria-hidden="true">
-              <OyenAvatar size="sm" />
-            </span>
-            <span className={styles.logoCopy}>
-              <span className={styles.logoTitle}>{displayName}</span>
-              {progress.studentName ? (
-                <span className={styles.logoSubtitle}>{t('appName')}</span>
-              ) : null}
-            </span>
-          </NavLink>
+          <div className={styles.topBar}>
+            <NavLink to="/" className={styles.logo} aria-label={t('nav.homeAria')}>
+              <span className={styles.logoMark} aria-hidden="true">
+                <OyenAvatar size="sm" />
+              </span>
+              <span className={styles.logoCopy}>
+                <span className={styles.logoTitle}>{displayName}</span>
+                {progress.studentName ? (
+                  <span className={styles.logoSubtitle}>{t('appName')}</span>
+                ) : null}
+              </span>
+            </NavLink>
+
+            <div className={styles.controls} aria-label={t('toggles.groupAria')}>
+              <LanguageToggle compact embedded />
+              <span className={styles.controlsDivider} aria-hidden="true" />
+              <button
+                type="button"
+                className={`${styles.controlBtn} ${progress.settings.darkMode ? styles.controlBtnActive : styles.controlBtnMuted}`}
+                onClick={toggleDarkMode}
+                aria-label={progress.settings.darkMode ? t('toggles.darkOff') : t('toggles.darkOn')}
+                aria-pressed={progress.settings.darkMode}
+              >
+                {progress.settings.darkMode ? '☀️' : '🌙'}
+              </button>
+              <button
+                type="button"
+                className={`${styles.controlBtn} ${progress.settings.speechEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
+                onClick={toggleSpeech}
+                aria-label={
+                  progress.settings.speechEnabled ? t('toggles.speechOn') : t('toggles.speechOff')
+                }
+                aria-pressed={progress.settings.speechEnabled}
+              >
+                🔊
+              </button>
+              <button
+                type="button"
+                className={`${styles.controlBtn} ${progress.settings.soundEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
+                onClick={toggleSound}
+                aria-label={
+                  progress.settings.soundEnabled ? t('toggles.soundOn') : t('toggles.soundOff')
+                }
+                aria-pressed={progress.settings.soundEnabled}
+              >
+                🔔
+              </button>
+            </div>
+          </div>
 
           <nav className={styles.nav} aria-label="Main navigation">
             {NAV.map((item) => (
@@ -85,55 +123,14 @@ export function Layout({ children }: LayoutProps) {
                 key={item.to}
                 to={item.to}
                 end={item.end}
-                title={item.label}
-                aria-label={item.label}
                 className={({ isActive }) =>
                   `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
                 }
               >
-                <span className={styles.navIcon} aria-hidden="true">
-                  {item.icon}
-                </span>
-                <span className={styles.navLabel}>{item.label}</span>
+                {item.label}
               </NavLink>
             ))}
           </nav>
-
-          <div className={styles.controls} aria-label={t('toggles.groupAria')}>
-            <LanguageToggle compact embedded />
-            <span className={styles.controlsDivider} aria-hidden="true" />
-            <button
-              type="button"
-              className={`${styles.controlBtn} ${progress.settings.darkMode ? styles.controlBtnActive : styles.controlBtnMuted}`}
-              onClick={toggleDarkMode}
-              aria-label={progress.settings.darkMode ? t('toggles.darkOff') : t('toggles.darkOn')}
-              aria-pressed={progress.settings.darkMode}
-            >
-              {progress.settings.darkMode ? '☀️' : '🌙'}
-            </button>
-            <button
-              type="button"
-              className={`${styles.controlBtn} ${progress.settings.speechEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
-              onClick={toggleSpeech}
-              aria-label={
-                progress.settings.speechEnabled ? t('toggles.speechOn') : t('toggles.speechOff')
-              }
-              aria-pressed={progress.settings.speechEnabled}
-            >
-              🔊
-            </button>
-            <button
-              type="button"
-              className={`${styles.controlBtn} ${progress.settings.soundEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
-              onClick={toggleSound}
-              aria-label={
-                progress.settings.soundEnabled ? t('toggles.soundOn') : t('toggles.soundOff')
-              }
-              aria-pressed={progress.settings.soundEnabled}
-            >
-              🔔
-            </button>
-          </div>
         </div>
       </header>
 
