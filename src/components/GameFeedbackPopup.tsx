@@ -28,7 +28,7 @@ const DEFAULT_DURATION = {
 } as const;
 
 export function GameFeedbackPopup({ feedback, onDismiss, durationMs }: GameFeedbackPopupProps) {
-  const icon = feedback.type === 'success' ? '🎉' : '😿';
+  const icon = feedback.type === 'success' ? '🎉' : '💭';
   const showMs = durationMs ?? DEFAULT_DURATION[feedback.type];
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function GameFeedbackPopup({ feedback, onDismiss, durationMs }: GameFeedb
   return (
     <div
       key={feedback.pulse}
-      className={`${styles.overlay} ${feedback.type === 'success' ? styles.overlaySuccess : ''}`}
+      className={`${styles.overlay} ${feedback.type === 'success' ? styles.overlaySuccess : styles.overlayError}`}
       style={{ ['--show-ms' as string]: `${showMs}ms` }}
       role="alertdialog"
       aria-live="assertive"

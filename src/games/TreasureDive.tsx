@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackButton } from '../components/BackButton';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
-import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
+import { CORRECT_ADVANCE_MS, WRONG_UNLOCK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -21,7 +21,6 @@ import { isPreschool, parseCountingVisual } from '../lib/preschoolConfig';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { speak } from '../lib/speech';
-import { DIVER_IMAGE } from '../lib/gameAssets';
 import shared from './shared.module.css';
 import styles from './TreasureDive.module.css';
 
@@ -45,10 +44,6 @@ function buildChests(correct: number, round: number): Chest[] {
     .map((value, i) => ({ id: `${round}-${i}`, value }));
 }
 
-function chestX(index: number) {
-  return 16 + index * 34;
-}
-
 export function TreasureDive({ onExit }: TreasureDiveProps) {
   const { gradeLevel, progress, setProgress } = useProgress();
   const { t, language } = useLanguage();
@@ -67,9 +62,6 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
   const screenConfetti = useConfettiBurst();
   const [done, setDone] = useState(false);
   const [locked, setLocked] = useState(false);
-  const [diverX, setDiverX] = useState(50);
-  const [diverFacingLeft, setDiverFacingLeft] = useState(false);
-  const [diving, setDiving] = useState(false);
   const [winChestId, setWinChestId] = useState<string | null>(null);
 
   const isCountingRound = countItems.length > 0;
@@ -95,9 +87,6 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       setChests(buildChests(correctAnswer, roundIndex));
       setFeedback(null);
       setLocked(false);
-      setDiverX(50);
-      setDiverFacingLeft(false);
-      setDiving(false);
       setWinChestId(null);
       speak(items.length > 0 ? `${promptLine} ${t('games.diveCountOnly')}` : q.prompt);
     },
@@ -132,14 +121,9 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
     [gradeLevel, progress, setProgress],
   );
 
-  const handleChest = (chest: Chest, index: number) => {
+  const handleChest = (chest: Chest) => {
     if (locked) return;
     setLocked(true);
-
-    const targetX = chestX(index);
-    setDiverFacingLeft(targetX < diverX);
-    setDiverX(targetX);
-    setDiving(true);
 
     if (chest.value === answer) {
       setConsecutiveWrong(0);
@@ -169,11 +153,8 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       playIncorrect();
       schedule(() => {
         setLocked(false);
-        setDiving(false);
-        setDiverX(50);
-        setDiverFacingLeft(false);
         setFeedback(null);
-      }, WRONG_FEEDBACK_MS);
+      }, WRONG_UNLOCK_MS);
     }
   };
 
@@ -281,14 +262,6 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
             <span className={styles.kelp} style={{ right: '5%' }} aria-hidden="true">
               🪸
             </span>
-
-            <div
-              className={`${styles.diver} ${diving ? styles.diverDown : ''} ${diverFacingLeft ? styles.diverFacingLeft : ''}`}
-              style={{ left: `${diverX}%` }}
-              aria-hidden="true"
-            >
-              <img src={DIVER_IMAGE} alt="" className={styles.diverImg} />
-            </div>
           </div>
 
           <div className={styles.seabed}>
@@ -297,14 +270,14 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
               role="group"
               aria-label={t('games.divePrompt')}
             >
-              {chests.map((chest, index) => {
+              {chests.map((chest) => {
                 const won = winChestId === chest.id;
                 return (
                   <button
                     key={chest.id}
                     type="button"
                     className={`${styles.chestBtn} ${won ? styles.chestWon : ''}`}
-                    onClick={() => handleChest(chest, index)}
+                    onClick={() => handleChest(chest)}
                     disabled={locked}
                     aria-label={String(chest.value)}
                   >

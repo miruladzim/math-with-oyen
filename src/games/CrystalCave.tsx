@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackButton } from '../components/BackButton';
 import { Confetti } from '../components/Confetti';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
-import { CORRECT_ADVANCE_MS, WRONG_FEEDBACK_MS } from '../lib/feedbackTiming';
+import { CORRECT_ADVANCE_MS, WRONG_UNLOCK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -149,7 +149,7 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
         setLocked(false);
         setShatterId(null);
         setFeedback(null);
-      }, WRONG_FEEDBACK_MS);
+      }, WRONG_UNLOCK_MS);
     }
   };
 

@@ -3,6 +3,7 @@ import { BackButton } from '../components/BackButton';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
 import { createGameFeedback, GameFeedbackPopup, type GameFeedback } from '../components/GameFeedbackPopup';
+import { WRONG_UNLOCK_MS } from '../lib/feedbackTiming';
 import { GameHUD } from '../components/GameHUD';
 import { GameCoach } from '../components/GameCoach';
 import { GamePrompt } from '../components/GamePrompt';
@@ -158,7 +159,7 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
             setFlipped([]);
             setLock(false);
             setFeedback(null);
-          }, preschool ? 1100 : 900);
+          }, WRONG_UNLOCK_MS);
         }
       }
     },

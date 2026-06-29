@@ -10,11 +10,12 @@
   pointer-events: none;
   animation:
     overlayIn 0.2s ease-out,
-    overlayOut 0.22s ease-in calc(var(--show-ms, 900ms) - 0.22s) forwards;
+    overlayOut 0.22s ease-in calc(var(--show-ms, 2000ms) - 0.22s) forwards;
 }
 
 /* Keep confetti and stage effects visible on correct answers */
-.overlaySuccess {
+.overlaySuccess,
+.overlayError {
   background: transparent;
 }
 
@@ -29,19 +30,26 @@
   z-index: 10051;
   animation:
     cardPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    overlayOut 0.22s ease-in calc(var(--show-ms, 900ms) - 0.22s) forwards;
+    overlayOut 0.22s ease-in calc(var(--show-ms, 2000ms) - 0.22s) forwards;
+}
+
+.error {
+  background: linear-gradient(180deg, var(--color-error-soft), var(--color-error-soft-2));
+  border-color: var(--color-error-border);
+  color: var(--color-error-text);
+  box-shadow:
+    0 16px 40px rgba(15, 23, 42, 0.28),
+    0 0 0 4px rgba(239, 68, 68, 0.12);
+  animation:
+    cardPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    cardWiggle 0.45s ease-in-out 0.1s,
+    overlayOut 0.22s ease-in calc(var(--show-ms, 2000ms) - 0.22s) forwards;
 }
 
 .success {
   background: var(--color-success-soft);
   border-color: var(--color-success-border);
   color: var(--color-success-text);
-}
-
-.error {
-  background: var(--color-error-soft);
-  border-color: var(--color-error-border);
-  color: var(--color-error-text);
 }
 
 .icon {
@@ -79,6 +87,19 @@
   }
 }
 
+@keyframes cardWiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
 @keyframes overlayOut {
   to {
     opacity: 0;
@@ -86,7 +107,8 @@
 }
 
 html.reduce-motion .overlay,
-html.reduce-motion .card {
+html.reduce-motion .card,
+html.reduce-motion .error {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
 }
