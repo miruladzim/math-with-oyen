@@ -14,7 +14,7 @@ export function PageTransition() {
 
   return (
     <FadeView viewKey={locationKey} scrollTopOnEnter>
-      <Routes location={location}>
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/games" element={<Games />} />

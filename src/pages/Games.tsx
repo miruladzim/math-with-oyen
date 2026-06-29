@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BalloonPop } from '../games/BalloonPop';
 import { CrystalCave } from '../games/CrystalCave';
@@ -19,13 +19,21 @@ type GameId = 'balloon' | 'match' | 'pizza' | 'rocket' | 'dive' | 'crystal' | nu
 
 const VALID_GAMES: GameId[] = ['balloon', 'match', 'pizza', 'rocket', 'dive', 'crystal'];
 
+function readLaunchGame(allowedGames: readonly string[]): GameId {
+  const play = new URLSearchParams(window.location.search).get('play');
+  if (play && VALID_GAMES.includes(play as GameId) && allowedGames.includes(play)) {
+    return play as GameId;
+  }
+  return null;
+}
+
 export function Games() {
   const { t, language } = useLanguage();
   const { gradeLevel } = useProgress();
   const preschoolMode = isPreschool(gradeLevel);
-  const allowedGames = getGamesForGrade(gradeLevel);
+  const allowedGames = useMemo(() => getGamesForGrade(gradeLevel), [gradeLevel]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeGame, setActiveGame] = useState<GameId>(null);
+  const [activeGame, setActiveGame] = useState<GameId>(() => readLaunchGame(allowedGames));
 
   useEffect(() => {
     const play = searchParams.get('play');
