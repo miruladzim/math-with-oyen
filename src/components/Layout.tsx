@@ -6,6 +6,7 @@ import { applyDarkMode } from '../lib/theme';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
 import { LanguageToggle } from './LanguageToggle';
+import { OyenAvatar } from './OyenAvatar';
 import { SceneBackground } from './SceneBackground';
 import styles from './Layout.module.css';
 
@@ -68,7 +69,7 @@ export function Layout({ children }: LayoutProps) {
         <div className={styles.headerInner}>
           <NavLink to="/" className={styles.logo} aria-label={t('nav.homeAria')}>
             <span className={styles.logoMark} aria-hidden="true">
-              🐱
+              <OyenAvatar size="sm" />
             </span>
             <span className={styles.logoCopy}>
               <span className={styles.logoTitle}>{displayName}</span>

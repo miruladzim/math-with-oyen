@@ -13,9 +13,7 @@
   gap: 0.5rem;
 }
 
-.emoji {
-  font-size: 5.5rem;
-  line-height: 1;
+.avatar {
   filter: drop-shadow(0 8px 16px rgba(249, 115, 22, 0.25));
 }
 
@@ -43,7 +41,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .emoji {
+  .avatar {
     animation: mascotBob 2.5s ease-in-out infinite;
   }
 
@@ -74,7 +72,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .emoji,
+  .avatar,
   .bubble {
     animation: none;
   }

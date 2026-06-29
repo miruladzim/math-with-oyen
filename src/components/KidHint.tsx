@@ -1,4 +1,5 @@
 import { useLanguage } from '../context/LanguageContext';
+import { OyenAvatar, type OyenMood } from './OyenAvatar';
 import styles from './KidHint.module.css';
 
 type HintVariant = 'tip' | 'howTo' | 'help' | 'encourage';
@@ -20,11 +21,11 @@ const VARIANT_MOOD: Record<HintVariant, HintMood> = {
   encourage: 'happy',
 };
 
-const MOOD_EMOJI: Record<HintMood, string> = {
-  idle: '🐱',
-  happy: '😺',
-  encourage: '🐱',
-  think: '🐱',
+const MOOD_AVATAR: Record<HintMood, OyenMood> = {
+  idle: 'default',
+  happy: 'happy',
+  encourage: 'default',
+  think: 'default',
 };
 
 const VARIANT_TITLE_KEY: Record<HintVariant, string> = {
@@ -44,7 +45,7 @@ export function KidHint({
 }: KidHintProps) {
   const { t } = useLanguage();
   const resolvedMood = mood ?? VARIANT_MOOD[variant];
-  const catEmoji = MOOD_EMOJI[resolvedMood];
+  const avatarMood = MOOD_AVATAR[resolvedMood];
   const mascotName = t('hints.mascotName');
   const displayTitle =
     title ??
@@ -60,7 +61,7 @@ export function KidHint({
       aria-label={`${mascotName}: ${message}`}
     >
       <div className={styles.catWrap} aria-hidden="true">
-        <span className={styles.cat}>{catEmoji}</span>
+        <OyenAvatar mood={avatarMood} size={compact ? 'sm' : 'md'} className={styles.cat} />
         {resolvedMood === 'think' ? <span className={styles.thought}>💭</span> : null}
       </div>
       <div className={styles.bubble}>

@@ -19,12 +19,7 @@
 
 .cat {
   display: block;
-  font-size: 2.1rem;
   filter: drop-shadow(0 4px 8px rgba(249, 115, 22, 0.22));
-}
-
-.compact .cat {
-  font-size: 1.75rem;
 }
 
 .thought {

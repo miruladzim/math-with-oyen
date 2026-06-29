@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { GradeLevelSlider } from '../components/GradeLevelSlider';
 import { KidHint } from '../components/KidHint';
+import { OyenAvatar } from '../components/OyenAvatar';
 import { StudentNameField } from '../components/StudentNameField';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
@@ -58,9 +59,7 @@ export function Home() {
   return (
     <div className={styles.page}>
       <header className={styles.hero}>
-        <span className={styles.heroIcon} aria-hidden="true">
-          🐱
-        </span>
+        <OyenAvatar size="lg" className={styles.heroIcon} />
         <div className={styles.heroBody}>
           <h1 className={styles.heroTitle}>{t('appName')}</h1>
           <p className={styles.heroTagline}>{t('appTagline')}</p>

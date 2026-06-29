@@ -33,7 +33,7 @@ const en = {
   },
   home: {
     mascotMessage: "Pick your level and let's play!",
-    mascotBubble: 'Meow! 🐱',
+    mascotBubble: 'Meow!',
     chooseLevel: 'Choose your level',
     chooseLevelHint:
       'Meow! Slide to your school year first — then Practice, Games, and Math Lab will show math that fits you!',
@@ -679,7 +679,7 @@ const ms: TranslationTree = {
   },
   home: {
     mascotMessage: 'Pilih tahap awak, jom bermain!',
-    mascotBubble: 'Meow! 🐱',
+    mascotBubble: 'Meow!',
     chooseLevel: 'Pilih tahap awak',
     chooseLevelHint:
       'Meow~ Leret ke tahun sekolah awak dulu — lepas tu Latihan, Permainan, dan Makmal akan tunjuk matematik yang sesuai!',
