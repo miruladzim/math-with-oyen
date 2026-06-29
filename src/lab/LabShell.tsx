@@ -71,7 +71,7 @@ export function LabShell({
   const promptTheme = THEME_MAP[theme] ?? 'arcade';
 
   return (
-    <div className={shared.shell}>
+    <div className={shared.shell} data-play-session>
       <BackButton label={t('lab.backLab')} onClick={onExit} />
       <Confetti burstKey={confettiKey} count={30} />
       <GameHUD

@@ -39,3 +39,16 @@
   transform: translateY(1px);
   box-shadow: 0 1px 0 var(--color-primary-shadow);
 }
+
+@media (max-height: 820px) {
+  .coach {
+    padding: 0.35rem 0.45rem;
+    gap: 0.3rem;
+  }
+
+  .toggle {
+    min-height: 2.25rem;
+    padding: 0.3rem 0.65rem;
+    font-size: 0.68rem;
+  }
+}

@@ -116,6 +116,20 @@
   }
 }
 
+@media (max-height: 820px) {
+  .hud {
+    padding: 0.5rem 0.7rem;
+  }
+
+  .topRow {
+    margin-bottom: 0.35rem;
+  }
+
+  .label {
+    font-size: 0.76rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .combo,
   .progressFill {

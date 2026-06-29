@@ -488,21 +488,26 @@
 .levelSection {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  padding: 0.65rem 0.7rem 0.55rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-primary-border);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0;
+}
+
+.menuSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
 }
 
 .sectionLabel {
   margin: 0;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--color-text-muted);
+  text-align: center;
 }
 
 @media (max-width: 640px) {
@@ -544,49 +549,52 @@
 }
 
 .startHere {
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-start-here-border);
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-start-here-border);
   background: var(--color-start-here-bg);
   box-shadow: var(--shadow-sm);
 }
 
 .startHereTitle {
-  font-size: 1.1rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.2rem;
 }
 
 .startHereDesc {
   color: var(--color-text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
 }
 
 .startHereActions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .startHereBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: var(--touch-min);
-  padding: 0.65rem 1rem;
-  border-radius: var(--radius-md);
+  gap: 0.4rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
   background: var(--color-primary);
   color: var(--color-on-primary);
   font-weight: 700;
+  font-size: 0.82rem;
   box-shadow: var(--shadow-sm);
 }
 
 .startHereLink {
   text-align: center;
   font-weight: 700;
-  padding: 0.5rem;
+  font-size: 0.78rem;
+  padding: 0.25rem;
 }
 
 .nextSteps {

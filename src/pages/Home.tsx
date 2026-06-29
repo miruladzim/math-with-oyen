@@ -85,38 +85,7 @@ export function Home() {
         <GradeLevelSlider value={gradeLevel} onChange={selectGrade} />
       </section>
 
-      {!progress.settings.onboardingDone && recommendedTopic ? (
-        <section className={styles.startHere} aria-labelledby="start-here-heading">
-          <h2 id="start-here-heading" className={styles.startHereTitle}>
-            {t('home.startHere')}
-          </h2>
-          <p className={styles.startHereDesc}>{t('home.startHereDesc')}</p>
-          <div className={styles.startHereActions}>
-            <button type="button" className={styles.startHereBtn} onClick={startRecommendedPractice}>
-              <span aria-hidden="true">{recommendedTopic.emoji}</span>
-              {t('home.startPractice')} — {topicLabel(recommendedTopic.id)}
-            </button>
-            <Link
-              to={`/games?play=${recommendedGameId}`}
-              className={styles.startHereLink}
-              onClick={() => patchSettings({ onboardingDone: true })}
-            >
-              {t('home.tryGame')} {GAME_EMOJI[recommendedGameId]}
-            </Link>
-          </div>
-        </section>
-      ) : null}
-
-      {gradeLevel !== 'preschool' &&
-      gradeStars >= 10 &&
-      !getFinalExamProgress(progress, gradeLevel)?.passed ? (
-        <section className={styles.examNudge}>
-          <Link to="/exam" className={styles.examNudgeLink}>
-            {t('home.examReady')} 🎓
-          </Link>
-        </section>
-      ) : null}
-
+      <section className={styles.menuSection} aria-label={t('nav.home')}>
       <div className={styles.tileGrid}>
         <Link
           to="/practice"
@@ -227,6 +196,39 @@ export function Home() {
           </div>
         </Link>
       </div>
+      </section>
+
+      {!progress.settings.onboardingDone && recommendedTopic ? (
+        <section className={styles.startHere} aria-labelledby="start-here-heading">
+          <h2 id="start-here-heading" className={styles.startHereTitle}>
+            {t('home.startHere')}
+          </h2>
+          <p className={styles.startHereDesc}>{t('home.startHereDesc')}</p>
+          <div className={styles.startHereActions}>
+            <button type="button" className={styles.startHereBtn} onClick={startRecommendedPractice}>
+              <span aria-hidden="true">{recommendedTopic.emoji}</span>
+              {t('home.startPractice')} — {topicLabel(recommendedTopic.id)}
+            </button>
+            <Link
+              to={`/games?play=${recommendedGameId}`}
+              className={styles.startHereLink}
+              onClick={() => patchSettings({ onboardingDone: true })}
+            >
+              {t('home.tryGame')} {GAME_EMOJI[recommendedGameId]}
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
+      {gradeLevel !== 'preschool' &&
+      gradeStars >= 10 &&
+      !getFinalExamProgress(progress, gradeLevel)?.passed ? (
+        <section className={styles.examNudge}>
+          <Link to="/exam" className={styles.examNudgeLink}>
+            {t('home.examReady')} 🎓
+          </Link>
+        </section>
+      ) : null}
 
       <details className={styles.parentGuide}>
         <summary>{t('home.parentGuide')}</summary>

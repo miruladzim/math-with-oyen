@@ -173,6 +173,31 @@
     0 0 0 3px rgba(99, 102, 241, 0.18);
 }
 
+@media (max-height: 820px) {
+  .card {
+    padding: 0.85rem 0.9rem 1rem;
+  }
+
+  .progressDots {
+    margin-bottom: 0.55rem;
+  }
+
+  .promptBox {
+    padding: 0.65rem 0.7rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .prompt {
+    font-size: clamp(1rem, 4.5vw, 1.35rem);
+  }
+
+  .choice {
+    min-height: 2.75rem;
+    padding: 0.55rem 0.5rem;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .progressFill,
   .dot,

@@ -122,6 +122,12 @@
   gap: var(--page-gap);
 }
 
+.gameArea:has([data-play-session]) {
+  flex: 1;
+  min-height: 0;
+  gap: var(--play-gap, 0.65rem);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gameCard:hover {
     transform: none;

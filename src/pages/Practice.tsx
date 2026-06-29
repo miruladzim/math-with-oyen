@@ -695,7 +695,7 @@ export function Practice() {
     );
   } else {
     const quizContent = (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${styles.quizPage}`} data-play-session>
       <BackButton label={t('practice.backTopics')} onClick={reset} />
 
       {topicId ? (
@@ -716,7 +716,7 @@ export function Practice() {
       {feedback && <FeedbackBanner type={feedback.type} message={feedback.message} />}
 
       <div className={styles.quizShell}>
-        <KidHint mood={coachMood} variant={coachVariant} message={coachMessage} live="polite" />
+        <KidHint mood={coachMood} variant={coachVariant} message={coachMessage} live="polite" compact />
 
         {labSuggestion && awaitingAction ? (
           <Link to={`/lab?mode=${labSuggestion}`} className={styles.labLink}>

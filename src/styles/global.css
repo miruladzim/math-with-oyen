@@ -1,6 +1,7 @@
 @import './theme-tokens.css';
 @import './transitions.css';
 @import './page-shell.css';
+@import './play-session.css';
 @import './touch.css';
 
 *,
@@ -31,6 +32,8 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 h1,

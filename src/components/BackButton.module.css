@@ -30,3 +30,12 @@
     border-color: var(--color-primary-border);
   }
 }
+
+@media (max-height: 820px) {
+  .backBtn {
+    min-height: 2.25rem;
+    min-width: auto;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.78rem;
+  }
+}

@@ -251,7 +251,7 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
   }
 
   const gameBody = (
-    <div className={`${shared.shell} ${isPreschool(gradeLevel) ? styles.preschoolShell : ''}`}>
+    <div className={`${shared.shell} ${isPreschool(gradeLevel) ? styles.preschoolShell : ''}`} data-play-session>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={screenConfetti.burstKey} count={45} />
       <GameHUD

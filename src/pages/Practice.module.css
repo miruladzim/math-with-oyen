@@ -286,6 +286,41 @@
   gap: 0.85rem;
 }
 
+.quizPage {
+  flex: 1;
+  min-height: 0;
+  gap: var(--play-gap, 0.65rem);
+}
+
+@media (max-height: 820px) {
+  .quizPage {
+    gap: var(--play-gap, 0.5rem);
+  }
+
+  .quizHeader {
+    padding: 0.4rem 0.85rem;
+  }
+
+  .quizTopicEmoji {
+    font-size: 1.15rem;
+  }
+
+  .quizTopicLabel {
+    font-size: 0.84rem;
+  }
+
+  .quizShell {
+    flex: 1;
+    min-height: 0;
+    gap: 0.5rem;
+    overflow-y: auto;
+  }
+
+  .hintRow {
+    margin: 0;
+  }
+}
+
 .streakBadge {
   display: inline-flex;
   align-items: center;

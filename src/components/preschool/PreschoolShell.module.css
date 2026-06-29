@@ -6,6 +6,13 @@
   padding: 0.15rem 0 1.5rem;
 }
 
+.shell:has([data-play-session]) {
+  flex: 1;
+  min-height: 0;
+  gap: var(--play-gap, 0.65rem);
+  padding-bottom: 0.35rem;
+}
+
 .shell[data-preschool='true'] {
   --touch-target: 52px;
 }
@@ -60,6 +67,13 @@
   text-align: center;
   line-height: 1.4;
   color: var(--color-text);
+}
+
+@media (max-height: 820px) {
+  .banner {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+  }
 }
 
 .shell > :not(.sparkles):not(.banner) {

@@ -129,3 +129,13 @@
 .questionOnly .body {
   font-size: 1.35rem;
 }
+
+@media (max-height: 820px) {
+  .questionOnly {
+    padding: 0.55rem 0.75rem 0.6rem;
+  }
+
+  .questionOnly .body {
+    font-size: clamp(1rem, 4.5vw, 1.25rem);
+  }
+}

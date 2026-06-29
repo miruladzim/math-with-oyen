@@ -9,7 +9,6 @@
 }
 
 .spaceStage {
-  height: 360px;
   border-color: #312e81;
 }
 
@@ -286,7 +285,7 @@
   position: relative;
   flex: 1;
   width: 18px;
-  min-height: 220px;
+  min-height: clamp(120px, 22dvh, 220px);
   border-radius: 999px;
   background: #0f172a;
   border: 2px solid #334155;
@@ -384,10 +383,6 @@
 
   .stageWrap {
     grid-template-columns: 1fr;
-  }
-
-  .spaceStage {
-    height: 320px;
   }
 }
 

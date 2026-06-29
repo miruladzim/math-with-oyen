@@ -152,7 +152,7 @@ export function FractionPizza({ onExit }: FractionPizzaProps) {
   const controlsLocked = roundLocked || checking;
 
   return (
-    <div className={shared.shell}>
+    <div className={shared.shell} data-play-session>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={confetti.burstKey} count={20} />
       <GameHUD

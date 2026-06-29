@@ -195,7 +195,7 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
   }
 
   const gameBody = (
-    <div className={shared.shell}>
+    <div className={shared.shell} data-play-session>
       <BackButton label={t('games.backGames')} onClick={onExit} />
       <GameHUD
         icon="🃏"

@@ -1,7 +1,8 @@
 .pizzaWrap {
   position: relative;
-  width: 270px;
-  height: 270px;
+  width: min(270px, 70vw);
+  height: min(270px, var(--play-stage-height, 270px));
+  max-height: var(--play-stage-height, 270px);
   padding: 0.5rem;
   border-radius: 50%;
   background: radial-gradient(circle, #fff7ed 0%, transparent 70%);

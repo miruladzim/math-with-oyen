@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { getLabHowTo, getLabTip, getLabWrongHelp, getOyenAskLabHint } from '../../lib/hints';
 import { speak } from '../../lib/speech';
+import { isCompactPlayViewport } from '../../lib/viewport';
 import { HintButton } from '../../components/HintButton';
 import { KidHint, type HintMood } from '../../components/KidHint';
 import type { LabModeId } from '../../lib/types';
@@ -15,7 +16,7 @@ interface LabCoachProps {
 
 export function LabCoach({ mode, round = 0, wrongHelp = false }: LabCoachProps) {
   const { t, language } = useLanguage();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => !isCompactPlayViewport());
   const [oyenAskMessage, setOyenAskMessage] = useState<string | null>(null);
   const oyenAskCount = useRef(0);
 
@@ -30,7 +31,9 @@ export function LabCoach({ mode, round = 0, wrongHelp = false }: LabCoachProps) 
   const coachMessage = useMemo(() => {
     if (oyenAskMessage) return oyenAskMessage;
     if (wrongHelp) return getLabWrongHelp(language, mode);
-    if (round === 0) return `${howTo} ${tip}`;
+    if (round === 0) {
+      return isCompactPlayViewport() ? tip : `${howTo} ${tip}`;
+    }
     return tip;
   }, [howTo, language, mode, oyenAskMessage, round, tip, wrongHelp]);
 

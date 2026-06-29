@@ -247,7 +247,7 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
   }
 
   return (
-    <div className={shared.shell}>
+    <div className={shared.shell} data-play-session>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={screenConfetti.burstKey} count={30} />
       <GameHUD

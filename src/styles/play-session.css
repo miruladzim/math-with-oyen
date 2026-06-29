@@ -1,0 +1,55 @@
+/* Fit games, lab, and practice quiz inside the visible viewport */
+
+:root {
+  --play-stage-height: clamp(175px, 36dvh, 360px);
+  --play-gap: clamp(0.35rem, 1.1vh, 0.75rem);
+}
+
+@media (max-height: 820px) {
+  :root {
+    --page-gap: 0.65rem;
+    --play-stage-height: clamp(160px, 32dvh, 300px);
+  }
+}
+
+@media (max-height: 700px) {
+  :root {
+    --play-stage-height: clamp(140px, 28dvh, 260px);
+  }
+}
+
+.layout:has([data-play-session]) {
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.layout:has([data-play-session]) .main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-top: max(0.4rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(0.4rem, env(safe-area-inset-bottom, 0px));
+}
+
+.layout:has([data-play-session]) .footer {
+  display: none;
+}
+
+.layout:has([data-play-session]) .app-fade-shell {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-play-session] {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--play-gap);
+}

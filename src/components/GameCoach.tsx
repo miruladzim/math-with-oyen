@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getGameHowTo, getGameTip, getGameWrongHelp, getOyenAskGameHint, type GameHintId } from '../lib/hints';
 import { speak } from '../lib/speech';
+import { isCompactPlayViewport } from '../lib/viewport';
 import { HintButton } from './HintButton';
 import { KidHint, type HintMood } from './KidHint';
 import styles from './GameCoach.module.css';
@@ -20,7 +21,7 @@ export function GameCoach({
   wrongMessage,
 }: GameCoachProps) {
   const { t, language } = useLanguage();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => !isCompactPlayViewport());
   const [oyenAskMessage, setOyenAskMessage] = useState<string | null>(null);
   const oyenAskCount = useRef(0);
 
@@ -35,7 +36,9 @@ export function GameCoach({
   const coachMessage = useMemo(() => {
     if (oyenAskMessage) return oyenAskMessage;
     if (wrongHelp) return wrongMessage ?? getGameWrongHelp(language, game);
-    if (round === 0) return `${howTo} ${tip}`;
+    if (round === 0) {
+      return isCompactPlayViewport() ? tip : `${howTo} ${tip}`;
+    }
     return tip;
   }, [game, howTo, language, oyenAskMessage, round, tip, wrongHelp, wrongMessage]);
 

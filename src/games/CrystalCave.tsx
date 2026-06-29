@@ -183,7 +183,7 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
   }
 
   return (
-    <div className={shared.shell}>
+    <div className={shared.shell} data-play-session>
       <BackButton label={t('games.backGames')} onClick={handleExit} />
       <Confetti burstKey={screenConfetti.burstKey} count={35} />
       <GameHUD
