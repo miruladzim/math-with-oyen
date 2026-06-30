@@ -11,7 +11,7 @@ import { getAllTopics, getTopicsForGrade } from '../lib/questions';
 import { getNextPracticeSteps, getTopicProgress } from '../lib/progress';
 import { getFinalExamProgress } from '../lib/exam/examProgress';
 import { getMathTips } from '../lib/mathTips';
-import { pickRandom } from '../lib/i18n/translations';
+import { pickRandom, translations } from '../lib/i18n/translations';
 import { isPreschool } from '../lib/preschoolConfig';
 import type { GradeLevel } from '../lib/types';
 import styles from './Home.module.css';
@@ -31,6 +31,7 @@ export function Home() {
   const [showLevelHint, setShowLevelHint] = useState(true);
 
   const dailyTip = useMemo(() => pickRandom(getMathTips(language)), [language]);
+  const parentGuideSections = translations[language].home.parentGuideSections;
 
   const topics = getAllTopics(language);
   const gradeTopics = getTopicsForGrade(gradeLevel, language);
@@ -214,7 +215,18 @@ export function Home() {
 
       <details className={styles.parentGuide}>
         <summary>{t('home.parentGuide')}</summary>
-        <p>{t('home.parentGuideText')}</p>
+        <div className={styles.parentGuideBody}>
+          {parentGuideSections.map((section) => (
+            <section key={section.title} className={styles.parentGuideSection}>
+              <h3 className={styles.parentGuideSectionTitle}>{section.title}</h3>
+              <ul className={styles.parentGuideList}>
+                {section.lines.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
       </details>
     </div>
   );

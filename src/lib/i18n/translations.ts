@@ -48,8 +48,61 @@ const en = {
     tipTitle: 'Did you know...',
     startPractice: 'Start Practice',
     parentGuide: 'Guide for parents & teachers',
-    parentGuideText:
-      'Sprout (K–1): Counting & Balloon Pop · Explorer (G2): Add/Subtract & Treasure Dive · Builder (G3): Multiplication & Rocket Launch · Champion (G4–5): Fractions & Crystal Cave',
+    parentGuideSections: [
+      {
+        title: 'Where to start',
+        lines: [
+          'Use the year slider at the top to match your child’s school level.',
+          'Add their name so Oyen can greet them — optional, but fun!',
+          'Tap a home tile: Practice for quizzes, Mini Games for play, or Math Lab to explore freely.',
+        ],
+      },
+      {
+        title: 'Practice',
+        lines: [
+          'Short 10-question quizzes, one topic at a time.',
+          'Stars are earned for strong scores. Check the Practice tile for a recommended topic.',
+        ],
+      },
+      {
+        title: 'Mini Games',
+        lines: [
+          'Six themed games — balloons, treasure dives, rockets, and more.',
+          'Each school year has a suggested game on the Mini Games tile. Great for 5–10 minute sessions.',
+        ],
+      },
+      {
+        title: 'Math Lab',
+        lines: [
+          'Hands-on tools: number line, balance scale, patterns, and more.',
+          'No scores or timers — let children explore and discover.',
+        ],
+      },
+      {
+        title: 'My Stars & Final Exam',
+        lines: [
+          'My Stars shows badges, streaks, and progress across topics.',
+          'From Year 1 onward, the Final Exam unlocks after earning enough stars at a level. It mixes 15 questions for a certificate.',
+        ],
+      },
+      {
+        title: 'Recommended by level',
+        lines: [
+          'Preschool (ages 5–6): counting, shapes, and gentle play.',
+          'Sprout (Year 1): counting & Balloon Pop.',
+          'Explorer (Year 2): add/subtract & Treasure Dive.',
+          'Builder (Year 3): multiplication & Rocket Launch.',
+          'Champion (Years 4–5): fractions & Crystal Cave.',
+        ],
+      },
+      {
+        title: 'Settings & Teacher',
+        lines: [
+          'Tap the gear icon for language (English / Bahasa Melayu), sound, and accessibility options.',
+          'The Teacher tile lets adults view progress, print worksheets, and set a PIN — for parents and teachers only.',
+        ],
+      },
+    ],
     recommendedTopic: 'Recommended for you',
     recommendedGame: 'Fun game pick',
     nextSteps: 'Your next steps',
@@ -692,8 +745,61 @@ const ms: TranslationTree = {
     tipTitle: 'Tahukah anda...',
     startPractice: 'Mula Latihan',
     parentGuide: 'Panduan ibu bapa & guru',
-    parentGuideText:
-      'Pemula (Tahun 1): Mengira & Letupkan Belon · Penjelajah (T2): Tambah/Tolak & Jom Menyelam · Pembina (T3): Pendaraban & Pelancaran Roket · Juara (T4–5): Pecahan & Gua Misteri',
+    parentGuideSections: [
+      {
+        title: 'Di mana untuk mula',
+        lines: [
+          'Guna peluncur tahun di atas untuk padankan tahap sekolah anak anda.',
+          'Tambah nama mereka supaya Oyen boleh menyapa — pilihan, tapi seronok!',
+          'Tekan jubin di halaman utama: Latihan untuk kuiz, Mini Permainan untuk main, atau Makmal untuk teroka bebas.',
+        ],
+      },
+      {
+        title: 'Latihan',
+        lines: [
+          'Kuiz pendek 10 soalan, satu topik setiap kali.',
+          'Bintang diperoleh untuk skor baik. Semak jubin Latihan untuk topik yang dicadangkan.',
+        ],
+      },
+      {
+        title: 'Mini Permainan',
+        lines: [
+          'Enam permainan bertema — belon, menyelam harta, roket, dan lagi.',
+          'Setiap tahun sekolah ada permainan cadangan pada jubin Mini Permainan. Sesuai untuk sesi 5–10 minit.',
+        ],
+      },
+      {
+        title: 'Makmal Matematik',
+        lines: [
+          'Alat hands-on: garis nombor, penimbang, corak, dan lagi.',
+          'Tiada skor atau pemasa — biarkan anak teroka dan menemui sendiri.',
+        ],
+      },
+      {
+        title: 'Bintang Saya & Peperiksaan Akhir',
+        lines: [
+          'Bintang Saya tunjuk lencana, rentetan hari, dan kemajuan merentas topik.',
+          'Dari Tahun 1, Peperiksaan Akhir dibuka selepas kumpul bintang mencukupi. Ia campur 15 soalan untuk sijil.',
+        ],
+      },
+      {
+        title: 'Cadangan mengikut tahap',
+        lines: [
+          'Prasekolah (umur 5–6): mengira, bentuk, dan main lembut.',
+          'Pemula (Tahun 1): mengira & Letupkan Belon.',
+          'Penjelajah (Tahun 2): tambah/tolak & Jom Menyelam.',
+          'Pembina (Tahun 3): pendaraban & Pelancaran Roket.',
+          'Juara (Tahun 4–5): pecahan & Gua Misteri.',
+        ],
+      },
+      {
+        title: 'Tetapan & Guru',
+        lines: [
+          'Tekan ikon gear untuk bahasa (English / Bahasa Melayu), bunyi, dan pilihan aksesibiliti.',
+          'Jubin Guru membolehkan dewasa lihat kemajuan, cetak lembaran kerja, dan tetapkan PIN — untuk ibu bapa dan guru sahaja.',
+        ],
+      },
+    ],
     recommendedTopic: 'Cadangan topik untuk awak',
     recommendedGame: 'Cadangan permainan',
     nextSteps: 'Langkah seterusnya awak',
