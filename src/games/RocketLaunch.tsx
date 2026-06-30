@@ -13,7 +13,7 @@ import { useGameTimers } from '../hooks/useGameTimers';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
 import { gameDifficulty } from '../lib/gameConfig';
-import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
+import { playCorrect, playIncorrect, playRocket, playSuccess } from '../lib/audio';
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateAddSub10Question } from '../lib/questions/addSub';
 import { generateMultiplicationQuestion } from '../lib/questions/multiply';
@@ -167,6 +167,7 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
         if (!isFinalRound) screenConfetti.burst();
         setFeedback(createGameFeedback('success', t('games.rocketCorrect')));
         speak(t('common.correct'));
+        playRocket();
         playCorrect();
 
         if (isFinalRound) {

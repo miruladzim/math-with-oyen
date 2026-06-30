@@ -11,7 +11,7 @@ import { VictoryScreen } from '../components/VictoryScreen';
 import { useGameTimers } from '../hooks/useGameTimers';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
-import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
+import { playCardFlip, playCorrect, playIncorrect, playSuccess } from '../lib/audio';
 import { recordSession } from '../lib/progress';
 import { generateAddSub10Question } from '../lib/questions/addSub';
 import {
@@ -127,6 +127,7 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
     (cardId: string) => {
       if (lock || done || flipped.includes(cardId) || matched.includes(cardId)) return;
 
+      playCardFlip();
       const newFlipped = [...flipped, cardId];
       setFlipped(newFlipped);
 

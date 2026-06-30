@@ -5,6 +5,7 @@ import { BackButton } from '../components/BackButton';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
+import { usePlaySessionAudio } from '../hooks/usePlaySessionAudio';
 import { isPreschool } from '../lib/preschoolConfig';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { getLabModesForGrade } from '../lib/lab/labConfig';
@@ -44,6 +45,8 @@ export function Lab() {
   const preschoolMode = isPreschool(gradeLevel);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeMode, setActiveMode] = useState<LabModeId | null>(null);
+
+  usePlaySessionAudio(activeMode ? 'lab' : null);
 
   useEffect(() => {
     const mode = searchParams.get('mode');

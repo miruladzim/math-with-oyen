@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 import { isSpeechEnabled, setSpeechEnabled } from '../lib/speech';
-import { isSoundEnabled, setSoundEnabled } from '../lib/audio';
+import { isMusicEnabled, isSoundEnabled, setMusicEnabled, setSoundEnabled } from '../lib/audio';
 import { applyDarkMode } from '../lib/theme';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
@@ -22,6 +22,7 @@ export function Layout({ children }: LayoutProps) {
   useEffect(() => {
     setSpeechEnabled(progress.settings.speechEnabled);
     setSoundEnabled(progress.settings.soundEnabled);
+    setMusicEnabled(progress.settings.musicEnabled ?? true);
     applyDarkMode(progress.settings.darkMode ?? false);
   }, [progress.settings]);
 
@@ -49,6 +50,15 @@ export function Layout({ children }: LayoutProps) {
     setProgress({
       ...progress,
       settings: { ...progress.settings, soundEnabled: next },
+    });
+  };
+
+  const toggleMusic = () => {
+    const next = !isMusicEnabled();
+    setMusicEnabled(next);
+    setProgress({
+      ...progress,
+      settings: { ...progress.settings, musicEnabled: next },
     });
   };
 
@@ -103,6 +113,19 @@ export function Layout({ children }: LayoutProps) {
                 aria-pressed={progress.settings.soundEnabled}
               >
                 🔔
+              </button>
+              <button
+                type="button"
+                className={`${styles.controlBtn} ${(progress.settings.musicEnabled ?? true) ? styles.controlBtnActive : styles.controlBtnMuted}`}
+                onClick={toggleMusic}
+                aria-label={
+                  progress.settings.musicEnabled ?? true
+                    ? t('toggles.musicOn')
+                    : t('toggles.musicOff')
+                }
+                aria-pressed={progress.settings.musicEnabled ?? true}
+              >
+                🎵
               </button>
             </div>
           </div>

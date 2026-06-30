@@ -11,6 +11,7 @@ import { BackButton } from '../components/BackButton';
 import { KidHint } from '../components/KidHint';
 import { useLanguage } from '../context/LanguageContext';
 import { useProgress } from '../context/ProgressContext';
+import { usePlaySessionAudio } from '../hooks/usePlaySessionAudio';
 import { getArcadeHint } from '../lib/hints';
 import { getGamesForGrade, isPreschool } from '../lib/preschoolConfig';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
@@ -35,6 +36,8 @@ export function Games() {
   const allowedGames = useMemo(() => getGamesForGrade(gradeLevel), [gradeLevel]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeGame, setActiveGame] = useState<GameId>(() => readLaunchGame(allowedGames));
+
+  usePlaySessionAudio(activeGame ? 'games' : null);
 
   useEffect(() => {
     const play = searchParams.get('play');

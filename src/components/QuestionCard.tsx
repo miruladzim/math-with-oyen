@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Question } from '../lib/types';
 import { speak } from '../lib/speech';
+import { playTap } from '../lib/audio';
 import { useLanguage } from '../context/LanguageContext';
 import { BigButton } from './BigButton';
 import styles from './QuestionCard.module.css';
@@ -36,6 +37,7 @@ export function QuestionCard({
 
   const handleChoice = (choice: string | number) => {
     if (disabled || revealed) return;
+    playTap();
     setSelected(choice);
     setRevealed(true);
     const correct =

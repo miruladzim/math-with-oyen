@@ -1,3 +1,4 @@
+import { playTap } from '../../lib/audio';
 import styles from './DragTile.module.css';
 
 interface DragTileProps {
@@ -12,7 +13,10 @@ export function DragTile({ label, selected, disabled, onSelect }: DragTileProps)
     <button
       type="button"
       className={`${styles.tile} ${selected ? styles.selected : ''}`}
-      onClick={onSelect}
+      onClick={() => {
+        if (!disabled) playTap();
+        onSelect();
+      }}
       disabled={disabled}
       aria-pressed={selected}
     >

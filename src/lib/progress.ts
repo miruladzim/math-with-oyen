@@ -8,6 +8,7 @@ const STORAGE_KEY = 'math-adventure-progress';
 const DEFAULT_SETTINGS: AppSettings = {
   speechEnabled: false,
   soundEnabled: true,
+  musicEnabled: true,
   darkMode: false,
   teacherPin: '1234',
   language: 'en',

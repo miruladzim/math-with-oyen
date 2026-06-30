@@ -3,6 +3,7 @@ import { BigButton } from '../BigButton';
 import { useLanguage } from '../../context/LanguageContext';
 import type { ExamQuestion } from '../../lib/exam/examBuilder';
 import { speak } from '../../lib/speech';
+import { playTap } from '../../lib/audio';
 import styles from './ExamChoiceBoard.module.css';
 
 const CHOICE_LABELS = ['A', 'B', 'C', 'D'];
@@ -53,6 +54,7 @@ export function ExamChoiceBoard({
 
   const handleChoice = (choice: string | number) => {
     if (disabled || revealed) return;
+    playTap();
     setSelected(choice);
     setRevealed(true);
     setReadyForNext(true);

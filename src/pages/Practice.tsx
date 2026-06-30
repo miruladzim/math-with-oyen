@@ -23,7 +23,8 @@ import {
   getTopicBadge,
 } from '../lib/curriculum/practicePath';
 import { pickRandom, translations } from '../lib/i18n/translations';
-import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
+import { usePlaySessionAudio } from '../hooks/usePlaySessionAudio';
+import { playCorrect, playIncorrect, playStreak, playSuccess } from '../lib/audio';
 import { CORRECT_FEEDBACK_MS } from '../lib/feedbackTiming';
 import {
   getNextPracticeSteps,
@@ -103,6 +104,17 @@ export function Practice() {
   }, []);
 
   useEffect(() => clearAdvanceTimer, [clearAdvanceTimer]);
+
+  const prevStreak = useRef(0);
+
+  usePlaySessionAudio(phase === 'quiz' ? 'practice' : null);
+
+  useEffect(() => {
+    if (phase === 'quiz' && streakCorrect >= 2 && streakCorrect > prevStreak.current) {
+      playStreak();
+    }
+    prevStreak.current = streakCorrect;
+  }, [phase, streakCorrect]);
 
   const pathUnits = useMemo(() => getPracticePath(gradeLevel), [gradeLevel]);
   const topics = useMemo(
