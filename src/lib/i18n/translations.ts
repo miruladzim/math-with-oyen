@@ -753,7 +753,7 @@ const ms: TranslationTree = {
       {
         title: 'Permulaan',
         lines: [
-          'Pilih tahun persekolahan anak anda menggunakan peluncur di bahagian atas.',
+          'Di bahagian atas, pilih tahun persekolahan yang sesuai untuk anak anda.',
           'Masukkan nama anak (pilihan) supaya Oyen boleh menyapa mereka — lebih menyeronokkan!',
           'Pilih kad di laman utama: Latihan untuk kuiz, Mini Permainan untuk bermain, atau Makmal Matematik untuk meneroka.',
         ],
