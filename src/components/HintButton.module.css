@@ -16,10 +16,12 @@
   transition: transform 0.1s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
-.btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-  box-shadow: 0 4px 0 var(--color-ask-btn-border), var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+    box-shadow: 0 4px 0 var(--color-ask-btn-border), var(--shadow-md);
+  }
 }
 
 .btn:active:not(:disabled) {

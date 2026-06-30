@@ -211,9 +211,11 @@
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-.chestBtn:hover:not(:disabled) {
-  transform: translateY(-4px) scale(1.04);
-  filter: drop-shadow(0 6px 12px rgba(251, 191, 36, 0.45));
+@media (hover: hover) and (pointer: fine) {
+  .chestBtn:hover:not(:disabled) {
+    transform: translateY(-4px) scale(1.04);
+    filter: drop-shadow(0 6px 12px rgba(251, 191, 36, 0.45));
+  }
 }
 
 .chestBtn:active:not(:disabled) {

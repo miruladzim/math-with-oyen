@@ -116,13 +116,6 @@
     background 0.12s ease;
 }
 
-.choice:hover:not(:disabled) {
-  border-color: var(--color-primary-border-strong);
-  background: var(--color-surface-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 0 var(--color-primary-border);
-}
-
 .choice:active:not(:disabled) {
   transform: translateY(2px);
   box-shadow: 0 1px 0 var(--color-primary-border);
@@ -220,5 +213,14 @@
   .choice {
     min-height: 64px;
     font-size: 1.45rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .choice:hover:not(:disabled) {
+    border-color: var(--color-primary-border-strong);
+    background: var(--color-surface-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 var(--color-primary-border);
   }
 }

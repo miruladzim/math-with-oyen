@@ -24,10 +24,12 @@
   box-shadow: 0 4px 0 var(--color-primary-shadow-deep), var(--shadow-sm);
 }
 
-.primary:hover:not(.disabled) {
-  filter: brightness(1.04);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 0 var(--color-primary-shadow-deep), var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover:not(.disabled) {
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 0 var(--color-primary-shadow-deep), var(--shadow-md);
+  }
 }
 
 .primary:active:not(.disabled) {
@@ -41,9 +43,11 @@
   box-shadow: 0 4px 0 var(--color-secondary-shadow), var(--shadow-sm);
 }
 
-.secondary:hover:not(.disabled) {
-  filter: brightness(1.04);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .secondary:hover:not(.disabled) {
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+  }
 }
 
 .outline {
@@ -53,9 +57,11 @@
   box-shadow: 0 3px 0 var(--color-primary-shadow);
 }
 
-.outline:hover:not(.disabled) {
-  background: var(--color-surface-hover);
-  border-color: var(--color-primary-border-strong);
+@media (hover: hover) and (pointer: fine) {
+  .outline:hover:not(.disabled) {
+    background: var(--color-surface-hover);
+    border-color: var(--color-primary-border-strong);
+  }
 }
 
 .success {

@@ -129,9 +129,11 @@
   color: var(--color-primary);
 }
 
-.choice:hover:not(:disabled) {
-  border-color: var(--color-primary-border-strong);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .choice:hover:not(:disabled) {
+    border-color: var(--color-primary-border-strong);
+    transform: translateY(-1px);
+  }
 }
 
 .choice:active:not(:disabled) {

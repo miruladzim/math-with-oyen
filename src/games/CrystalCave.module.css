@@ -67,12 +67,14 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.crystalBtn:hover:not(:disabled) {
-  transform: scale(1.05) translateY(-2px);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
-  box-shadow:
-    0 0 32px rgba(168, 85, 247, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .crystalBtn:hover:not(:disabled) {
+    transform: scale(1.05) translateY(-2px);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+    box-shadow:
+      0 0 32px rgba(168, 85, 247, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
 }
 
 .gemEmoji {

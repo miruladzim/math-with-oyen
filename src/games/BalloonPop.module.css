@@ -72,9 +72,11 @@
   animation: float ease-in-out infinite !important;
 }
 
-.balloon:hover:not(:disabled) {
-  transform: scale(1.14);
-  filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.35));
+@media (hover: hover) and (pointer: fine) {
+  .balloon:hover:not(:disabled) {
+    transform: scale(1.14);
+    filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.35));
+  }
 }
 
 .balloonEmoji {

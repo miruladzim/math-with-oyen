@@ -48,9 +48,11 @@
   min-height: 88px;
 }
 
-.gameCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .gameCard:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .gameCard:active {

@@ -48,9 +48,11 @@
   min-height: 96px;
 }
 
-.modeCard:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .modeCard:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .modeArt {

@@ -330,10 +330,12 @@
   box-shadow: 0 4px 0 #c7d2fe, var(--shadow-sm);
 }
 
-.pod:hover:not(:disabled) {
-  transform: translateY(-3px);
-  border-color: #818cf8;
-  box-shadow: 0 6px 0 #a5b4fc, var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .pod:hover:not(:disabled) {
+    transform: translateY(-3px);
+    border-color: #818cf8;
+    box-shadow: 0 6px 0 #a5b4fc, var(--shadow-md);
+  }
 }
 
 .pod:active:not(:disabled) {
