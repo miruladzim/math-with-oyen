@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { BigButton } from '../BigButton';
 import { useLanguage } from '../../context/LanguageContext';
 import type { ExamQuestion } from '../../lib/exam/examBuilder';
-import { speak } from '../../lib/speech';
 import { playTap } from '../../lib/audio';
 import styles from './ExamChoiceBoard.module.css';
 
@@ -43,7 +42,6 @@ export function ExamChoiceBoard({
     setSelected(null);
     setRevealed(false);
     setReadyForNext(false);
-    speak(question.prompt.replace(/\n/g, '. '));
   }, [question.id, question.prompt, resetKey]);
 
   const choices = question.choices ?? [];

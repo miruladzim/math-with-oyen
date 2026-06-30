@@ -19,7 +19,6 @@ import {
   PRESCHOOL_MATCH_PAIRS,
 } from '../lib/questions/preschoolMatch';
 import { isPreschool } from '../lib/preschoolConfig';
-import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './NumberMatch.module.css';
 
@@ -119,7 +118,6 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
       recordSession(progress, preschool ? 'shapes' : 'addSub10', pairTotal, pairTotal),
     );
     playSuccess();
-    speak(t('games.matchAllSpeech'));
     setDone(true);
   }, [allMatched, done, pairTotal, preschool, progress, setProgress, t]);
 
@@ -139,7 +137,6 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
 
         if (isMatch) {
           playCorrect();
-          speak(t('common.match'));
           setPairsFound((p) => p + 1);
           setMatched((m) => [...m, a.id, b.id]);
           setFlipped([]);
@@ -148,7 +145,6 @@ export function NumberMatch({ onExit }: NumberMatchProps) {
           setFeedback(null);
         } else {
           playIncorrect();
-          speak(preschool ? t('preschool.matchTryAgain') : t('games.matchWrong'));
           setMismatchHint(true);
           setFeedback(
             createGameFeedback(

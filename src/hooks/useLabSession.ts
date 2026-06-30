@@ -6,7 +6,6 @@ import { getLabRounds, isPreschool } from '../lib/preschoolConfig';
 import { pickEncouragement } from '../lib/hints';
 import { getVictoryEncouragement, recordLabSession, starsFromAccuracy } from '../lib/progress';
 import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
-import { speak } from '../lib/speech';
 import type { LabModeId } from '../lib/types';
 import type { AppProgress } from '../lib/types';
 import { createGameFeedback, type GameFeedback } from '../components/GameFeedbackPopup';
@@ -66,7 +65,6 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
       const cheer = pickEncouragement(language, round + correct);
       const popupMessage = explanation ? `${cheer} ${explanation}` : cheer;
       setFeedback(createGameFeedback('success', popupMessage));
-      speak(popupMessage);
 
       setCorrect((prev) => {
         const next = prev + 1;
@@ -101,7 +99,6 @@ export function useLabSession({ modeId, progress, setProgress }: UseLabSessionOp
       playIncorrect();
       const gentle = isPreschool(progress.gradeLevel);
       setFeedback(createGameFeedback('error', gentle ? message.replace(/not quite/gi, 'almost') : message));
-      speak(message);
       schedule(() => {
         setLocked(false);
         setFeedback(null);

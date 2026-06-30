@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { speak } from '../lib/speech';
 
 export function useHintButton(onReveal: () => string) {
   const [revealedMessage, setRevealedMessage] = useState<string | null>(null);
@@ -7,7 +6,6 @@ export function useHintButton(onReveal: () => string) {
   const revealHint = useCallback(() => {
     const message = onReveal();
     setRevealedMessage(message);
-    speak(message);
   }, [onReveal]);
 
   const resetHint = useCallback(() => {

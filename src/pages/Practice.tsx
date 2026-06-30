@@ -40,7 +40,6 @@ import {
   getPracticeWrongHint,
 } from '../lib/hints';
 import { generateQuestion, getTopicsForGrade } from '../lib/questions';
-import { speak } from '../lib/speech';
 import {
   getPracticeSessionSize,
   isCompareTopic,
@@ -159,12 +158,6 @@ export function Practice() {
         setProgress(updated);
       }
       playSuccess();
-      speak(
-        t('practice.sessionScoreSpeech', {
-          correct: finalCorrect,
-          total,
-        }),
-      );
       setWaiting(false);
       setAwaitingAction(false);
       setPhase('done');
@@ -323,7 +316,6 @@ export function Practice() {
         }
         const msg = pickRandom(translations[language].practice.correctMessages);
         setFeedback({ type: 'success', message: msg });
-        speak(msg);
         playCorrect();
         if (!isRetry) {
           setLabSuggestion(null);
@@ -346,7 +338,6 @@ export function Practice() {
         answer: String(currentQuestion?.correctAnswer ?? ''),
       });
       setFeedback({ type: 'error', message: `${msg} ${answerReveal}` });
-      speak(answerReveal);
       playIncorrect();
 
       if (currentQuestion && topicId) {

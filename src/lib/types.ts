@@ -77,7 +77,6 @@ export interface LabModeProgress {
 }
 
 export interface AppSettings {
-  speechEnabled: boolean;
   soundEnabled: boolean;
   musicEnabled: boolean;
   darkMode: boolean;

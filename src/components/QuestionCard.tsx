@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import type { Question } from '../lib/types';
-import { speak } from '../lib/speech';
 import { playTap } from '../lib/audio';
 import { useLanguage } from '../context/LanguageContext';
 import { BigButton } from './BigButton';
@@ -32,7 +31,6 @@ export function QuestionCard({
     setSelected(null);
     setInputValue('');
     setRevealed(false);
-    speak(question.prompt.replace(/\n/g, '. '));
   }, [question.id, question.prompt, resetKey]);
 
   const handleChoice = (choice: string | number) => {

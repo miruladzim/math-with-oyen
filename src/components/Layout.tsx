@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
-import { isSpeechEnabled, setSpeechEnabled } from '../lib/speech';
 import { isMusicEnabled, isSoundEnabled, setMusicEnabled, setSoundEnabled } from '../lib/audio';
 import { applyDarkMode } from '../lib/theme';
 import { useLanguage } from '../context/LanguageContext';
@@ -20,7 +19,6 @@ export function Layout({ children }: LayoutProps) {
   const displayName = progress.studentName || t('appName');
 
   useEffect(() => {
-    setSpeechEnabled(progress.settings.speechEnabled);
     setSoundEnabled(progress.settings.soundEnabled);
     setMusicEnabled(progress.settings.musicEnabled ?? true);
     applyDarkMode(progress.settings.darkMode ?? false);
@@ -32,15 +30,6 @@ export function Layout({ children }: LayoutProps) {
     setProgress({
       ...progress,
       settings: { ...progress.settings, darkMode: next },
-    });
-  };
-
-  const toggleSpeech = () => {
-    const next = !isSpeechEnabled();
-    setSpeechEnabled(next);
-    setProgress({
-      ...progress,
-      settings: { ...progress.settings, speechEnabled: next },
     });
   };
 
@@ -91,17 +80,6 @@ export function Layout({ children }: LayoutProps) {
                 aria-pressed={progress.settings.darkMode}
               >
                 {progress.settings.darkMode ? '☀️' : '🌙'}
-              </button>
-              <button
-                type="button"
-                className={`${styles.controlBtn} ${progress.settings.speechEnabled ? styles.controlBtnActive : styles.controlBtnMuted}`}
-                onClick={toggleSpeech}
-                aria-label={
-                  progress.settings.speechEnabled ? t('toggles.speechOn') : t('toggles.speechOff')
-                }
-                aria-pressed={progress.settings.speechEnabled}
-              >
-                🔊
               </button>
               <button
                 type="button"

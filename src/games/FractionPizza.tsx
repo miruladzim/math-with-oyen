@@ -16,7 +16,6 @@ import { useGameTimers } from '../hooks/useGameTimers';
 import { playCorrect, playIncorrect, playSuccess } from '../lib/audio';
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateFractionQuestion, parseFraction } from '../lib/questions/fractions';
-import { speak } from '../lib/speech';
 import { PizzaVisual } from './PizzaVisual';
 import shared from './shared.module.css';
 import styles from './FractionPizza.module.css';
@@ -49,7 +48,6 @@ export function FractionPizza({ onExit }: FractionPizzaProps) {
     setFeedback(null);
     setChecking(false);
     setRoundLocked(false);
-    speak(t('games.pizzaSpeech', { numer, denom }));
   }, [language, t]);
 
   useEffect(() => {
@@ -86,7 +84,6 @@ export function FractionPizza({ onExit }: FractionPizzaProps) {
         setRoundLocked(true);
         confetti.burst();
         setFeedback(createGameFeedback('success', t('games.pizzaPerfect')));
-        speak(t('common.correct'));
         playCorrect();
 
         schedule(() => {
@@ -111,7 +108,6 @@ export function FractionPizza({ onExit }: FractionPizzaProps) {
           t('games.pizzaWrong', { count: filledCount, target: target.numer }),
         ),
       );
-      speak(t('common.tryAgain'));
       playIncorrect();
       schedule(() => {
         setFeedback(null);

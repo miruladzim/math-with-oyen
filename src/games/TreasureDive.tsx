@@ -20,7 +20,6 @@ import { generateCountingQuestion } from '../lib/questions/counting';
 import { isPreschool, parseCountingVisual } from '../lib/preschoolConfig';
 import { PreschoolShell } from '../components/preschool/PreschoolShell';
 import { PreschoolVictoryScreen } from '../components/preschool/PreschoolVictoryScreen';
-import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './TreasureDive.module.css';
 
@@ -88,7 +87,6 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       setFeedback(null);
       setLocked(false);
       setWinChestId(null);
-      speak(items.length > 0 ? `${promptLine} ${t('games.diveCountOnly')}` : q.prompt);
     },
     [consecutiveWrong, gradeLevel, language, t],
   );
@@ -134,7 +132,6 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
         setCombo((c) => c + 1);
         screenConfetti.burst();
         setFeedback(createGameFeedback('success', t('games.diveCorrect')));
-        speak(t('common.correct'));
         playCorrect();
 
         schedule(() => {
@@ -149,7 +146,6 @@ export function TreasureDive({ onExit }: TreasureDiveProps) {
       setWrongCount((w) => w + 1);
       setCombo(0);
       setFeedback(createGameFeedback('error', t('games.diveWrong')));
-      speak(t('common.notQuite'));
       playIncorrect();
       schedule(() => {
         setLocked(false);

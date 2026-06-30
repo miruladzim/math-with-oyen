@@ -17,8 +17,6 @@ const en = {
     greeting: 'Hi, {name}',
   },
   toggles: {
-    speechOn: 'Turn off read aloud',
-    speechOff: 'Turn on read aloud',
     soundOn: 'Mute sounds',
     soundOff: 'Unmute sounds',
     musicOn: 'Turn off music',
@@ -716,8 +714,6 @@ const ms: TranslationTree = {
     greeting: 'Hai, {name}',
   },
   toggles: {
-    speechOn: 'Matikan bacaan suara',
-    speechOff: 'Hidupkan bacaan suara',
     soundOn: 'Senyapkan bunyi',
     soundOff: 'Hidupkan bunyi',
     musicOn: 'Matikan muzik',

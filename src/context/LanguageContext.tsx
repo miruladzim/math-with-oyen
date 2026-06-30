@@ -19,7 +19,6 @@ import {
 } from '../lib/i18n/translations';
 import type { Language } from '../lib/i18n/types';
 import type { GradeLevel, TopicId } from '../lib/types';
-import { setSpeechLanguage } from '../lib/speech';
 
 interface LanguageContextValue {
   language: Language;
@@ -42,7 +41,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = language === 'ms' ? 'ms' : 'en';
     document.title =
       language === 'ms' ? 'Matematik dengan Oyen' : 'Math With Oyen';
-    setSpeechLanguage(language);
   }, [language]);
 
   const setLanguage = useCallback(

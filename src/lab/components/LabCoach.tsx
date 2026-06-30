@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { getLabHowTo, getLabTip, getLabWrongHelp, getOyenAskLabHint } from '../../lib/hints';
-import { speak } from '../../lib/speech';
 import { isCompactPlayViewport } from '../../lib/viewport';
 import { HintButton } from '../../components/HintButton';
 import { KidHint, type HintMood } from '../../components/KidHint';
@@ -44,7 +43,6 @@ export function LabCoach({ mode, round = 0, wrongHelp = false }: LabCoachProps) 
     const message = getOyenAskLabHint(language, mode, oyenAskCount.current);
     oyenAskCount.current += 1;
     setOyenAskMessage(message);
-    speak(message);
   }, [language, mode]);
 
   return (

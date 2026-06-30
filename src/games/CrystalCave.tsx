@@ -17,7 +17,6 @@ import { playCorrect, playCrystal, playIncorrect, playSuccess } from '../lib/aud
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateAddSub10Question, generateSkipCountingQuestion } from '../lib/questions/addSub';
 import { generateMultiplicationQuestion } from '../lib/questions/multiply';
-import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './CrystalCave.module.css';
 
@@ -83,7 +82,6 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
       setFeedback(null);
       setLocked(false);
       setShatterId(null);
-      speak(q.prompt);
     },
     [consecutiveWrong, gradeLevel, language],
   );
@@ -128,7 +126,6 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
         setCombo((c) => c + 1);
         screenConfetti.burst();
         setFeedback(createGameFeedback('success', t('games.crystalCorrect')));
-        speak(t('common.correct'));
         playCorrect();
 
         schedule(() => {
@@ -143,7 +140,6 @@ export function CrystalCave({ onExit }: CrystalCaveProps) {
       setWrongCount((w) => w + 1);
       setCombo(0);
       setFeedback(createGameFeedback('error', t('games.crystalWrong')));
-      speak(t('common.notQuite'));
       playIncorrect();
       schedule(() => {
         setLocked(false);

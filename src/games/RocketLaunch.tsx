@@ -17,7 +17,6 @@ import { playCorrect, playIncorrect, playRocket, playSuccess } from '../lib/audi
 import { getVictoryEncouragement, recordSession, starsFromAccuracy } from '../lib/progress';
 import { generateAddSub10Question } from '../lib/questions/addSub';
 import { generateMultiplicationQuestion } from '../lib/questions/multiply';
-import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './RocketLaunch.module.css';
 
@@ -124,7 +123,6 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
       setPickedId(null);
       setLanded(false);
       setFinishing(false);
-      speak(q.prompt);
     },
     [consecutiveWrong, gradeLevel, language],
   );
@@ -166,7 +164,6 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
         setCombo((c) => c + 1);
         if (!isFinalRound) screenConfetti.burst();
         setFeedback(createGameFeedback('success', t('games.rocketCorrect')));
-        speak(t('common.correct'));
         playRocket();
         playCorrect();
 
@@ -179,7 +176,6 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
             schedule(() => {
               setLanded(true);
               setFeedback(createGameFeedback('success', t('games.rocketLanded')));
-              speak(t('games.rocketLanded'));
               screenConfetti.burst();
             }, LANDING_MESSAGE_DELAY_MS);
 
@@ -201,7 +197,6 @@ export function RocketLaunch({ onExit }: RocketLaunchProps) {
       setWrongCount((w) => w + 1);
       setCombo(0);
       setFeedback(createGameFeedback('error', t('games.rocketWrong')));
-      speak(t('common.notQuite'));
       playIncorrect();
       schedule(() => {
         setLocked(false);

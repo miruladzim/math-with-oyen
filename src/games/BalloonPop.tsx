@@ -21,7 +21,6 @@ import { generateMultiplicationQuestion } from '../lib/questions/multiply';
 import { generateAddSub10Question } from '../lib/questions/addSub';
 import { generateCountingQuestion } from '../lib/questions/counting';
 import { isPreschool } from '../lib/preschoolConfig';
-import { speak } from '../lib/speech';
 import shared from './shared.module.css';
 import styles from './BalloonPop.module.css';
 
@@ -141,7 +140,6 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
       setShakingId(null);
       setLocked(false);
       setBursts([]);
-      speak(q.prompt);
     },
     [consecutiveWrong, gradeLevel, language],
   );
@@ -188,7 +186,6 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
         setCombo((c) => c + 1);
         screenConfetti.burst();
         setFeedback(createGameFeedback('success', t('games.popCorrect')));
-        speak(t('common.correct'));
         playCorrect();
 
         schedule(() => {
@@ -204,7 +201,6 @@ export function BalloonPop({ onExit }: BalloonPopProps) {
       setWrongCount((w) => w + 1);
       setCombo(0);
       setFeedback(createGameFeedback('error', t('games.popWrong')));
-      speak(t('common.notQuite'));
       playIncorrect();
       schedule(() => {
         setShakingId(null);

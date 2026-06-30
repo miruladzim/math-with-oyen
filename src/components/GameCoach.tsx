@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getGameHowTo, getGameTip, getGameWrongHelp, getOyenAskGameHint, type GameHintId } from '../lib/hints';
-import { speak } from '../lib/speech';
 import { isCompactPlayViewport } from '../lib/viewport';
 import { HintButton } from './HintButton';
 import { KidHint, type HintMood } from './KidHint';
@@ -49,7 +48,6 @@ export function GameCoach({
     const message = getOyenAskGameHint(language, game, oyenAskCount.current);
     oyenAskCount.current += 1;
     setOyenAskMessage(message);
-    speak(message);
   }, [game, language]);
 
   return (
